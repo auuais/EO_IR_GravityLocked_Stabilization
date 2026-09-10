@@ -44,6 +44,11 @@ module EoV19StreamingRendererII1 #(
     output wire [11:0] dbg_cut_pano_x,
     output wire [11:0] dbg_cut_count
 );
+    // One place for the row-window contract, instead of 62/63/2 literals
+    // scattered through the gate, the pass-start check and the replay demand.
+    localparam integer CACHE_DEPTH_ROWS = 64;                    // EoV19LineCache CACHE_LINES
+    localparam [10:0]  BILINEAR_LEAD    = 11'd2;                 // need rows m..M+1 -> count M+2
+    localparam [10:0]  WINDOW_GUARD     = CACHE_DEPTH_ROWS - 1;  // 63, one row inside the ring
     localparam integer CONTENT_Y0 = `EO_V19_YPAD;
     localparam integer CONTENT_Y1 = `EO_V19_YPAD + `EO_V19_PER_CAM_H - 1;
 
@@ -137,13 +142,24 @@ module EoV19StreamingRendererII1 #(
                                (pano_y - CONTENT_Y0) : 9'd0;
     wire [10:0] gate_max_row = scale_row(row_max_y0[map_row_index]);
     wire [10:0] gate_min_row = scale_row(row_min_y0[map_row_index]);
-    wire [10:0] gate_need_row = gate_max_row + 11'd2;
-    wire [10:0] first_need_row = scale_row(row_max_y0[0]) + 11'd2;
+    wire [10:0] gate_need_row = gate_max_row + BILINEAR_LEAD;
+    wire [10:0] first_need_row = scale_row(row_max_y0[0]) + BILINEAR_LEAD;
     wire [10:0] first_start_row = scale_row(row_min_y0[0]);
     // With captured_rows == R the 64-entry ring holds source rows
     // [R-64, R-1], so the true contract is gate_min_row >= R-64, i.e. an
-    // overrun bound of gate_min_row + 64.  Use +62 to keep two rows of
-    // implementation margin while staying strictly inside the ring.
+    // overrun bound of gate_min_row + 64.  WINDOW_GUARD is 63: one row inside
+    // the ring, which is where the margin has to come from.
+    //
+    // It was +62, and combined with the replay asking for one row too many
+    // (see source_need_row) that made logical rows 0..3 impossible to admit.
+    // Their span is 61, and a span-61 window needs 63 completed source rows,
+    // m through M+1 inclusive.  63 fits in a 64-entry ring; the old bound
+    // excluded a window the cache could actually hold.
+    //
+    // Do NOT raise this to +64.  At count R the writer may already be
+    // overwriting the slot that held R-64, and the cache only rewrites that
+    // slot's tag when the new row COMPLETES -- so an old tag can still hit
+    // while its data is half replaced.  +63 never reads that slot.
     //
     // The old +60 bound predated the row-window fix in
     // scripts/v19_generate_render_runs.py.  row_max_y0/row_min_y0 now
@@ -162,18 +178,15 @@ module EoV19StreamingRendererII1 #(
                          (rows3 >= gate_need_row || !cam_present[3]) &&
                          (rows4 >= gate_need_row || !cam_present[4]) &&
                          (rows5 >= gate_need_row || !cam_present[5]);
-    wire gate_upper_ok = (rows0 >= gate_min_row) && (rows0 <= gate_min_row + 11'd62) &&
-                         (rows1 >= gate_min_row) && (rows1 <= gate_min_row + 11'd62) &&
-                         (rows2 >= gate_min_row) && (rows2 <= gate_min_row + 11'd62) &&
-                         (rows3 >= gate_min_row) && (rows3 <= gate_min_row + 11'd62) &&
-                         (rows4 >= gate_min_row) && (rows4 <= gate_min_row + 11'd62) &&
-                         (rows5 >= gate_min_row) && (rows5 <= gate_min_row + 11'd62);
-    wire gate_overrun = (cam_present[0] && rows0 > gate_min_row + 11'd62) ||
-                        (cam_present[1] && rows1 > gate_min_row + 11'd62) ||
-                        (cam_present[2] && rows2 > gate_min_row + 11'd62) ||
-                        (cam_present[3] && rows3 > gate_min_row + 11'd62) ||
-                        (cam_present[4] && rows4 > gate_min_row + 11'd62) ||
-                        (cam_present[5] && rows5 > gate_min_row + 11'd62);
+    // gate_upper_ok was declared here and never read.  It encoded the old +62
+    // contract, so leaving it would quietly contradict WINDOW_GUARD; removed
+    // rather than updated.
+    wire gate_overrun = (cam_present[0] && rows0 > gate_min_row + WINDOW_GUARD) ||
+                        (cam_present[1] && rows1 > gate_min_row + WINDOW_GUARD) ||
+                        (cam_present[2] && rows2 > gate_min_row + WINDOW_GUARD) ||
+                        (cam_present[3] && rows3 > gate_min_row + WINDOW_GUARD) ||
+                        (cam_present[4] && rows4 > gate_min_row + WINDOW_GUARD) ||
+                        (cam_present[5] && rows5 > gate_min_row + WINDOW_GUARD);
     // epoch_consistent is DIAGNOSTIC ONLY -- it must never gate a pass start.
     //
     // EoV19LineCache gives each camera a free-running 2-bit epoch incremented
@@ -209,7 +222,7 @@ module EoV19StreamingRendererII1 #(
     // frame; after start, per-row gate_lower_ok/gate_overrun controls the
     // exact row pacing.
     wire start_rows_aligned = (dbg_rows_min >= first_need_row) &&
-                              (dbg_rows_max <= first_start_row + 11'd63);
+                              (dbg_rows_max <= first_start_row + WINDOW_GUARD);
     // The cache registers its row-tag hit one clock after the stage-3 read
     // address is launched.  At that point the matching token is in stage 5,
     // not stage 4.  Select with ca/cb[5], then register the result alongside
@@ -343,8 +356,19 @@ module EoV19StreamingRendererII1 #(
     // allowed replay to restart.
     assign source_need_valid = start_copy &&
                                (!started_for_copy || (pano_y <= CONTENT_Y1));
-    assign source_need_row = (!started_for_copy || (pano_y < CONTENT_Y0)) ? first_need_row :
-                             (pano_y <= CONTENT_Y1) ? gate_need_row :
+    // Replay's dbg_row is the row it is EMITTING, and it holds once
+    // dbg_row >= source_need_row, so asking for N leaves captured_rows at N+1.
+    // The gate needs rows m..M+1 complete, i.e. captured_rows == M+2, so the
+    // row to ask for is M+1 -- one BELOW the readiness count.
+    //
+    // EO asked for gate_need_row (M+2) and therefore overfetched by one row
+    // every time demand rose, pushing captured_rows to M+3 and putting the
+    // steady-state window one row past the overrun bound.  IrV19StreamingRenderer
+    // has always made this conversion and says why; EO never did.
+    wire [10:0] need_row_demand  = (gate_need_row  == 11'd0) ? 11'd0 : (gate_need_row  - 11'd1);
+    wire [10:0] first_row_demand = (first_need_row == 11'd0) ? 11'd0 : (first_need_row - 11'd1);
+    assign source_need_row = (!started_for_copy || (pano_y < CONTENT_Y0)) ? first_row_demand :
+                             (pano_y <= CONTENT_Y1) ? need_row_demand :
                              11'd0;
     assign source_start_row = first_start_row;
 

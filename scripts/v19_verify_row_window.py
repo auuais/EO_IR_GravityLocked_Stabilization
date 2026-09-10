@@ -22,7 +22,14 @@ complete in the 64-entry ring:
   2. bilinear needs qy+1, and the renderer waits for R >= row_max_y0+2,
      so qy+1 <= R-1 holds iff check 1 holds
   3. the oldest required row must still be resident: row_max_y0 - row_min_y0
-     must not exceed the renderer's overrun bound (62)
+     must satisfy the renderer's FULL admission contract, not just the span.
+
+     The gate binds one variable twice: the renderer waits for
+     captured_rows >= row_max_y0 + BILINEAR_LEAD, and declares an overrun above
+     row_min_y0 + WINDOW_GUARD.  Comparing the span against the guard alone
+     ignores the +2 readiness lead and reports PASS on tables that cannot be
+     admitted -- it did exactly that for logical rows 0..3, whose span of 61
+     looked fine against 62 while the real requirement was max+2 <= min+62.
 
 Exits non-zero on any violation.  Run after regenerating the RowRun assets.
 """
@@ -37,7 +44,8 @@ H, NCAM, SEG = 480, 6, 64
 SEGS = (655 + SEG - 1) // SEG
 QY_LIMIT = 1078
 DRUN_FRAC_BITS = 5
-OVERRUN_BOUND = 62
+WINDOW_GUARD  = 63   # EoV19StreamingRendererII1 WINDOW_GUARD (CACHE_LINES-1)
+BILINEAR_LEAD = 2    # the renderer needs source rows m..M+1, i.e. count M+2
 
 
 def load_mem(path: Path) -> list[int]:
@@ -101,12 +109,15 @@ def main() -> int:
                         first.append(f"sy={sy} cam={cam} lx={lx} qy={y} < row_min={lo}")
 
     spans = [row_max[sy] - row_min[sy] for sy in range(H)]
-    over_ring = [(sy, spans[sy]) for sy in range(H) if spans[sy] > OVERRUN_BOUND]
+    # settled captured_rows for row sy is row_max+BILINEAR_LEAD, given the
+    # replay is asked to stop at row_max+BILINEAR_LEAD-1
+    over_ring = [(sy, spans[sy]) for sy in range(H)
+                 if row_max[sy] + BILINEAR_LEAD > row_min[sy] + WINDOW_GUARD]
 
     print(f"tokens above row_max_y0 : {above} (worst +{worst_above})")
     print(f"tokens below row_min_y0 : {below} (worst -{worst_below})")
     print(f"row window span min/max : {min(spans)}/{max(spans)} "
-          f"(overrun bound {OVERRUN_BOUND})")
+          f"(guard {WINDOW_GUARD}, lead {BILINEAR_LEAD})")
     for line in first:
         print("  " + line)
     if over_ring:
