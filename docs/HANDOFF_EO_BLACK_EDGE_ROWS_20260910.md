@@ -4,48 +4,39 @@
 **Repo:** `E:\Xylinx\EO_Panorama_V19_M1_IR_DDR` (the same defect exists in
 `E:\Xylinx\EO_Panorama_V19_M1`; the two repos' row tables are byte-identical)
 
-This is a request for a cause and a fix. A partial explanation already exists
-and **does not match the hardware** — the mismatch is the interesting part, so
-it is stated explicitly rather than smoothed over.
+This is a request for a cause and a fix.  The skipped rows are known; a partial
+explanation exists and covers only half of them.  The gap is the interesting
+part, so it is stated explicitly rather than smoothed over.
 
 ---
 
-## 1. What is actually on screen
+## 1. Which rows are skipped
 
-EO panorama renders a 3840x480 logical canvas that is folded into 1920x960 for
-the HD raster: physical row `y` is the LEFT half (x 0..1919) of logical row `y`,
-and physical row `480+y` is the RIGHT half (x 1920..3839) of the same logical
-row. The remaining 120 physical rows (960..1079) are letterbox.
+**Logical rows 0, 1, 478 and 479** — two at the top of the 480-row canvas and
+two at the bottom. 476 of 480 rows carry content. This is the design owner's
+identification and it is authoritative.
 
-Measured from captured stills, four different builds and four different scenes
-(bright daylight through a dark room):
+EO panorama renders a 3840x480 logical canvas folded into 1920x960 for the HD
+raster: physical row `y` is the LEFT half (x 0..1919) of logical row `y`, and
+physical row `480+y` is the RIGHT half of the same logical row. So each blacked
+logical row appears **twice** on screen — 8 physical rows in total — which is
+why it reads as a band at the top and bottom of each of the two visible halves
+and is easy to mistake for a fold or seam artifact. The fold arithmetic is
+correct and uninvolved.
 
-```
-physical black rows : 0, 1, 2, 479, 480, 481, 482, 959
-folded to logical   : 0, 1, 2, 479      (each appears twice, once per half)
-```
+### A warning about measuring this off the capture card
 
-So **three rows at the top of the logical canvas and one at the bottom**, which
-on screen reads as a band at the top of each half plus a hairline at the bottom
-of each half. It is often described as "2 top and 2 bottom"; the true split is
-3 and 1.
+Grabbed stills put the black rows at physical 0,1,2 / 479,480,481,482 / 959,
+which folds to logical {0,1,2,479} — three at the top and one at the bottom, NOT
+the real set. That is a **one-line vertical offset in the USB3 capture card**,
+not a property of the design: shifting the grabbed raster by one row reproduces
+{0,1,478,479} exactly. `V19_CONTENT_FIRST_ROW` is `EO_V19_YPAD` = 0, so there is
+no such offset in the RTL.
 
-This is stable and scene-independent. It is not dark content: those rows
-measure `max sample = 0` exactly, which is `EO_V19_BLACK_PIXEL` (`16'h1080`,
-Y=0x10 C=0x80, studio black) surviving YUV->RGB, whereas real dark content in
-the same frames never goes below ~130.
-
-Reproduce:
-
-```
-python - <<'PY'
-import cv2
-g=cv2.cvtColor(cv2.imread('captures/final_30fps.png'),cv2.COLOR_BGR2GRAY)
-rmax=g.max(axis=1)
-blk=[y for y in range(960) if rmax[y]<=16]
-print(sorted({y if y<480 else y-480 for y in blk}))
-PY
-```
+Do not identify rows from a grabbed image. The rows are numerically close
+enough that an off-by-one silently changes which end of the canvas you think is
+failing, and it sent this investigation after the wrong bottom row. Settle it
+from the renderer's own point of view instead — see section 5.2.
 
 ## 2. The only mechanism that can blacken a whole content row
 
@@ -115,20 +106,22 @@ It is the steep top-edge cylindrical warp.
 
 ## 4. Where the explanation breaks — the open question
 
-The arithmetic predicts black on logical rows **0,1,2,3**. The hardware shows
-black on logical rows **0,1,2,479**. Both ends are wrong:
+The arithmetic accounts for the **top** pair cleanly: rows 0 and 1 have span 61
+and no feasible `rows` exists, so the renderer declares overrun and emits black.
+That is the stated cause and it holds.
 
-* **Row 3 is predicted infeasible and renders fine.**
-* **Row 479 is comfortably feasible (span 50, 10 rows of slack) and renders
-  black.**
+What it does not account for:
 
-Rows 0,1,2 agree, which is why the span-61 story looked complete. It is not.
-Any proposed fix that only addresses span-61 rows will, on this evidence, leave
-row 479 black and may not even change row 3.
+* **Rows 2 and 3 are equally infeasible in the table** (span 61, short by
+  exactly 1) yet are not reported as skipped. If the gate math were the whole
+  story, the top band would be four rows, not two.
+* **Rows 478 and 479 are comfortably feasible** — span 52 and 50, ten rows of
+  slack — yet they are skipped.
 
-**Do not treat the span-61 analysis as the settled cause.** It is a real,
-independently verifiable infeasibility in the table, but something else is also
-in play.
+So the span-61 conflict is real and verifiable in the table, and it explains the
+top pair, but a second mechanism is acting on the bottom pair and something
+keeps rows 2 and 3 alive. **A fix aimed only at span-61 rows will not clear the
+bottom pair.**
 
 ### The strongest lead: two different guard constants for one cache
 
@@ -183,9 +176,13 @@ The renderer already exports what is needed on `v19_dbg_bus` (bit layout in
    counters added in `EoV19StreamingRendererII1` (see
    `scripts/decode_eo_done.py`) are a working model for how to carry this out on
    `probe24` — note there is no spare ILA probe, so it has to share.
-3. **Check row 479 specifically.** It is the last content row and the one that
-   asserts `last[0]` and therefore `frame_done`. Establish whether it is
-   blackened by the gate at all, or by the pass ending underneath it.
+3. **Check rows 478 and 479 specifically.** 479 is the last content row and the
+   one that asserts `last[0]` and therefore `frame_done`. Establish whether the
+   bottom pair is blackened by the gate at all, or by the pass ending underneath
+   it — the table says the gate has no reason to blacken them.
+4. **Check why rows 2 and 3 survive** despite being infeasible by the same
+   arithmetic as rows 0 and 1. Whatever spares them may be the same effect that
+   condemns 478 and 479.
 
 ## 6. Candidate fixes, with what each costs
 
@@ -193,9 +190,9 @@ Ordered by size, not by preference — the measurement above should pick.
 
 1. **Unify the guard at `+63`** (per-row `gate_min_row + 63`, matching the
    existing start gate). One constant. Makes all four span-61 rows feasible with
-   zero margin. Cheapest thing to try, and it directly resolves the
-   inconsistency in section 4. Does not obviously explain row 479, so do not
-   expect it to fix everything.
+   zero margin, so it should clear the top pair. Cheapest thing to try, and it
+   directly resolves the inconsistency in section 4. It has no bearing on the
+   bottom pair, so do not expect it to fix everything.
 2. **Guard at `+64`**, the ring's true bound, giving one row of margin on
    span-61 and two on span-60. Needs confidence that `captured_rows` and the
    cache's write pointer cannot be off by one against each other at a frame
