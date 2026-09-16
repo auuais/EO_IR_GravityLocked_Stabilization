@@ -26,10 +26,17 @@ module RpSampler #(
     parameter integer CAM5_START = 3185,
     parameter integer STRIP1 = 650,  parameter integer STRIP2 = 1305,
     parameter integer STRIP3 = 1960, parameter integer STRIP4 = 2615,
-    parameter integer STRIP5 = 3270
+    parameter integer STRIP5 = 3270,
+    // IR geometry
+    parameter integer IR_SRC_W = 640,
+    parameter integer IR_SRC_H = 512,
+    parameter integer IR_STRIP1 = 616,  parameter integer IR_STRIP2 = 1237,
+    parameter integer IR_STRIP3 = 1877, parameter integer IR_STRIP4 = 2498,
+    parameter integer IR_STRIP5 = 3119
 ) (
     input  wire               clk,
     input  wire               rst,
+    input  wire               sensor_ir,
 
     input  wire               tok_valid,
     input  wire [2:0]         tok_cam,
@@ -55,8 +62,12 @@ module RpSampler #(
     output wire               busy,        // any token in flight
     output reg  [31:0]        row_mismatch_count
 );
-    localparam integer XMAX = SRC_W - 2;
-    localparam integer YMAX = SRC_H - 2;
+    // EO: RowWindow word = 4 x {2'b0, Y, C}; x phase-locked to pano_x parity;
+    //     Y and C interpolated with rounding (M1 EO renderer).
+    // IR: RowWindow word = 8 x {1'b0, Y}; x = floor(ax); luma interpolated
+    //     with the M1 IR renderer's truncating vlerp; C is 0x80.
+    wire signed [31:0] XMAXQ = sensor_ir ? ((IR_SRC_W - 2) <<< 16) : ((SRC_W - 2) <<< 16);
+    wire signed [31:0] YMAXQ = sensor_ir ? ((IR_SRC_H - 2) <<< 16) : ((SRC_H - 2) <<< 16);
 
     function [11:0] cam_start;
         input [2:0] cam;
@@ -70,12 +81,20 @@ module RpSampler #(
     endfunction
     function [11:0] strip_base;
         input [2:0] cam;
+        input       ir;
         begin
-            case (cam)
-                3'd0: strip_base = 12'd0;   3'd1: strip_base = STRIP1;
-                3'd2: strip_base = STRIP2;  3'd3: strip_base = STRIP3;
-                3'd4: strip_base = STRIP4;  default: strip_base = STRIP5;
-            endcase
+            if (ir)
+                case (cam)
+                    3'd0: strip_base = 12'd0;     3'd1: strip_base = IR_STRIP1;
+                    3'd2: strip_base = IR_STRIP2; 3'd3: strip_base = IR_STRIP3;
+                    3'd4: strip_base = IR_STRIP4; default: strip_base = IR_STRIP5;
+                endcase
+            else
+                case (cam)
+                    3'd0: strip_base = 12'd0;   3'd1: strip_base = STRIP1;
+                    3'd2: strip_base = STRIP2;  3'd3: strip_base = STRIP3;
+                    3'd4: strip_base = STRIP4;  default: strip_base = STRIP5;
+                endcase
         end
     endfunction
     function [10:0] qx_phase;
@@ -95,29 +114,35 @@ module RpSampler #(
     // ---- S1: decode -------------------------------------------------------
     reg        v1, ok1;
     reg [15:0] fr1;
-    reg [7:0]  slot1;
+    reg [8:0]  slot1;
     reg [11:0] strip1;
     always @(posedge clk) begin
         if (rst) v1 <= 1'b0;
         else     v1 <= tok_valid;
-        ok1    <= (tok_ax >= 0) && (tok_ax <= (XMAX <<< 16)) &&
-                  (tok_ay >= 0) && (tok_ay <= (YMAX <<< 16));
+        ok1    <= (tok_ax >= 0) && (tok_ax <= XMAXQ) &&
+                  (tok_ay >= 0) && (tok_ay <= YMAXQ);
         fr1    <= tok_ay[15:0];
-        slot1  <= tok_sy[7:0];
-        strip1 <= strip_base(tok_cam) + {2'd0, tok_lx};
+        slot1  <= tok_sy;
+        strip1 <= strip_base(tok_cam, sensor_ir) + {2'd0, tok_lx};
         begin : rd
             reg [11:0] px;
             reg [10:0] x;
             px = cam_start(tok_cam) + {2'd0, tok_lx};
-            x  = qx_phase(tok_ax, px[0]);
+            // IR: floor.  Out-of-range samples are written black, so the
+            // clamp only has to keep the ring address in range.
+            if (sensor_ir)
+                x = tok_ax[31] ? 11'd0 :
+                    (tok_ax[26:16] > (IR_SRC_W - 2)) ? (IR_SRC_W - 2) : tok_ax[26:16];
+            else
+                x = qx_phase(tok_ax, px[0]);
             ring_word <= x[10:2];
             ring_sel  <= x[1:0];
             ring_cam  <= tok_cam;
         end
         // A valid pixel must be sampled at the y0 being rendered.
         if (rst) row_mismatch_count <= 32'd0;
-        else if (tok_valid && (tok_ax >= 0) && (tok_ax <= (XMAX <<< 16)) &&
-                 (tok_ay >= 0) && (tok_ay <= (YMAX <<< 16)) && (tok_ay[26:16] != y0))
+        else if (tok_valid && (tok_ax >= 0) && (tok_ax <= XMAXQ) &&
+                 (tok_ay >= 0) && (tok_ay <= YMAXQ) && (tok_ay[26:16] != y0))
             row_mismatch_count <= row_mismatch_count + 32'd1;
     end
 
@@ -125,7 +150,7 @@ module RpSampler #(
     reg [4:1]  vd;
     reg [3:0]  okd;
     reg [15:0] frd [1:4];
-    reg [7:0]  slotd [1:4];
+    reg [8:0]  slotd [1:4];
     reg [11:0] stripd [1:4];
     integer k;
     always @(posedge clk) begin
@@ -146,9 +171,21 @@ module RpSampler #(
             wacc = ({1'b0, a} * (17'd65536 - {1'b0, f})) + ({1'b0, b} * {1'b0, f}) + 33'd32768;
         end
     endfunction
+    function [7:0] vlerp;
+        input [7:0] p0, p1;
+        input [15:0] f;
+        reg signed [8:0]  d;
+        reg signed [24:0] m;
+        begin
+            d = $signed({1'b0, p1}) - $signed({1'b0, p0});
+            m = d * $signed({1'b0, f});
+            vlerp = p0 + m[24:16];
+        end
+    endfunction
     reg        v6, ok6;
     reg [32:0] accy6, accc6;
-    reg [7:0]  slot6;
+    reg [7:0]  ir6;
+    reg [8:0]  slot6;
     reg [11:0] strip6;
     always @(posedge clk) begin
         if (rst) v6 <= 1'b0;
@@ -156,6 +193,7 @@ module RpSampler #(
         ok6    <= okd[3];
         accy6  <= wacc(ring_pa[15:8], ring_pb[15:8], frd[4]);
         accc6  <= wacc(ring_pa[7:0],  ring_pb[7:0],  frd[4]);
+        ir6    <= vlerp(ring_pa[15:8], ring_pb[15:8], frd[4]);
         slot6  <= slotd[4];
         strip6 <= stripd[4];
     end
@@ -166,13 +204,21 @@ module RpSampler #(
             rw_we <= 8'd0;
         end else begin
             rw_we <= 8'd0;
-            if (v6) begin
+            if (v6 && sensor_ir) begin
+                rw_we[strip6[2:0]] <= 1'b1;
+            end else if (v6) begin
                 rw_we[{strip6[1:0], 1'b0}] <= 1'b1;
                 rw_we[{strip6[1:0], 1'b1}] <= 1'b1;
             end
         end
-        rw_addr <= {slot6, strip6[11:2]};
-        rw_din  <= {4{2'b00, (ok6 ? {accy6[23:16], accc6[23:16]} : BLACK)}};
+        if (sensor_ir) begin
+            // 512 rows x 512 words of 8 one-byte luma pixels.
+            rw_addr <= {slot6[8:0], strip6[11:3]};
+            rw_din  <= {8{1'b0, (ok6 ? ir6 : BLACK[15:8])}};
+        end else begin
+            rw_addr <= {slot6[7:0], strip6[11:2]};
+            rw_din  <= {4{2'b00, (ok6 ? {accy6[23:16], accc6[23:16]} : BLACK)}};
+        end
     end
 
     assign busy = v1 | (|vd) | v6 | (|rw_we);

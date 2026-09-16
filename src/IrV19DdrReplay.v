@@ -16,12 +16,23 @@ module IrV19DdrReplay #(
     parameter [28:0] CAM5_BASE_ADDR = 29'd0,
     parameter [28:0] FRAME_STRIDE_ADDR = 29'd81920,
     parameter [28:0] ROW_STRIDE_ADDR = 29'd160,
-    parameter [28:0] BEAT_STRIDE_ADDR = 29'd8
+    parameter [28:0] BEAT_STRIDE_ADDR = 29'd8,
+    // BEAT_OUT=1: present each beat (32 luma pixels, pixel p in [p*8 +: 8])
+    // on beat_* for one cycle and hold BEAT_HOLD cycles while RpLineRing
+    // writes it as eight 4-pixel words, instead of shifting it out.
+    parameter integer BEAT_OUT = 0,
+    parameter integer BEAT_HOLD = 7
 ) (
     input  wire        rst_n,
     input  wire        clk,
     input  wire        ui_rst,
     input  wire        run_enable,
+    output reg         beat_valid,
+    output reg  [10:0] beat_row,
+    output reg  [6:0]  beat_idx,
+    output reg  [1535:0] beat_data,
+    output reg         row_done,
+    output reg  [10:0] row_done_row,
     input  wire        lease_valid,
     input  wire [1:0]  bank0,
     input  wire [1:0]  bank1,
@@ -72,6 +83,8 @@ module IrV19DdrReplay #(
     localparam [2:0] ST_SHIFT    = 3'd4;
     localparam [2:0] ST_LINE_END = 3'd5;
     localparam [2:0] ST_GAP      = 3'd6;
+    localparam [2:0] ST_BEAT_HOLD = 3'd7;
+    reg [3:0] hold_cnt;
 
     localparam integer RBATCH = 4;
     localparam integer RTOTAL = 6 * RBATCH;
@@ -224,7 +237,9 @@ module IrV19DdrReplay #(
             dbg_state <= ST_IDLE;
             shift0 <= 256'd0; shift1 <= 256'd0; shift2 <= 256'd0;
             shift3 <= 256'd0; shift4 <= 256'd0; shift5 <= 256'd0;
+            beat_valid <= 1'b0; row_done <= 1'b0; hold_cnt <= 4'd0;
         end else if (!run_enable) begin
+            beat_valid <= 1'b0; row_done <= 1'b0;
             state <= ST_IDLE;
             req_idx <= 5'd0;
             ret_idx <= 5'd0;
@@ -245,6 +260,8 @@ module IrV19DdrReplay #(
         end else begin
             frame_edge <= 1'b0;
             rd_req_valid <= 1'b0;
+            beat_valid <= 1'b0;
+            row_done <= 1'b0;
             replay_hsync0 <= 1'b0; replay_hsync1 <= 1'b0; replay_hsync2 <= 1'b0;
             replay_hsync3 <= 1'b0; replay_hsync4 <= 1'b0; replay_hsync5 <= 1'b0;
             dbg_state <= (state == ST_WAIT) ? ret_idx[4:2] : state;
@@ -307,7 +324,15 @@ module IrV19DdrReplay #(
                     end
                 end
 
-                ST_LOAD: begin
+                ST_LOAD: if (BEAT_OUT != 0) begin
+                    beat_valid <= 1'b1;
+                    beat_row   <= dbg_row;
+                    beat_idx   <= {1'b0, beat_x} + {5'd0, shift_k};
+                    beat_data  <= {cbuf5[shift_k], cbuf4[shift_k], cbuf3[shift_k],
+                                   cbuf2[shift_k], cbuf1[shift_k], cbuf0[shift_k]};
+                    hold_cnt   <= BEAT_HOLD;
+                    state      <= ST_BEAT_HOLD;
+                end else begin
                     replay_vsync0 <= 1'b1; replay_vsync1 <= 1'b1; replay_vsync2 <= 1'b1;
                     replay_vsync3 <= 1'b1; replay_vsync4 <= 1'b1; replay_vsync5 <= 1'b1;
                     shift0 <= cbuf0[shift_k]; shift1 <= cbuf1[shift_k];
@@ -317,6 +342,25 @@ module IrV19DdrReplay #(
                     replay_hsync3 <= 1'b1; replay_hsync4 <= 1'b1; replay_hsync5 <= 1'b1;
                     shift_count <= 5'd0;
                     state <= ST_SHIFT;
+                end
+
+                ST_BEAT_HOLD: begin
+                    if (hold_cnt != 4'd0) begin
+                        hold_cnt <= hold_cnt - 4'd1;
+                    end else if (shift_k == RBATCH_LAST) begin
+                        shift_k <= 2'd0;
+                        if (beat_x + RBATCH_STEP >= BEATS_PER_ROW) begin
+                            beat_x <= 6'd0;
+                            row_done <= 1'b1; row_done_row <= dbg_row;
+                            state <= ST_LINE_END;
+                        end else begin
+                            beat_x <= beat_x + RBATCH_STEP;
+                            state <= ST_REQ;
+                        end
+                    end else begin
+                        shift_k <= shift_k + 2'd1;
+                        state <= ST_LOAD;
+                    end
                 end
 
                 ST_SHIFT: begin

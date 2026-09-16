@@ -8,10 +8,12 @@
 // slot.  The renderer only moves to y0+1 after its pipeline has drained,
 // which is what frees the y0 slot for row y0+3.
 //
-// Write side: EoV19DdrReplay in BEAT_OUT mode presents one 256-bit beat
-// (16 pixels, pixel p in [p*16 +: 16]) per camera with its row and beat
-// index, then holds for BEAT_HOLD cycles while this module writes the beat as
-// four 64-bit words (4 pixels each) into a 480-word row.  Beats outside the
+// Write side: the DDR replay in BEAT_OUT mode presents one 256-bit beat per
+// camera with its row and beat index, then holds while this module writes it
+// into a 480-word row of 64-bit words, 4 x 16-bit {Y, C} pixels each:
+//   EO (EoV19DdrReplay)  16 pixels, pixel p in [p*16 +: 16]    -> 4 words
+//   IR (IrV19DdrReplay)  32 luma pixels, pixel p in [p*8 +: 8]  -> 8 words,
+//                        stored as {Y, 8'h80} so the read side is identical  Beats outside the
 // replay's fetch window are never presented; their words keep old contents,
 // which the renderer never addresses because the fetch window is derived from
 // the same tables that bound every sampled column.
@@ -24,6 +26,7 @@ module RpLineRing (
     input  wire          clk,
     input  wire          rst,
     input  wire          frame_start,      // replay frame_edge: forget all rows
+    input  wire          sensor_ir,        // static while a pass runs
 
     input  wire          beat_valid,
     input  wire [10:0]   beat_row,
@@ -50,11 +53,11 @@ module RpLineRing (
     reg [1535:0] wbeat;
     reg [8:0]    wbase;          // beat_idx * 4
     reg [1:0]    wslot;
-    reg [2:0]    wleft;          // words still to write for the latched beat
-    reg [1:0]    wk;             // word within the beat
+    reg [3:0]    wleft;          // words still to write for the latched beat
+    reg [2:0]    wk;             // word within the beat
     reg          row_done_pend;
     reg [10:0]   row_done_pend_row;
-    assign writer_idle = (wleft == 3'd0);
+    assign writer_idle = (wleft == 4'd0);
 
     function [1:0] mod3;
         input [10:0] v;
@@ -65,19 +68,19 @@ module RpLineRing (
 
     always @(posedge clk) begin
         if (rst || frame_start) begin
-            wleft <= 3'd0; wk <= 2'd0;
+            wleft <= 4'd0; wk <= 3'd0;
             rows_done <= 12'd0;
             row_done_pend <= 1'b0;
         end else begin
             if (beat_valid) begin
                 wbeat <= beat_data;
-                wbase <= {beat_idx, 2'b00};
+                wbase <= sensor_ir ? {beat_idx[5:0], 3'b000} : {beat_idx, 2'b00};
                 wslot <= mod3(beat_row);
-                wleft <= 3'd4;
-                wk    <= 2'd0;
-            end else if (wleft != 3'd0) begin
-                wleft <= wleft - 3'd1;
-                wk    <= wk + 2'd1;
+                wleft <= sensor_ir ? 4'd8 : 4'd4;
+                wk    <= 3'd0;
+            end else if (wleft != 4'd0) begin
+                wleft <= wleft - 4'd1;
+                wk    <= wk + 3'd1;
             end
             if (row_done) begin
                 row_done_pend     <= 1'b1;
@@ -89,8 +92,8 @@ module RpLineRing (
         end
     end
 
-    wire        we_any = (wleft != 3'd0);
-    wire [8:0]  waddr  = wbase + {7'd0, wk};
+    wire        we_any = (wleft != 4'd0);
+    wire [8:0]  waddr  = wbase + {6'd0, wk};
 
     //------------------------------------------------------------------------
     // 18 row memories (6 cams x 3 slots), 480 x 64 bits each
@@ -107,9 +110,15 @@ module RpLineRing (
             for (gs = 0; gs < 3; gs = gs + 1) begin : g_slot
                 (* ram_style = "block" *) reg [63:0] mem [0:511];
                 reg [63:0] q1, q2;
+                // IR word k: luma pixels 4k..4k+3, each widened to {Y, 8'h80}.
+                wire [63:0] word_eo = wbeat[gc*256 + wk*64 +: 64];
+                wire [63:0] word_ir = {wbeat[gc*256 + (wk*4+3)*8 +: 8], 8'h80,
+                                       wbeat[gc*256 + (wk*4+2)*8 +: 8], 8'h80,
+                                       wbeat[gc*256 + (wk*4+1)*8 +: 8], 8'h80,
+                                       wbeat[gc*256 + (wk*4)*8   +: 8], 8'h80};
                 always @(posedge clk) begin
                     if (we_any && (wslot == gs))
-                        mem[waddr] <= wbeat[gc*256 + wk*64 +: 64];
+                        mem[waddr] <= sensor_ir ? word_ir : word_eo;
                 end
                 always @(posedge clk) begin
                     q1 <= mem[rd_word_q];

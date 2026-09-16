@@ -26,10 +26,12 @@
 //============================================================================
 `timescale 1ns/1ps
 module RpWalker #(
-    parameter integer SLOTS = 256,
+    parameter integer SLOTS = 256,       // EO RowWindow rows
+    parameter integer IR_SLOTS = 512,    // IR RowWindow rows (1-byte pixels)
     parameter integer QDEPTH_LOG2 = 12
 ) (
     input  wire         clk,
+    input  wire         sensor_ir,
     input  wire         rst,            // also used as the pass abort
     input  wire         pass_start,     // clears queue and p_next
 
@@ -114,7 +116,7 @@ module RpWalker #(
     wire signed [15:0] cur_ay_int = cur_ay[31:16];
     wire take = y0_last || cur_ay[31] || (cur_ay_int <= $signed({5'd0, y0}));
     wire [8:0] dsy = cur_sy - sy_out;
-    wire alias_ok = (dsy < SLOTS - 1);
+    wire alias_ok = sensor_ir ? (dsy < IR_SLOTS - 1) : (dsy < SLOTS - 1);
     wire exhausted = cur_dir ? (cur_i == cur_last) : (cur_i == 6'd0);
 
     wire stall   = cur_v && take && !alias_ok && emit_can_progress;

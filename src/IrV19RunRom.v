@@ -23,7 +23,8 @@
 //     [95:80] day Q12.4  signed   source y step per output pixel
 module IrV19RunRom #(
     parameter integer DEPTH  = `IR_V19_RUN_COUNT,   // 28,800
-    parameter integer ADDR_W = 15                   // 2^15 = 32,768 >= 28,800
+    parameter integer ADDR_W = 15,                  // 2^15 = 32,768 >= 28,800
+    parameter         ROM_FILE = "../../assets/rowruns/ir_v19_render_runs.mem"
 ) (
     input  wire clk,
     // Read enable, NOT tied high. The renderer stalls whenever its downstream
@@ -40,7 +41,7 @@ module IrV19RunRom #(
         // Vivado launches out-of-context synthesis from .runs/synth_1, so the
         // checked-in assets sit two levels above the run directory. The same
         // path is valid for implementation.
-        $readmemh("../../assets/rowruns/ir_v19_render_runs.mem", mem);
+        $readmemh(ROM_FILE, mem);
     end
     always @(posedge clk) begin
         if (en) begin

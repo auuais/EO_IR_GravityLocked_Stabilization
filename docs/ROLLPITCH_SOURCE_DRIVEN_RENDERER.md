@@ -142,21 +142,44 @@ delays the last 17 pixels of strip k to blend with the first 17 of strip k+1,
 using the M1 formula and alpha tables. `cam_present` handling is M1's: absent
 camera A → black; both present → blend; B absent → A.
 
-## 4. Memory budget (xcku15p: 984 BRAM tiles, 128 URAM)
+## 4. One core for EO and IR panorama
 
-| block | M1 | this design |
+EO panorama (mode 0x15) and IR panorama (mode 0x14) never run together, so
+`RpRenderer` serves both and rebuilds its tables when the mode flips (~4 ms).
+What differs is selected at run time (`model/rpcore.py` is the reference):
+
+| | EO | IR |
 |---|---|---|
-| EO line caches | 384 RAMB36 | 18 RAMB36 (3 rows x 6 cams) |
-| segment ROM | 67 RAMB36 | 67 RAMB36 (unchanged) |
-| RowWindow | – | 62 URAM (256 x 982 words x 64 b) |
-| PARAMS | – | 16 URAM (31680 x 144 b) |
-| QUEUE | – | 2 URAM (4096 x 144 b) |
-| BUCKET_END, ROW_READY | – | 2 RAMB18 |
+| source | 1920x1080, 16-bit {Y,C} | 640x512, 8-bit luma |
+| segment ROM | 144-bit, 11 segs/row, deltas Q.5 | 96-bit, 10 segs/row, Q12.4 |
+| strips | 650, 655 x5 | 616, 621, **640**, 621, 621, 621 |
+| output row | 3840 | 3576 (fold formatter pads) |
+| sampling | x phase-locked to pano_x parity, interp8 on Y and C | x = floor, truncating vlerp on Y, C = 0x80 |
+| seams | 17/17, alpha j | 29/29, except cam2/cam3: 48 cam2 px (lx 592..639, last repeated), 90 cam3 px, `cam23_fold_alpha_pos` |
+| absent camera in a seam | A absent -> black | A absent -> B |
+| pitch_to_translation_factor | -9.80 | -8.72 |
+| RowWindow | 256 rows x 1024 words, 4 x 16-bit px | 512 rows x 512 words, 8 x 8-bit px |
+| replay beat | 16 px x 16 bit, 4 ring words | 32 px x 8 bit, 8 ring words |
 
-Before: 880.5 of 984 BRAM tiles (89.5%), 10 URAM. Expected after: ~515 tiles
-(~52%), ~90 URAM (70%).
+IR camera 2 is 640 wide because the M1 IR renderer extrapolates its last
+RowRun segment to source column 639 for the fold-straddling seam.
 
-## 5. Interfaces that change outside the renderer
+IR's 512-row RowWindow never aliases (480 output rows); its alternating
++-10 deg case needs 288 rows, which would not fit 256.
+
+## 5. Memory budget (xcku15p: 984 BRAM tiles, 128 URAM)
+
+Synthesis of the EO-only build (commit ab33bb9):
+
+| | M1 (routed) | roll/pitch |
+|---|---|---|
+| Block RAM tiles | 880.5 (89.5%) | 441 (44.8%) |
+| URAM | 10 | 92 (RowWindow 64, PARAMS 16, queue 2) |
+| DSP | 26 | 29 |
+
+The shared core additionally removes the six IR 32-line caches.
+
+## 6. Interfaces that change outside the renderer
 
 * **I2C regfile** already stores the bank the firmware pushes
   (`fpga_push_bank`): EO base 0x20, IR base 0x50; per camera i16 LE pitch at
@@ -170,15 +193,34 @@ Before: 880.5 of 984 BRAM tiles (89.5%), 10 URAM. Expected after: ~515 tiles
 * **EoV19DdrCamWriter** row/beat window becomes runtime-settable so zero offset
   keeps today's write bandwidth (the 30 fps constraint was write bandwidth).
 
-## 6. Verification plan
+## 7. Verification
 
-1. `model/golden.py`: functional renderer (per-pixel, no scheduling) and the
-   table builder; at zero offset compared with an M1 output-driven model.
-2. Schedule model: every pixel written exactly once before its row emits, for
-   the envelope cases above.
-3. RTL unit benches: table builder vs model tables; line ring; walker token
-   stream vs model; RowWindow RMW bypass; emitter blend.
-4. Full renderer bench: synthetic textured frames, offsets {0, mixed, ±10°},
-   output stream compared bit-exact with `model/golden.py`.
-5. Hardware: zero offset first (FPS and image vs M1 build), then offsets
-   through the UI.
+| check | result |
+|---|---|
+| `model/golden.py --selftest`: offset renderer at 0 vs M1 EO transcription | 0 / 1,843,200 px differ |
+| `model/rpcore.py --selftest`: generic EO vs golden.py; IR at 0 vs M1 IR transcription (all present, cam2 absent, cam3 absent) | 0 differ |
+| walker exactly-once / right row / written before emit: EO and IR, zero, 10 deg, mixed, alternating +-10 | pass |
+| `tb_RpTables`: every PARAMS entry, bucket and row-ready value, EO and IR, 4 offset cases, alternating sensors | 0 mismatches |
+| `tb_EoV19DdrReplayBeatOut`: real replay in BEAT_OUT mode into the line ring, late-ack arbiter, aborts | pass |
+| `tb_EoV19DdrReplayArbiterAck`: pixel-shift replay unchanged | pass |
+| `tb_EoV19RpRenderer` (EO-only core): zero, zero again, mixed, 10 deg, alternating +-10, camera absent | bit-exact, 13-17 ms per pass |
+| `tb_RpRenderer` (shared core): EO and IR cases | see commit log |
+
+Bench outputs are compared with `python model/compare_rp_tb.py`.
+
+## 8. Firmware and UI
+
+The per-camera offsets already travel UI -> MCU (config bank apply) -> FPGA
+(`fpga_push_bank`, byte by byte with read-back verify).  Two things had to
+change because the FPGA now acts on them:
+
+* **Range**: FW `cfg_bank_values_valid` and the UI dialog accepted +-500 cd
+  (5 deg); both now accept +-1000 cd (10 deg), the FPGA's clamp.
+* **Default EO pitch**: FW `cfg_set_bank_defaults` and the UI's local defaults
+  had EO pitch `{-500, 500, -500, 500, -500, 500}`, a placeholder the FPGA used
+  to ignore.  With this renderer it would shift alternate cameras by +-49
+  rows.  Both now default to 0, as in `parameters_unified.ini [eo_offset]`.
+  **A board whose MCU flash already holds the old pattern keeps it** -- check
+  the Maintenance page and zero the EO pitch offsets before judging the image.
+* The Maintenance status page showed pitch/roll as uint16 (-500 read as
+  65036); it now shows signed centi-degrees and degrees.

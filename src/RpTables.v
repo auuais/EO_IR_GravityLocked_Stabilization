@@ -24,7 +24,7 @@
 `timescale 1ns/1ps
 module RpTables #(
     parameter integer NUM_ROWS  = 480,
-    parameter integer SEGS      = 11,
+    parameter integer SEGS      = 11,       // EO geometry
     parameter integer SEG_W     = 64,
     parameter integer CAM0_W    = 650,
     parameter integer CAM1_W    = 655,
@@ -34,11 +34,25 @@ module RpTables #(
     parameter integer CAM5_W    = 655,
     parameter integer SRC_W     = 1920,
     parameter integer SRC_H     = 1080,
+    // IR geometry.  IR camera 2 is 640 wide, not 621: IrV19StreamingRenderer
+    // extends it to source column 639 for the fold-straddling cam2/cam3 seam,
+    // extrapolating its last RowRun segment.
+    parameter integer IR_SEGS   = 10,
+    parameter integer IR_CAM0_W = 616,
+    parameter integer IR_CAM1_W = 621,
+    parameter integer IR_CAM2_W = 640,
+    parameter integer IR_CAM3_W = 621,
+    parameter integer IR_CAM4_W = 621,
+    parameter integer IR_CAM5_W = 621,
+    parameter integer IR_SRC_W  = 640,
+    parameter integer IR_SRC_H  = 512,
     parameter integer ANGLE_MAX = 1000,
-    parameter         ANGLE_ROM_FILE = "../../assets/rollpitch/eo_rp_angle.mem"
+    parameter         ANGLE_ROM_FILE    = "../../assets/rollpitch/eo_rp_angle.mem",
+    parameter         IR_ANGLE_ROM_FILE = "../../assets/rollpitch/ir_rp_angle.mem"
 ) (
     input  wire         clk,
     input  wire         rst,
+    input  wire         sensor_ir,          // latched at build_req
 
     input  wire         build_req,
     input  wire [95:0]  roll_cd,          // cam0 in [15:0], signed centi-degrees
@@ -52,9 +66,11 @@ module RpTables #(
     output reg  [10:0]  col_lo,
     output reg  [10:0]  col_hi,
 
-    // segment ROM (EoV19RunRom port, registered output, latency 1)
+    // segment ROMs (registered output, latency 1), one address for both
     output reg  [14:0]  rom_addr,
-    input  wire [143:0] rom_data,
+    input  wire [143:0] rom_data,           // EO: {day, dax, ay0, ax0} at [143:48]
+    input  wire [95:0]  rom_data_ir,        // IR: {day, dax, ay0, ax0} at [95:0]
+    output reg          built_ir,           // sensor the current tables describe
 
     // runtime read ports
     input  wire [14:0]  params_raddr,
@@ -64,9 +80,10 @@ module RpTables #(
     input  wire [8:0]   rready_raddr,
     output reg  [10:0]  rready_rdata      // latency 1
 );
-    localparam integer NUM_SEGMENTS = NUM_ROWS * 6 * SEGS;
-    localparam integer YMAX = SRC_H - 2;          // 1078: sched_y range 0..YMAX
-    localparam integer NBUCKET = YMAX + 1;
+    reg         ir_l;                     // sensor latched for this build
+    wire [3:0]  segs_n      = ir_l ? IR_SEGS[3:0] : SEGS[3:0];
+    wire [14:0] last_seg_k  = ir_l ? (NUM_ROWS * 6 * IR_SEGS - 1) : (NUM_ROWS * 6 * SEGS - 1);
+    wire [10:0] last_bucket = ir_l ? (IR_SRC_H - 2) : (SRC_H - 2);   // sched_y 0..YMAX
 
     //------------------------------------------------------------------------
     // Memories
@@ -117,10 +134,14 @@ module RpTables #(
     end
 
     (* rom_style = "distributed" *) reg [40:0] angle_rom [0:ANGLE_MAX];
+    (* rom_style = "distributed" *) reg [40:0] angle_rom_ir [0:ANGLE_MAX];
     initial $readmemh(ANGLE_ROM_FILE, angle_rom);
+    initial $readmemh(IR_ANGLE_ROM_FILE, angle_rom_ir);
     reg [9:0]  ang_addr;
     reg [40:0] ang_q;
-    always @(posedge clk) ang_q <= angle_rom[ang_addr];
+    // cos/sin are the same in both; only the pitch row shift (the sensor's
+    // pitch_to_translation_factor) differs.
+    always @(posedge clk) ang_q <= ir_l ? angle_rom_ir[ang_addr] : angle_rom[ang_addr];
 
     //------------------------------------------------------------------------
     // Per-camera offset constants
@@ -149,11 +170,18 @@ module RpTables #(
 
     function integer cam_width;
         input integer cam;
+        input         ir;
         begin
-            case (cam)
-                0: cam_width = CAM0_W; 1: cam_width = CAM1_W; 2: cam_width = CAM2_W;
-                3: cam_width = CAM3_W; 4: cam_width = CAM4_W; default: cam_width = CAM5_W;
-            endcase
+            if (ir)
+                case (cam)
+                    0: cam_width = IR_CAM0_W; 1: cam_width = IR_CAM1_W; 2: cam_width = IR_CAM2_W;
+                    3: cam_width = IR_CAM3_W; 4: cam_width = IR_CAM4_W; default: cam_width = IR_CAM5_W;
+                endcase
+            else
+                case (cam)
+                    0: cam_width = CAM0_W; 1: cam_width = CAM1_W; 2: cam_width = CAM2_W;
+                    3: cam_width = CAM3_W; 4: cam_width = CAM4_W; default: cam_width = CAM5_W;
+                endcase
         end
     endfunction
 
@@ -167,7 +195,7 @@ module RpTables #(
     reg  [5:0]  it_last;
     always @* begin : last_calc
         integer w, rem;
-        w   = cam_width(it_cam);
+        w   = cam_width(it_cam, ir_l);
         rem = w - it_seg * SEG_W;
         it_last = ((rem >= SEG_W) ? SEG_W : rem) - 1;
     end
@@ -186,10 +214,11 @@ module RpTables #(
     wire signed [23:0] xf_stx, xf_sty;
     wire [10:0]        xf_st, xf_en, xf_xa, xf_xb;
 
-    RpSegXform #(.SRC_W(SRC_W), .SRC_H(SRC_H)) u_xf (
-        .clk(clk), .in_valid(xf_in_valid),
-        .in_ax0($signed(rom_data[79:48])), .in_ay0($signed(rom_data[111:80])),
-        .in_dax($signed(rom_data[127:112])), .in_day($signed(rom_data[143:128])),
+    wire [95:0] rec = ir_l ? rom_data_ir : rom_data[143:48];
+    RpSegXform #(.SRC_W(SRC_W), .SRC_H(SRC_H), .IR_SRC_W(IR_SRC_W), .IR_SRC_H(IR_SRC_H)) u_xf (
+        .clk(clk), .in_ir(ir_l), .in_valid(xf_in_valid),
+        .in_ax0($signed(rec[31:0])), .in_ay0($signed(rec[63:32])),
+        .in_dax($signed(rec[79:64])), .in_day($signed(rec[95:80])),
         .in_last(xf_last), .in_c(xf_c), .in_s(xf_s), .in_ysh(xf_ysh), .in_tag(xf_tag),
         .out_valid(xf_valid), .out_tag(xf_otag), .out_i0(xf_i0), .out_dir(xf_dir),
         .out_last(xf_olast), .out_ax(xf_ax), .out_ay(xf_ay), .out_stx(xf_stx),
@@ -236,6 +265,7 @@ module RpTables #(
     always @(posedge clk) begin
         if (rst) begin
             state <= S_IDLE; busy <= 1'b0; tables_valid <= 1'b0; sat_seen <= 1'b0;
+            ir_l <= 1'b0; built_ir <= 1'b0;
             build_count <= 32'd0;
             params_we <= 1'b0; bend_we <= 1'b0; rr_we <= 1'b0; cnt_we <= 1'b0;
             xf_in_valid <= 1'b0; rom_addr <= 15'd0;
@@ -246,7 +276,7 @@ module RpTables #(
             case (state)
             S_IDLE: if (build_req) begin
                 busy <= 1'b1; tables_valid <= 1'b0; sat_seen <= 1'b0;
-                roll_l <= roll_cd; pitch_l <= pitch_cd;
+                roll_l <= roll_cd; pitch_l <= pitch_cd; ir_l <= sensor_ir;
                 ang_idx <= 4'd0;
                 state <= S_ANG_REQ;
             end
@@ -282,7 +312,7 @@ module RpTables #(
                 if (clr_idx < NUM_ROWS) begin
                     rr_we <= 1'b1; rr_waddr <= clr_idx[8:0]; rr_wdata <= 11'd0;
                 end
-                if (clr_idx == NBUCKET - 1) begin
+                if (clr_idx == last_bucket) begin
                     ylo <= 11'd2047; yhi <= 11'd0; col_lo <= 11'd2047; col_hi <= 11'd0;
                     it_sy <= 9'd0; it_cam <= 3'd0; it_seg <= 4'd0; it_k <= 15'd0;
                     pass_b <= 1'b0;
@@ -348,7 +378,7 @@ module RpTables #(
             S_B_WR: state <= S_NEXT;
 
             S_NEXT: begin
-                if (it_k == NUM_SEGMENTS - 1) begin
+                if (it_k == last_seg_k) begin
                     if (!pass_b) begin
                         clr_idx <= 11'd0; acc <= 16'd0; state <= S_PFX_RD;
                     end else begin
@@ -356,7 +386,7 @@ module RpTables #(
                     end
                 end else begin
                     it_k <= it_k + 15'd1;
-                    if (it_seg == SEGS - 1) begin
+                    if (it_seg == segs_n - 4'd1) begin
                         it_seg <= 4'd0;
                         if (it_cam == 3'd5) begin it_cam <= 3'd0; it_sy <= it_sy + 9'd1; end
                         else it_cam <= it_cam + 3'd1;
@@ -374,7 +404,7 @@ module RpTables #(
                 bend_we <= 1'b1; bend_waddr <= clr_idx; bend_wdata <= acc + cnt_rdata;
                 cnt_we <= 1'b1; cnt_waddr <= clr_idx; cnt_wdata <= acc;
                 acc <= acc + cnt_rdata;
-                if (clr_idx == NBUCKET - 1) begin
+                if (clr_idx == last_bucket) begin
                     it_sy <= 9'd0; it_cam <= 3'd0; it_seg <= 4'd0; it_k <= 15'd0;
                     pass_b <= 1'b1;
                     state <= S_ROM;
@@ -385,7 +415,7 @@ module RpTables #(
             end
 
             S_DONE: begin
-                busy <= 1'b0; tables_valid <= 1'b1;
+                busy <= 1'b0; tables_valid <= 1'b1; built_ir <= ir_l;
                 build_count <= build_count + 32'd1;
                 state <= S_IDLE;
             end

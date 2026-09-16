@@ -24,11 +24,15 @@
 //============================================================================
 `timescale 1ns/1ps
 module RpSegXform #(
-    parameter integer SRC_W = 1920,
+    parameter integer SRC_W = 1920,     // EO geometry
     parameter integer SRC_H = 1080,
-    parameter integer DRUN_TO_Q16 = 11
+    parameter integer DRUN_TO_Q16 = 11,
+    parameter integer IR_SRC_W = 640,   // IR geometry, selected by in_ir
+    parameter integer IR_SRC_H = 512,
+    parameter integer IR_DRUN_TO_Q16 = 12
 ) (
     input  wire               clk,
+    input  wire               in_ir,       // static while a build runs
     input  wire               in_valid,
     input  wire signed [31:0] in_ax0,
     input  wire signed [31:0] in_ay0,
@@ -55,19 +59,23 @@ module RpSegXform #(
     output reg  [10:0]        out_xb,
     output reg                out_sat      // a step or accumulator did not fit
 );
-    localparam signed [31:0] CX = SRC_W <<< 15;
-    localparam signed [31:0] CY = SRC_H <<< 15;
-    localparam integer XMAX = SRC_W - 2;
-    localparam integer YMAX = SRC_H - 2;
+    localparam signed [31:0] EO_CX = SRC_W <<< 15;
+    localparam signed [31:0] EO_CY = SRC_H <<< 15;
+    localparam signed [31:0] IR_CX = IR_SRC_W <<< 15;
+    localparam signed [31:0] IR_CY = IR_SRC_H <<< 15;
+    wire signed [31:0] CX   = in_ir ? IR_CX : EO_CX;
+    wire signed [31:0] CY   = in_ir ? IR_CY : EO_CY;
+    wire [10:0] XMAX = in_ir ? (IR_SRC_W - 2) : (SRC_W - 2);
+    wire [10:0] YMAX = in_ir ? (IR_SRC_H - 2) : (SRC_H - 2);
 
     function [10:0] clamp_floor;
         input signed [47:0] v;
-        input integer       vmax;
+        input [10:0]        vmax;
         reg signed [47:0]   f;
         begin
             f = v >>> 16;
             if (v < 0)          clamp_floor = 11'd0;
-            else if (f > vmax)  clamp_floor = vmax[10:0];
+            else if (f > $signed({37'd0, vmax}))  clamp_floor = vmax;
             else                clamp_floor = f[10:0];
         end
     endfunction
@@ -85,8 +93,8 @@ module RpSegXform #(
         last1 <= in_last;
         dx1   <= in_ax0 - CX;
         dy1   <= in_ay0 + ($signed({{8{in_ysh[7]}}, in_ysh}) <<< 16) - CY;
-        dax1  <= $signed(in_dax) <<< DRUN_TO_Q16;
-        day1  <= $signed(in_day) <<< DRUN_TO_Q16;
+        dax1  <= $signed(in_dax) <<< (in_ir ? IR_DRUN_TO_Q16 : DRUN_TO_Q16);
+        day1  <= $signed(in_day) <<< (in_ir ? IR_DRUN_TO_Q16 : DRUN_TO_Q16);
         c1    <= in_c;
         s1    <= in_s;
     end

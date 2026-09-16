@@ -70,9 +70,28 @@ def write_vectors(rom, name, roll, pitch):
     print(f"{name}: Y={tbl['ylo']}..{tbl['yhi']} cols={tbl['col_lo']}..{tbl['col_hi']}")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and "--ir" not in sys.argv:
     write_angle_rom(ROOT / "assets" / "rollpitch" / "eo_rp_angle.mem", g.EO_PITCH_TR)
     write_angle_rom(ROOT / "assets" / "rollpitch" / "ir_rp_angle.mem", IR_PITCH_TR)
     rom = g.load_rom()
     for name, (r, p) in CASES.items():
         write_vectors(rom, name, r, p)
+
+
+def write_vectors_ir():
+    import rpcore as rc
+    rom = rc.load_rom(rc.IR)
+    for name, (r, p) in CASES.items():
+        tbl = rc.build_tables(rc.IR, rom, r, p)
+        d = ROOT / "sim" / "vectors" / f"rp_tables_ir_{name}"
+        d.mkdir(parents=True, exist_ok=True)
+        wtext(d / "params.mem", "".join(f"{pack_entry(q):036x}\n" for q in tbl["params"]))
+        wtext(d / "bucket_end.mem", "".join(f"{int(v):04x}\n" for v in tbl["bucket_end"]))
+        wtext(d / "row_ready.mem", "".join(f"{int(v):03x}\n" for v in tbl["row_ready"]))
+        wtext(d / "offsets.mem", "".join(f"{v & 0xFFFF:04x}\n" for v in list(r) + list(p)))
+        wtext(d / "meta.mem", "".join(f"{v:04x}\n" for v in (tbl["ylo"], tbl["yhi"], tbl["col_lo"], tbl["col_hi"])))
+        print(f"ir {name}: Y={tbl['ylo']}..{tbl['yhi']} cols={tbl['col_lo']}..{tbl['col_hi']} n={len(tbl['params'])}")
+
+
+if __name__ == "__main__" and "--ir" in sys.argv:
+    write_vectors_ir()

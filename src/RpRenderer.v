@@ -1,40 +1,44 @@
 `include "EoV19PanoramaParams.vh"
 //============================================================================
-// EoV19RpRenderer
+// RpRenderer
 //
-// Source-driven EO panorama renderer with live per-camera roll/pitch offsets.
-// Replaces EoV19StreamingRendererII1 (same output raster, same seam blend,
-// bit-exact at zero offset); see docs/ROLLPITCH_SOURCE_DRIVEN_RENDERER.md.
+// Source-driven panorama renderer with live per-camera roll/pitch offsets,
+// shared by EO and IR panorama (they never run at the same time).  Replaces
+// EoV19StreamingRendererII1 and IrV19StreamingRenderer: same output rasters,
+// same seam blends, bit-exact with them at zero offset.  See
+// docs/ROLLPITCH_SOURCE_DRIVEN_RENDERER.md.
 //
 // Per pass, for y0 = Ylo .. Yhi:
-//   WAIT_ROWS  rows y0 and y0+1 are complete in the line ring
+//   ROWS       rows y0 and y0+1 are complete in the line ring
 //   GO/WALK    the walker issues every pixel whose source row is y0
 //   DRAIN      the sampler has written them into the RowWindow
 //   then y0_done = y0 lets the emitter release rows whose ROW_READY <= y0.
 // The replay is asked for row y0+2 while y0 renders, so it fetches the next
 // row concurrently into the ring's third slot.
 //
-// Tables are rebuilt when the offsets change, only between passes.  After a
-// rebuild the camera writers need a few frames to adopt the new row/beat
-// window, so new passes wait SETTLE_CYCLES.
+// Tables are rebuilt between passes whenever the selected sensor or its
+// offsets change (~1 M cycles, ~4 ms).
 //============================================================================
 `timescale 1ns/1ps
-module EoV19RpRenderer #(
-    parameter integer SLOTS          = 256,
-    parameter integer SETTLE_CYCLES  = 67108864,   // ~290 ms at 233 MHz
-    parameter integer DRAIN_CYCLES   = 16,
-    parameter         RUN_ROM_FILE   = "../../assets/rowruns/eo_v19_render_runs.mem",
-    parameter         ANGLE_ROM_FILE = "../../assets/rollpitch/eo_rp_angle.mem",
-    parameter         ALPHA_Y_FILE   = "../../assets/rowruns/eo_v19_alpha_y.mem",
-    parameter         ALPHA_C_FILE   = "../../assets/rowruns/eo_v19_alpha_c.mem"
+module RpRenderer #(
+    parameter integer SETTLE_CYCLES     = 1,
+    parameter integer DRAIN_CYCLES      = 16,
+    parameter         RUN_ROM_FILE      = "../../assets/rowruns/eo_v19_render_runs.mem",
+    parameter         IR_RUN_ROM_FILE   = "../../assets/rowruns/ir_v19_render_runs.mem",
+    parameter         ANGLE_ROM_FILE    = "../../assets/rollpitch/eo_rp_angle.mem",
+    parameter         IR_ANGLE_ROM_FILE = "../../assets/rollpitch/ir_rp_angle.mem",
+    parameter         ALPHA_Y_FILE      = "../../assets/rowruns/eo_v19_alpha_y.mem",
+    parameter         ALPHA_C_FILE      = "../../assets/rowruns/eo_v19_alpha_c.mem",
+    parameter         IR_ALPHA_Y_FILE   = "../../assets/rowruns/ir_v19_alpha_y.mem"
 ) (
     input  wire          rst_n,
     input  wire          clk,
+    input  wire          sensor_ir,         // 0 EO panorama, 1 IR panorama
     input  wire          start_copy,
     input  wire [5:0]    cam_present,
     input  wire          source_frame_reset,
 
-    // EoV19DdrReplay BEAT_OUT interface
+    // BEAT_OUT replay of the selected sensor
     input  wire          beat_valid,
     input  wire [10:0]   beat_row,
     input  wire [6:0]    beat_idx,
@@ -43,8 +47,10 @@ module EoV19RpRenderer #(
     input  wire [10:0]   row_done_row,
 
     // offsets, already synchronised and stable (ui_clk)
-    input  wire [95:0]   roll_cd,
-    input  wire [95:0]   pitch_cd,
+    input  wire [95:0]   eo_roll_cd,
+    input  wire [95:0]   eo_pitch_cd,
+    input  wire [95:0]   ir_roll_cd,
+    input  wire [95:0]   ir_pitch_cd,
 
     output wire          px_valid,
     input  wire          px_ready,
@@ -55,6 +61,7 @@ module EoV19RpRenderer #(
     output wire          source_need_valid,
     output wire [10:0]   source_need_row,
     output wire [10:0]   source_start_row,
+    // EO camera writer / replay windows from the last EO table build
     output reg  [6:0]    fetch_beat_lo,
     output reg  [6:0]    fetch_beat_hi,
     output reg  [10:0]   wr_row_lo,
@@ -77,10 +84,11 @@ module EoV19RpRenderer #(
     reg         build_req;
     reg  [95:0] built_roll, built_pitch;
     reg         built_once;
-    wire        tbl_busy, tbl_valid, tbl_sat;
+    wire        tbl_busy, tbl_valid, tbl_sat, tbl_ir;
     wire [10:0] ylo, yhi, col_lo, col_hi;
     wire [14:0] rom_addr;
     wire [143:0] rom_data, rom_data_unused;
+    wire [95:0] rom_data_ir, rom_data_ir_unused;
     wire [14:0] params_raddr;
     wire [143:0] params_rdata;
     reg  [10:0] bend_raddr;
@@ -88,20 +96,28 @@ module EoV19RpRenderer #(
     wire [8:0]  rr_raddr;
     wire [10:0] rr_rdata;
 
+    wire [95:0] sel_roll  = sensor_ir ? ir_roll_cd  : eo_roll_cd;
+    wire [95:0] sel_pitch = sensor_ir ? ir_pitch_cd : eo_pitch_cd;
+
     EoV19RunRom #(.DEPTH(`EO_V19_RUN_COUNT), .ADDR_W(15), .ROM_FILE(RUN_ROM_FILE)) u_rom (
         .clk(clk), .addr_a(rom_addr), .addr_b(15'd0), .data_a(rom_data), .data_b(rom_data_unused));
+    IrV19RunRom #(.DEPTH(28800), .ADDR_W(15), .ROM_FILE(IR_RUN_ROM_FILE)) u_rom_ir (
+        .clk(clk), .en(1'b1), .addr_a(rom_addr), .addr_b(15'd0), .data_a(rom_data_ir), .data_b(rom_data_ir_unused));
 
-    RpTables #(.ANGLE_ROM_FILE(ANGLE_ROM_FILE)) u_tables (
-        .clk(clk), .rst(rst), .build_req(build_req), .roll_cd(roll_cd), .pitch_cd(pitch_cd),
+    RpTables #(.ANGLE_ROM_FILE(ANGLE_ROM_FILE), .IR_ANGLE_ROM_FILE(IR_ANGLE_ROM_FILE)) u_tables (
+        .clk(clk), .rst(rst), .sensor_ir(sensor_ir),
+        .build_req(build_req), .roll_cd(sel_roll), .pitch_cd(sel_pitch),
         .busy(tbl_busy), .tables_valid(tbl_valid), .sat_seen(tbl_sat), .build_count(build_count),
         .ylo(ylo), .yhi(yhi), .col_lo(col_lo), .col_hi(col_hi),
-        .rom_addr(rom_addr), .rom_data(rom_data),
+        .rom_addr(rom_addr), .rom_data(rom_data), .rom_data_ir(rom_data_ir), .built_ir(tbl_ir),
         .params_raddr(params_raddr), .params_rdata(params_rdata),
         .bend_raddr(bend_raddr), .bend_rdata(bend_rdata),
         .rready_raddr(rr_raddr), .rready_rdata(rr_rdata));
     assign tables_valid = tbl_valid;
     assign tables_busy  = tbl_busy;
-    assign frames_valid = tbl_valid;
+    wire   tables_match = tbl_valid && (tbl_ir == sensor_ir) &&
+                          (sel_roll == built_roll) && (sel_pitch == built_pitch);
+    assign frames_valid = tables_match;
 
     //------------------------------------------------------------------------
     // Pass control
@@ -124,7 +140,6 @@ module EoV19RpRenderer #(
     reg        pass_start;
     reg        pass_rst;
     reg        edge_seen_late;
-    reg [5:0]  present_q;
 
     wire        walker_idle;
     wire [11:0] rows_done;
@@ -135,15 +150,18 @@ module EoV19RpRenderer #(
     wire        emit_can_progress;
     wire        sampler_busy;
 
-    wire offsets_changed = (roll_cd != built_roll) || (pitch_cd != built_pitch);
+    wire rebuild_needed = !built_once || !tbl_valid || (tbl_ir != sensor_ir) ||
+                          (sel_roll != built_roll) || (sel_pitch != built_pitch);
+    wire [11:0] row_cap = tbl_ir ? 12'd511 : 12'd1079;
 
     assign source_need_valid = need_valid;
     assign source_need_row   = need_row;
     assign source_start_row  = ylo;
 
-    function [10:0] cap1079;
+    function [10:0] cap_row;
         input [11:0] v;
-        begin cap1079 = (v > 12'd1079) ? 11'd1079 : v[10:0]; end
+        input [11:0] cap;
+        begin cap_row = (v > cap) ? cap[10:0] : v[10:0]; end
     endfunction
 
     always @(posedge clk) begin
@@ -166,18 +184,20 @@ module EoV19RpRenderer #(
             end else begin
                 case (cs)
                 C_IDLE: begin
-                    if (!built_once || (offsets_changed && !start_copy)) begin
+                    // Rebuild between passes whenever the tables do not
+                    // describe the selected sensor and its current offsets.
+                    // A pending copy simply waits the ~4 ms.
+                    if (rebuild_needed) begin
                         build_req <= 1'b1;
-                        built_roll <= roll_cd; built_pitch <= pitch_cd;
+                        built_roll <= sel_roll; built_pitch <= sel_pitch;
                         cs <= C_BUILD;
-                    end else if (start_copy && tbl_valid) begin
+                    end else if (start_copy) begin
                         pass_start <= 1'b1;
-                        present_q  <= cam_present;
                         y0 <= ylo; y0_last <= (ylo == yhi);
                         slot_a <= ylo % 3; slot_b <= (ylo + 11'd1) % 3;
                         y0_done_valid <= 1'b0; all_done <= 1'b0;
                         need_valid <= 1'b1;
-                        need_row <= cap1079({1'b0, ylo} + 12'd2);
+                        need_row <= cap_row({1'b0, ylo} + 12'd2, row_cap);
                         cs <= C_EDGE;
                     end
                 end
@@ -209,7 +229,7 @@ module EoV19RpRenderer #(
                         end else begin
                             y0 <= y0 + 11'd1; y0_last <= (y0 + 11'd1 == yhi);
                             slot_a <= slot_b; slot_b <= (slot_b == 2'd2) ? 2'd0 : slot_b + 2'd1;
-                            need_row <= cap1079({1'b0, y0} + 12'd3);
+                            need_row <= cap_row({1'b0, y0} + 12'd3, row_cap);
                             cs <= C_ROWS;
                         end
                     end
@@ -226,14 +246,15 @@ module EoV19RpRenderer #(
     wire y0_go = (cs == C_GO);
 
     //------------------------------------------------------------------------
-    // Window outputs (registered, from the tables)
+    // EO window outputs: follow the tables only while they describe EO, and
+    // hold the last EO values while IR panorama runs (EO capture is off then).
     //------------------------------------------------------------------------
     always @(posedge clk) begin
-        if (!tbl_valid) begin
+        if (rst) begin
             fetch_beat_lo <= 7'd0;  fetch_beat_hi <= 7'd112;
             wr_row_lo <= 11'd0;     wr_row_hi <= 11'd1079;
             wr_beat_lo <= 7'd0;     wr_beat_hi <= 7'd119;
-        end else begin : win
+        end else if (tbl_valid && !tbl_ir) begin : win
             reg [10:0] cl;
             reg [6:0]  blo, bhi;
             // qx_phase may step one column below col_lo or up to col_hi.
@@ -258,7 +279,7 @@ module EoV19RpRenderer #(
     wire [15:0] ring_pa, ring_pb;
 
     RpLineRing u_ring (
-        .clk(clk), .rst(rst), .frame_start(source_frame_reset),
+        .clk(clk), .rst(rst), .frame_start(source_frame_reset), .sensor_ir(tbl_ir),
         .beat_valid(beat_valid), .beat_row(beat_row), .beat_idx(beat_idx), .beat_data(beat_data),
         .row_done(row_done), .row_done_row(row_done_row),
         .rows_done(rows_done), .writer_idle(ring_idle),
@@ -275,8 +296,8 @@ module EoV19RpRenderer #(
     wire [12:0] q_peak;
     wire [31:0] visits;
 
-    RpWalker #(.SLOTS(SLOTS)) u_walker (
-        .clk(clk), .rst(rst || pass_rst), .pass_start(pass_start),
+    RpWalker u_walker (
+        .clk(clk), .sensor_ir(tbl_ir), .rst(rst || pass_rst), .pass_start(pass_start),
         .y0_go(y0_go), .y0(y0), .y0_last(y0_last), .bucket_end(bend_q), .idle(walker_idle),
         .params_raddr(params_raddr), .params_rdata(params_rdata),
         .sy_out(sy_out), .emit_can_progress(emit_can_progress),
@@ -291,7 +312,7 @@ module EoV19RpRenderer #(
     wire [31:0] row_mismatch;
 
     RpSampler u_sampler (
-        .clk(clk), .rst(rst || pass_rst),
+        .clk(clk), .rst(rst || pass_rst), .sensor_ir(tbl_ir),
         .tok_valid(tok_valid), .tok_cam(tok_cam), .tok_sy(tok_sy), .tok_lx(tok_lx),
         .tok_ax(tok_ax), .tok_ay(tok_ay), .y0(y0),
         .ring_word(ring_word), .ring_sel(ring_sel), .ring_cam(ring_cam),
@@ -299,12 +320,13 @@ module EoV19RpRenderer #(
         .rw_we(rw_we), .rw_addr(rw_waddr), .rw_din(rw_din),
         .busy(sampler_busy), .row_mismatch_count(row_mismatch));
 
-    RpRowWindow #(.RD_LAT(3)) u_rw (
+    RpRowWindow #(.RD_LAT(5)) u_rw (
         .clk(clk), .we(rw_we), .waddr(rw_waddr), .din(rw_din),
         .raddr(rw_raddr), .dout(rw_dout));
 
-    RpEmitter #(.RW_RD_LAT(3), .ALPHA_Y_FILE(ALPHA_Y_FILE), .ALPHA_C_FILE(ALPHA_C_FILE)) u_emit (
-        .clk(clk), .rst(rst || pass_rst), .start(pass_start), .cam_present(cam_present),
+    RpEmitter #(.RW_RD_LAT(5), .ALPHA_Y_FILE(ALPHA_Y_FILE), .ALPHA_C_FILE(ALPHA_C_FILE),
+                .IR_ALPHA_Y_FILE(IR_ALPHA_Y_FILE)) u_emit (
+        .clk(clk), .rst(rst || pass_rst), .sensor_ir(tbl_ir), .start(pass_start), .cam_present(cam_present),
         .rr_raddr(rr_raddr), .rr_rdata(rr_rdata),
         .y0_done_valid(y0_done_valid), .y0_done(y0_done), .all_done(all_done),
         .drop_valid(drop_valid), .drop_sy(drop_sy),
@@ -314,7 +336,7 @@ module EoV19RpRenderer #(
         .sy_out(sy_out), .can_progress(emit_can_progress));
     assign frame_done = emit_frame_done;
 
-    assign status_flags = {8'd0, edge_seen_late, (row_mismatch != 0), q_ovf, alias_drop,
+    assign status_flags = {7'd0, tbl_ir, edge_seen_late, (row_mismatch != 0), q_ovf, alias_drop,
                            tbl_sat, tbl_busy, tbl_valid, all_done};
     assign dbg_word = {cs, sy_out[8:0], y0, rows_done[10:0], q_peak[11:0], visits[15:0], 1'b0};
 endmodule
