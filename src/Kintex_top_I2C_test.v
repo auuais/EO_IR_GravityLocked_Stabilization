@@ -12,7 +12,14 @@ module Kintex_top_I2C_test #(
     input  wire SCL,
     inout  wire SDA,
 	output wire [3:0] cam_select,
-    output wire [7:0] mode_out
+    output wire [7:0] mode_out,
+    // Per-camera static offsets as the firmware's fpga_push_bank writes them
+    // (fpga_regs.h): int16 LE centi-degrees, cam0 in [15:0].  SCLK domain --
+    // the consumer must synchronise and wait for the bank write to finish.
+    output wire [95:0] eo_pitch_cd_raw,
+    output wire [95:0] eo_roll_cd_raw,
+    output wire [95:0] ir_pitch_cd_raw,
+    output wire [95:0] ir_roll_cd_raw
 );
 
     //===========================================================
@@ -123,23 +130,21 @@ module Kintex_top_I2C_test #(
 
     wire [7:0] mode_reg = regfile[8'h00];
     assign mode_out = mode_reg;
-    wire [31:0] eo_cyl_h_fov_q16 = {regfile[8'h23], regfile[8'h22], regfile[8'h21], regfile[8'h20]};
-    wire [31:0] eo_cyl_v_fov_q16 = {regfile[8'h27], regfile[8'h26], regfile[8'h25], regfile[8'h24]};
-    wire [31:0] eo_crop_h_q16    = {regfile[8'h2B], regfile[8'h2A], regfile[8'h29], regfile[8'h28]};
-    wire [31:0] eo_crop_w_q16    = {regfile[8'h2F], regfile[8'h2E], regfile[8'h2D], regfile[8'h2C]};
-    wire [31:0] eo_pitch_tr_q16  = {regfile[8'h33], regfile[8'h32], regfile[8'h31], regfile[8'h30]};
-    wire [31:0] eo_yaw_tr_q16    = {regfile[8'h37], regfile[8'h36], regfile[8'h35], regfile[8'h34]};
-    wire [31:0] eo_overlap_i32   = {regfile[8'h3B], regfile[8'h3A], regfile[8'h39], regfile[8'h38]};
-    wire [31:0] eo_feather_q16   = {regfile[8'h3F], regfile[8'h3E], regfile[8'h3D], regfile[8'h3C]};
-
-    wire [31:0] ir_cyl_h_fov_q16 = {regfile[8'h53], regfile[8'h52], regfile[8'h51], regfile[8'h50]};
-    wire [31:0] ir_cyl_v_fov_q16 = {regfile[8'h57], regfile[8'h56], regfile[8'h55], regfile[8'h54]};
-    wire [31:0] ir_crop_h_q16    = {regfile[8'h5B], regfile[8'h5A], regfile[8'h59], regfile[8'h58]};
-    wire [31:0] ir_crop_w_q16    = {regfile[8'h5F], regfile[8'h5E], regfile[8'h5D], regfile[8'h5C]};
-    wire [31:0] ir_pitch_tr_q16  = {regfile[8'h63], regfile[8'h62], regfile[8'h61], regfile[8'h60]};
-    wire [31:0] ir_yaw_tr_q16    = {regfile[8'h67], regfile[8'h66], regfile[8'h65], regfile[8'h64]};
-    wire [31:0] ir_overlap_i32   = {regfile[8'h6B], regfile[8'h6A], regfile[8'h69], regfile[8'h68]};
-    wire [31:0] ir_feather_q16   = {regfile[8'h6F], regfile[8'h6E], regfile[8'h6D], regfile[8'h6C]};
+    // Parameter banks (fpga_regs.h): base 0x20 EO, 0x50 IR;
+    //   yaw_cd[6] +0x00, pitch_cd[6] +0x0C, roll_cd[6] +0x18,
+    //   overlap +0x24, feather_q16 +0x28.
+    // This file used to decode the same addresses as cylindrical FOV / crop /
+    // translation-factor words.  Nothing read those wires, and the firmware
+    // has always written the bank layout above, so they are gone.
+    genvar gb;
+    generate
+        for (gb = 0; gb < 6; gb = gb + 1) begin : g_bank
+            assign eo_pitch_cd_raw[gb*16 +: 16] = {regfile[8'h2D + 2*gb], regfile[8'h2C + 2*gb]};
+            assign eo_roll_cd_raw [gb*16 +: 16] = {regfile[8'h39 + 2*gb], regfile[8'h38 + 2*gb]};
+            assign ir_pitch_cd_raw[gb*16 +: 16] = {regfile[8'h5D + 2*gb], regfile[8'h5C + 2*gb]};
+            assign ir_roll_cd_raw [gb*16 +: 16] = {regfile[8'h69 + 2*gb], regfile[8'h68 + 2*gb]};
+        end
+    endgenerate
     assign cam_select =
         (mode_reg <= 8'd5)                      ? mode_reg[3:0] :
         ((mode_reg >= 8'h0D) && (mode_reg <= 8'h12)) ? (mode_reg - 8'h0D) :

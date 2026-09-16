@@ -2,7 +2,7 @@
 // RpSegXform
 //
 // Applies one camera's static roll/pitch offset to one RowRun segment and
-// derives everything the source-driven renderer needs to walk it.  Six
+// derives everything the source-driven renderer needs to walk it.  Seven
 // registered stages, no back-pressure: in_valid is carried as out_valid.
 //
 //   dx = ax0 - CX                dy = ay0 + (ysh<<16) - CY
@@ -139,11 +139,11 @@ module RpSegXform #(
         Dy4   <= sum_dy >>> 15;
     end
 
-    // ---- stage 5: end point = A + last*D ---------------------------------
+    // ---- stage 5: last*D (DSP) ---------------------------------------------
     reg               v5;
     reg [22:0]        tag5;
     reg [5:0]         last5;
-    reg signed [47:0] Ax5, Ay5, Dx5, Dy5, Ex5, Ey5;
+    reg signed [47:0] Ax5, Ay5, Dx5, Dy5, Mx5, My5;
     always @(posedge clk) begin
         v5    <= v4;
         tag5  <= tag4;
@@ -152,35 +152,53 @@ module RpSegXform #(
         Ay5   <= Ay4;
         Dx5   <= Dx4;
         Dy5   <= Dy4;
-        Ex5   <= Ax4 + $signed({1'b0, last4}) * Dx4;
-        Ey5   <= Ay4 + $signed({1'b0, last4}) * Dy4;
+        Mx5   <= $signed({1'b0, last4}) * Dx4;
+        My5   <= $signed({1'b0, last4}) * Dy4;
     end
 
-    // ---- stage 6: orient the walk and clamp ------------------------------
-    wire               dir5  = !Dy5[47];
-    wire signed [47:0] sax5  = dir5 ? Ax5 : Ex5;
-    wire signed [47:0] say5  = dir5 ? Ay5 : Ey5;
-    wire signed [47:0] eay5  = dir5 ? Ey5 : Ay5;
-    wire signed [47:0] stx5  = dir5 ? Dx5 : -Dx5;
-    wire signed [47:0] sty5  = dir5 ? Dy5 : -Dy5;
-    wire sat5 = (sax5 < -48'sd2147483648) || (sax5 > 48'sd2147483647) ||
-                (say5 < -48'sd2147483648) || (say5 > 48'sd2147483647) ||
-                (stx5 < -48'sd8388608)    || (stx5 > 48'sd8388607) ||
-                (sty5 < -48'sd8388608)    || (sty5 > 48'sd8388607);
+    // ---- stage 6: end point, walk orientation -----------------------------
+    reg               v6, dir6;
+    reg [22:0]        tag6;
+    reg [5:0]         last6;
+    reg signed [47:0] Ax6, Ex6, sax6, say6, eay6, stx6, sty6;
+    always @(posedge clk) begin : s6
+        reg signed [47:0] ex, ey;
+        reg               d;
+        ex = Ax5 + Mx5;
+        ey = Ay5 + My5;
+        d  = !Dy5[47];
+        v6    <= v5;
+        tag6  <= tag5;
+        last6 <= last5;
+        dir6  <= d;
+        Ax6   <= Ax5;
+        Ex6   <= ex;
+        sax6  <= d ? Ax5 : ex;
+        say6  <= d ? Ay5 : ey;
+        eay6  <= d ? ey  : Ay5;
+        stx6  <= d ? Dx5 : -Dx5;
+        sty6  <= d ? Dy5 : -Dy5;
+    end
+
+    // ---- stage 7: clamp and range check ----------------------------------
+    wire sat6 = (sax6 < -48'sd2147483648) || (sax6 > 48'sd2147483647) ||
+                (say6 < -48'sd2147483648) || (say6 > 48'sd2147483647) ||
+                (stx6 < -48'sd8388608)    || (stx6 > 48'sd8388607) ||
+                (sty6 < -48'sd8388608)    || (sty6 > 48'sd8388607);
     always @(posedge clk) begin
-        out_valid <= v5;
-        out_tag   <= tag5;
-        out_last  <= last5;
-        out_dir   <= dir5;
-        out_i0    <= dir5 ? 6'd0 : last5;
-        out_ax    <= sax5[31:0];
-        out_ay    <= say5[31:0];
-        out_stx   <= stx5[23:0];
-        out_sty   <= sty5[23:0];
-        out_st    <= clamp_floor(say5, YMAX);
-        out_en    <= clamp_floor(eay5, YMAX);
-        out_xa    <= clamp_floor(Ax5, XMAX);
-        out_xb    <= clamp_floor(Ex5, XMAX);
-        out_sat   <= sat5;
+        out_valid <= v6;
+        out_tag   <= tag6;
+        out_last  <= last6;
+        out_dir   <= dir6;
+        out_i0    <= dir6 ? 6'd0 : last6;
+        out_ax    <= sax6[31:0];
+        out_ay    <= say6[31:0];
+        out_stx   <= stx6[23:0];
+        out_sty   <= sty6[23:0];
+        out_st    <= clamp_floor(say6, YMAX);
+        out_en    <= clamp_floor(eay6, YMAX);
+        out_xa    <= clamp_floor(Ax6, XMAX);
+        out_xb    <= clamp_floor(Ex6, XMAX);
+        out_sat   <= sat6;
     end
 endmodule

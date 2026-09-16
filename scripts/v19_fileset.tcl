@@ -56,7 +56,9 @@ proc v19_refresh_fileset {project_root {skip_debug_ip 0}} {
                       [file join $project_root assets rowruns eo_v19_render_row_max_y0.mem] \
                       [file join $project_root assets rowruns eo_v19_render_row_min_y0.mem] \
                       [file join $project_root assets rowruns eo_v19_alpha_y.mem] \
-                      [file join $project_root assets rowruns eo_v19_alpha_c.mem]] {
+                      [file join $project_root assets rowruns eo_v19_alpha_c.mem] \
+                      [file join $project_root assets rollpitch eo_rp_angle.mem] \
+                      [file join $project_root assets rollpitch ir_rp_angle.mem]] {
         if {![file exists $mem]} { error "Required V19 memory artifact is missing: $mem" }
         v19_add_if_missing $mem
     }

@@ -255,6 +255,7 @@ module KintexTop_EO_IR_HD_SDI_panorama_base(
 
     wire [3:0] cam_select_unused;
     wire [7:0] mode_current;
+    wire [95:0] eo_pitch_cd_raw, eo_roll_cd_raw, ir_pitch_cd_raw, ir_roll_cd_raw;
     Kintex_top_I2C_test #(
         .SLAVE_ADDR(7'h36),
         .SCLK_HZ(74_250_000),
@@ -265,7 +266,11 @@ module KintexTop_EO_IR_HD_SDI_panorama_base(
         .SCL       (SCL),
         .SDA       (SDA),
         .cam_select(cam_select_unused),
-        .mode_out  (mode_current)
+        .mode_out  (mode_current),
+        .eo_pitch_cd_raw(eo_pitch_cd_raw),
+        .eo_roll_cd_raw (eo_roll_cd_raw),
+        .ir_pitch_cd_raw(ir_pitch_cd_raw),
+        .ir_roll_cd_raw (ir_roll_cd_raw)
     );
 
     // Bring-up override: pinned every IR single mode to one physical slot,
@@ -537,6 +542,10 @@ module KintexTop_EO_IR_HD_SDI_panorama_base(
         .eo5_wr_vsync         (eo5_vsync),
         .eo5_wr_pixel         (eo5_dout),
         .eo_strobe_ref        (eo_fpga_trigger_common),
+        .eo_pitch_cd_raw      (eo_pitch_cd_raw),
+        .eo_roll_cd_raw       (eo_roll_cd_raw),
+        .ir_pitch_cd_raw      (ir_pitch_cd_raw),
+        .ir_roll_cd_raw       (ir_roll_cd_raw),
         .c0_sys_clk_p         (c0_sys_clk_p),
         .c0_sys_clk_n         (c0_sys_clk_n),
         .c0_ddr4_adr          (c0_ddr4_adr),

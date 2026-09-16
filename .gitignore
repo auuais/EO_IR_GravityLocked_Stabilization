@@ -70,3 +70,4 @@ iter_*_CongestedCLBsAndNets.txt
 dfx_runtime.txt
 clockInfo.txt
 xvlog.pb
+sim_out/

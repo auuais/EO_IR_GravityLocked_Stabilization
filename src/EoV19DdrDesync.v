@@ -53,10 +53,18 @@ module EoV19DdrCamWriter #(
     parameter [6:0]  WR_BEAT_LO = 7'd0,
     parameter [6:0]  WR_BEAT_HI = 7'd127,
     parameter [10:0] WR_ROW_LO  = 11'd0,
-    parameter [10:0] WR_ROW_HI  = 11'd2047
+    parameter [10:0] WR_ROW_HI  = 11'd2047,
+    // DYN_WINDOW=1: the window comes from wr_*_ui (ui_clk) instead, adopted at
+    // camera frame start.  The roll/pitch renderer sets it from its tables so
+    // zero offset keeps today's write bandwidth and larger offsets widen it.
+    parameter integer DYN_WINDOW = 0
 ) (
     input  wire        rst_n,
     input  wire        capture_enable,
+    input  wire [6:0]  wr_beat_lo_ui,
+    input  wire [6:0]  wr_beat_hi_ui,
+    input  wire [10:0] wr_row_lo_ui,
+    input  wire [10:0] wr_row_hi_ui,
     // Per-camera enable from the rejoin supervisor (ui_clk level).  Dropping
     // it clears every cam_clk register in this writer through the existing
     // capture_enable reset branches -- the only reset that can reach this
@@ -134,9 +142,31 @@ module EoV19DdrCamWriter #(
     // Beat index within the row is pix_x/PIX_PER_BEAT, evaluated on the cycle
     // the beat completes.
     wire [6:0] wr_beat_idx = (PIX_PER_BEAT == 32) ? pix_x[10:5] : pix_x[10:4];
-    wire beat_in_write_window = (wr_beat_idx >= WR_BEAT_LO) &&
-                                (wr_beat_idx <= WR_BEAT_HI) &&
-                                (row_y >= WR_ROW_LO) && (row_y <= WR_ROW_HI);
+    // Runtime window: two-flop synchronised, and adopted only at frame start
+    // and only when the synchronised word agrees with the one behind it, so a
+    // value changing mid-sample cannot produce a torn window.  It changes only
+    // when the roll/pitch tables are rebuilt.
+    (* ASYNC_REG = "TRUE" *) reg [35:0] win_meta;
+    (* ASYNC_REG = "TRUE" *) reg [35:0] win_sync;
+    reg [35:0] win_prev;
+    reg [6:0]  win_beat_lo = WR_BEAT_LO;
+    reg [6:0]  win_beat_hi = WR_BEAT_HI;
+    reg [10:0] win_row_lo  = WR_ROW_LO;
+    reg [10:0] win_row_hi  = WR_ROW_HI;
+    always @(posedge cam_clk) begin
+        win_meta <= {wr_beat_lo_ui, wr_beat_hi_ui, wr_row_lo_ui, wr_row_hi_ui};
+        win_sync <= win_meta;
+        win_prev <= win_sync;
+        if (frame_start && (win_sync == win_prev))
+            {win_beat_lo, win_beat_hi, win_row_lo, win_row_hi} <= win_sync;
+    end
+    wire [6:0]  eff_beat_lo = (DYN_WINDOW != 0) ? win_beat_lo : WR_BEAT_LO;
+    wire [6:0]  eff_beat_hi = (DYN_WINDOW != 0) ? win_beat_hi : WR_BEAT_HI;
+    wire [10:0] eff_row_lo  = (DYN_WINDOW != 0) ? win_row_lo  : WR_ROW_LO;
+    wire [10:0] eff_row_hi  = (DYN_WINDOW != 0) ? win_row_hi  : WR_ROW_HI;
+    wire beat_in_write_window = (wr_beat_idx >= eff_beat_lo) &&
+                                (wr_beat_idx <= eff_beat_hi) &&
+                                (row_y >= eff_row_lo) && (row_y <= eff_row_hi);
     reg [PACK_CW-1:0] pack_count;
     reg [28:0] row_base_addr;
     reg [28:0] beat_addr;
@@ -709,12 +739,27 @@ module EoV19DdrReplay #(
     parameter [28:0] FRAME_STRIDE_ADDR = 29'd1036800,
     parameter [28:0] ROW_STRIDE_ADDR = 29'd960,
     parameter [28:0] BEAT_STRIDE_ADDR = 29'd8,
-    parameter integer LINE_PERIOD_UI = 6914
+    parameter integer LINE_PERIOD_UI = 6914,
+    // BEAT_OUT=1: present each fetched beat on beat_* for one cycle and hold
+    // BEAT_HOLD cycles (RpLineRing writes it as four words) instead of
+    // shifting 16 pixels out on replay_pixelN.  The pixel outputs stay idle.
+    parameter integer BEAT_OUT = 0,
+    parameter integer BEAT_HOLD = 3,
+    // DYN_FETCH=1: the horizontal fetch window comes from fetch_beat_lo/hi.
+    parameter integer DYN_FETCH = 0
 ) (
     input  wire        rst_n,
     input  wire        clk,
     input  wire        ui_rst,
     input  wire        run_enable,
+    input  wire [6:0]  fetch_beat_lo,
+    input  wire [6:0]  fetch_beat_hi,
+    output reg         beat_valid,
+    output reg  [10:0] beat_row,
+    output reg  [6:0]  beat_idx,
+    output reg  [1535:0] beat_data,
+    output reg         row_done,
+    output reg  [10:0] row_done_row,
     input  wire        lease_valid,
     input  wire [1:0]  bank0,
     input  wire [1:0]  bank1,
@@ -765,6 +810,8 @@ module EoV19DdrReplay #(
     localparam [2:0] ST_LINE_END = 3'd4;
     localparam [2:0] ST_GAP = 3'd5;
     localparam [2:0] ST_LOAD = 3'd6;
+    localparam [2:0] ST_BEAT_HOLD = 3'd7;
+    reg [3:0] hold_cnt;
 
     // Beats fetched from ONE camera before moving to the next.
     //
@@ -806,8 +853,10 @@ module EoV19DdrReplay #(
     // row-completion and tag contract is untouched.  Narrowing the cache
     // instead would save the shift time too and free ~93 BRAM tiles, but it
     // changes the renderer's x indexing and is a much larger change.
-    localparam [6:0]   FETCH_BEAT_LO = 7'd16;   // first fetched batch's beat_x
-    localparam [6:0]   FETCH_BEAT_HI = 7'd96;   // last fetched batch's beat_x
+    localparam [6:0]   FETCH_BEAT_LO_FIXED = 7'd16;   // first fetched batch's beat_x
+    localparam [6:0]   FETCH_BEAT_HI_FIXED = 7'd96;   // last fetched batch's beat_x
+    wire [6:0] FETCH_BEAT_LO = DYN_FETCH ? fetch_beat_lo : FETCH_BEAT_LO_FIXED;
+    wire [6:0] FETCH_BEAT_HI = DYN_FETCH ? fetch_beat_hi : FETCH_BEAT_HI_FIXED;
     localparam [15:0]  NEUTRAL_PIXEL = 16'h0080;  // Y=0, C=128
 
     reg [2:0] state;
@@ -998,7 +1047,9 @@ module EoV19DdrReplay #(
             dbg_state <= ST_IDLE;
             shift0 <= 256'd0; shift1 <= 256'd0; shift2 <= 256'd0;
             shift3 <= 256'd0; shift4 <= 256'd0; shift5 <= 256'd0;
+            beat_valid <= 1'b0; row_done <= 1'b0; hold_cnt <= 4'd0;
         end else if (!run_enable) begin
+            beat_valid <= 1'b0; row_done <= 1'b0;
             // The DDR-backed source replay is consumed by tiny line caches in
             // the RowRun renderer.  It must therefore be phase-locked to the
             // active panorama copy pass, not free-run continuously through the
@@ -1028,6 +1079,8 @@ module EoV19DdrReplay #(
         end else begin
             frame_edge <= 1'b0;
             rd_req_valid <= 1'b0;
+            beat_valid <= 1'b0;
+            row_done <= 1'b0;
             replay_hsync0 <= 1'b0; replay_hsync1 <= 1'b0; replay_hsync2 <= 1'b0;
             replay_hsync3 <= 1'b0; replay_hsync4 <= 1'b0; replay_hsync5 <= 1'b0;
             // Bring-up visibility: while waiting for the six camera DDR
@@ -1127,7 +1180,30 @@ module EoV19DdrReplay #(
 
                 // Present one beat of the batch: all six cameras' data for the
                 // same beat index, exactly as the old per-beat path did.
-                ST_LOAD: begin
+                ST_LOAD: if (BEAT_OUT != 0) begin
+                    replay_vsync0 <= 1'b0; replay_vsync1 <= 1'b0; replay_vsync2 <= 1'b0;
+                    replay_vsync3 <= 1'b0; replay_vsync4 <= 1'b0; replay_vsync5 <= 1'b0;
+                    if (batch_black) begin
+                        // Nothing fetched for this batch: skip it whole.
+                        shift_k <= 3'd0;
+                        if (beat_x + RBATCH_STEP >= 7'd120) begin
+                            beat_x <= 7'd0;
+                            row_done <= 1'b1; row_done_row <= dbg_row;
+                            state <= ST_LINE_END;
+                        end else begin
+                            beat_x <= beat_x + RBATCH_STEP;
+                            state <= ST_REQ;
+                        end
+                    end else begin
+                        beat_valid <= 1'b1;
+                        beat_row   <= dbg_row;
+                        beat_idx   <= beat_x + {4'd0, shift_k};
+                        beat_data  <= {cbuf5[shift_k], cbuf4[shift_k], cbuf3[shift_k],
+                                       cbuf2[shift_k], cbuf1[shift_k], cbuf0[shift_k]};
+                        hold_cnt   <= BEAT_HOLD;
+                        state      <= ST_BEAT_HOLD;
+                    end
+                end else begin
                     replay_vsync0 <= 1'b0; replay_vsync1 <= 1'b0; replay_vsync2 <= 1'b0;
                     replay_vsync3 <= 1'b0; replay_vsync4 <= 1'b0; replay_vsync5 <= 1'b0;
                     shift0 <= batch_black ? {16{NEUTRAL_PIXEL}} : cbuf0[shift_k];
@@ -1145,6 +1221,25 @@ module EoV19DdrReplay #(
                     replay_hsync3 <= 1'b1; replay_hsync4 <= 1'b1; replay_hsync5 <= 1'b1;
                     shift_count <= 4'd0;
                     state <= ST_SHIFT;
+                end
+
+                ST_BEAT_HOLD: begin
+                    if (hold_cnt != 4'd0) begin
+                        hold_cnt <= hold_cnt - 4'd1;
+                    end else if (shift_k == RBATCH_LAST) begin
+                        shift_k <= 3'd0;
+                        if (beat_x + RBATCH_STEP >= 7'd120) begin
+                            beat_x <= 7'd0;
+                            row_done <= 1'b1; row_done_row <= dbg_row;
+                            state <= ST_LINE_END;
+                        end else begin
+                            beat_x <= beat_x + RBATCH_STEP;
+                            state <= ST_REQ;
+                        end
+                    end else begin
+                        shift_k <= shift_k + 3'd1;
+                        state <= ST_LOAD;
+                    end
                 end
 
                 ST_SHIFT: begin

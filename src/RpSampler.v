@@ -1,0 +1,179 @@
+//============================================================================
+// RpSampler
+//
+// Walker token -> sampled pixel -> RowWindow write.  II=1, no back-pressure.
+//
+//   valid  = 0 <= ax <= (SRC_W-2)<<16  and  0 <= ay <= (SRC_H-2)<<16
+//   x      = qx_phase(ax, parity(CAM_START[cam] + lx))     (M1 renderer)
+//   rows   = the two line-ring slots for y0 and y0+1 (the walker only issues
+//            a valid pixel at the y0 it samples)
+//   Y, C   = vertical interpolation with ay[15:0], rounded (M1 interp8)
+//   out    = valid ? {Y, C} : BLACK
+//
+// The RowWindow address is {sy mod 256, strip_x >> 2}; pixel strip_x & 3 of
+// the 72-bit word lives at [sel*18 +: 16] and is written with byte enables,
+// so no read-modify-write is needed.
+//
+// Latency: tok -> rw write strobe registered 7 cycles later.
+//============================================================================
+`timescale 1ns/1ps
+module RpSampler #(
+    parameter integer SRC_W = 1920,
+    parameter integer SRC_H = 1080,
+    parameter [15:0]  BLACK = 16'h1080,
+    parameter integer CAM1_START = 633,  parameter integer CAM2_START = 1271,
+    parameter integer CAM3_START = 1909, parameter integer CAM4_START = 2547,
+    parameter integer CAM5_START = 3185,
+    parameter integer STRIP1 = 650,  parameter integer STRIP2 = 1305,
+    parameter integer STRIP3 = 1960, parameter integer STRIP4 = 2615,
+    parameter integer STRIP5 = 3270
+) (
+    input  wire               clk,
+    input  wire               rst,
+
+    input  wire               tok_valid,
+    input  wire [2:0]         tok_cam,
+    input  wire [8:0]         tok_sy,
+    input  wire [9:0]         tok_lx,
+    input  wire signed [31:0] tok_ax,
+    input  wire signed [31:0] tok_ay,
+
+    input  wire [10:0]        y0,          // for the debug row check only
+
+    // line ring
+    output reg  [8:0]         ring_word,
+    output reg  [1:0]         ring_sel,
+    output reg  [2:0]         ring_cam,
+    input  wire [15:0]        ring_pa,     // latency 4 from ring_*
+    input  wire [15:0]        ring_pb,
+
+    // RowWindow port A
+    output reg  [7:0]         rw_we,
+    output reg  [17:0]        rw_addr,
+    output reg  [71:0]        rw_din,
+
+    output wire               busy,        // any token in flight
+    output reg  [31:0]        row_mismatch_count
+);
+    localparam integer XMAX = SRC_W - 2;
+    localparam integer YMAX = SRC_H - 2;
+
+    function [11:0] cam_start;
+        input [2:0] cam;
+        begin
+            case (cam)
+                3'd0: cam_start = 12'd0;               3'd1: cam_start = CAM1_START;
+                3'd2: cam_start = CAM2_START;          3'd3: cam_start = CAM3_START;
+                3'd4: cam_start = CAM4_START;          default: cam_start = CAM5_START;
+            endcase
+        end
+    endfunction
+    function [11:0] strip_base;
+        input [2:0] cam;
+        begin
+            case (cam)
+                3'd0: strip_base = 12'd0;   3'd1: strip_base = STRIP1;
+                3'd2: strip_base = STRIP2;  3'd3: strip_base = STRIP3;
+                3'd4: strip_base = STRIP4;  default: strip_base = STRIP5;
+            endcase
+        end
+    endfunction
+    function [10:0] qx_phase;
+        input signed [31:0] c;
+        input               parity;
+        reg [10:0] q;
+        begin
+            if (c < 0)                  q = 11'd0;
+            else if (c > (1918 <<< 16)) q = 11'd1918;
+            else                        q = c[26:16];
+            if (q == 0)            qx_phase = parity ? 11'd1 : 11'd0;
+            else if (q >= 11'd1918) qx_phase = parity ? 11'd1919 : 11'd1918;
+            else                   qx_phase = {q[10:1], parity};
+        end
+    endfunction
+
+    // ---- S1: decode -------------------------------------------------------
+    reg        v1, ok1;
+    reg [15:0] fr1;
+    reg [7:0]  slot1;
+    reg [11:0] strip1;
+    always @(posedge clk) begin
+        if (rst) v1 <= 1'b0;
+        else     v1 <= tok_valid;
+        ok1    <= (tok_ax >= 0) && (tok_ax <= (XMAX <<< 16)) &&
+                  (tok_ay >= 0) && (tok_ay <= (YMAX <<< 16));
+        fr1    <= tok_ay[15:0];
+        slot1  <= tok_sy[7:0];
+        strip1 <= strip_base(tok_cam) + {2'd0, tok_lx};
+        begin : rd
+            reg [11:0] px;
+            reg [10:0] x;
+            px = cam_start(tok_cam) + {2'd0, tok_lx};
+            x  = qx_phase(tok_ax, px[0]);
+            ring_word <= x[10:2];
+            ring_sel  <= x[1:0];
+            ring_cam  <= tok_cam;
+        end
+        // A valid pixel must be sampled at the y0 being rendered.
+        if (rst) row_mismatch_count <= 32'd0;
+        else if (tok_valid && (tok_ax >= 0) && (tok_ax <= (XMAX <<< 16)) &&
+                 (tok_ay >= 0) && (tok_ay <= (YMAX <<< 16)) && (tok_ay[26:16] != y0))
+            row_mismatch_count <= row_mismatch_count + 32'd1;
+    end
+
+    // ---- S2..S5: wait for the ring (latency 4) ----------------------------
+    reg [4:1]  vd;
+    reg [3:0]  okd;
+    reg [15:0] frd [1:4];
+    reg [7:0]  slotd [1:4];
+    reg [11:0] stripd [1:4];
+    integer k;
+    always @(posedge clk) begin
+        if (rst) vd <= 4'd0;
+        else     vd <= {vd[3:1], v1};
+        okd[0] <= ok1; frd[1] <= fr1; slotd[1] <= slot1; stripd[1] <= strip1;
+        for (k = 2; k <= 4; k = k + 1) begin
+            okd[k-1] <= okd[k-2]; frd[k] <= frd[k-1]; slotd[k] <= slotd[k-1]; stripd[k] <= stripd[k-1];
+        end
+    end
+    // vd[4], okd[3], frd[4], slotd[4], stripd[4] are aligned with ring_pa/pb.
+
+    // ---- S6: interpolate --------------------------------------------------
+    function [32:0] wacc;
+        input [7:0] a, b;
+        input [15:0] f;
+        begin
+            wacc = ({1'b0, a} * (17'd65536 - {1'b0, f})) + ({1'b0, b} * {1'b0, f}) + 33'd32768;
+        end
+    endfunction
+    reg        v6, ok6;
+    reg [32:0] accy6, accc6;
+    reg [7:0]  slot6;
+    reg [11:0] strip6;
+    always @(posedge clk) begin
+        if (rst) v6 <= 1'b0;
+        else     v6 <= vd[4];
+        ok6    <= okd[3];
+        accy6  <= wacc(ring_pa[15:8], ring_pb[15:8], frd[4]);
+        accc6  <= wacc(ring_pa[7:0],  ring_pb[7:0],  frd[4]);
+        slot6  <= slotd[4];
+        strip6 <= stripd[4];
+    end
+
+    // ---- S7: write --------------------------------------------------------
+    always @(posedge clk) begin
+        if (rst) begin
+            rw_we <= 8'd0;
+        end else begin
+            rw_we <= 8'd0;
+            if (v6) begin
+                rw_we[{strip6[1:0], 1'b0}] <= 1'b1;
+                rw_we[{strip6[1:0], 1'b1}] <= 1'b1;
+            end
+        end
+        rw_addr <= {slot6, strip6[11:2]};
+        rw_din  <= {4{2'b00, (ok6 ? {accy6[23:16], accc6[23:16]} : BLACK)}};
+    end
+
+    assign busy = v1 | (|vd) | v6 | (|rw_we);
+endmodule
