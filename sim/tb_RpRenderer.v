@@ -10,8 +10,8 @@
 // Each case writes its output raster to sim_out/rp_<case>.hex; compare with
 //   python model/compare_rp_tb.py
 module tb_RpRenderer;
-    parameter ROOT = "E:/Xylinx/EO_Panorama_V19_RollPitch_ir";
-    parameter OUTDIR = "E:/Xylinx/EO_Panorama_V19_RollPitch_ir/sim_out";
+    parameter ROOT = "E:/Xylinx/EO_Panorama_V19_RollPitch";
+    parameter OUTDIR = "E:/Xylinx/EO_Panorama_V19_RollPitch/sim_out";
     parameter integer BEAT_SPACING = 4;
 
     reg clk = 1'b0;
