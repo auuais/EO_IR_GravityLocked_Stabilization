@@ -204,7 +204,8 @@ The shared core additionally removes the six IR 32-line caches.
 | `tb_EoV19DdrReplayBeatOut`: real replay in BEAT_OUT mode into the line ring, late-ack arbiter, aborts | pass |
 | `tb_EoV19DdrReplayArbiterAck`: pixel-shift replay unchanged | pass |
 | `tb_EoV19RpRenderer` (EO-only core): zero, zero again, mixed, 10 deg, alternating +-10, camera absent | bit-exact, 13-17 ms per pass |
-| `tb_RpRenderer` (shared core): EO and IR cases | see commit log |
+| `tb_RpRenderer` (shared core, RowWindow read latency 5): EO zero/mixed/absent, IR zero/mixed/alternating +-10/cam2 absent/cam3 absent, sensor switched every pass | bit-exact, EO 13.5-15.3 ms, IR 12.5-15.2 ms per pass |
+| `tb_IrV19DdrReplayBeatOut`; `tb_IrV19DdrReplay` (pixel mode unchanged) | pass |
 
 Bench outputs are compared with `python model/compare_rp_tb.py`.
 
