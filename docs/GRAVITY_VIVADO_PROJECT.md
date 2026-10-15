@@ -79,6 +79,21 @@ the script never connects to hardware or writes flash.
 No timing, throughput or hardware success is implied by starting this script.
 Inspect the actual reports and recorded outcome before using its output.
 
+Read the saved build evidence without opening Vivado:
+
+```powershell
+python scripts/summarize_gravity_build.py builds/gravity_YYYYMMDD_HHMMSS
+```
+
+The helper prints JSON and can also save a new file with `--output NEW.json`.
+It reports incomplete evidence separately from failure and requires the ordered
+completion/guard markers, parsed routed reports, scoped timing/CDC audits and
+nonempty stable artifacts before reporting `complete_verified`. That status
+does not establish hardware behavior or waive the full-design CDC findings.
+Exit code zero also permits pending evidence; automation must inspect
+`overall_state`. An explicit `--log` may include a known associated Vivado log;
+the helper never guesses which build owns a shared project log.
+
 ## Verification outputs and limits
 
 The generated directory contains `project_manifest.txt`, `compile_order.txt`,
