@@ -239,10 +239,16 @@ through the established reset procedure before each run so old alarms are not
 misattributed.
 
 The fixed EO envelope is rows0..1079 and beats8..111. At six cameras x30fps its
-capture-only arithmetic is 20,217,600 beats/s. One full-width selected camera
-plus five envelopes is 20,736,000; two overlapping full frames during a switch
-is 21,254,400. The historical 22,300,000 figure is not a new whole-system rate
-or burst-margin guarantee. Rapid selection can temporarily widen more cameras.
+capture-only arithmetic is 20,217,600 beats/s. At 30 output copies/s, the
+1920x960 output adds 3,456,000, totaling 23,673,600. The historical 22,300,000
+figure measured **aggregate DDR writes**, so it does not establish headroom:
+the current EO panorama demand exceeds it by 1,373,600 beats/s. EO single
+totals 24,624,000 including its 1920x1080 output. IR panorama totals 5,299,200;
+IR single still captures six EO cameras in the background and therefore has
+the EO panorama demand. No steady mode enables both EO and IR DDR capture.
+These are conditional averages at the stated rates, not a measured limit of
+the current writer or a burst-margin guarantee. Rapid selection can temporarily
+widen more EO cameras. See `validation/gravity_bandwidth_review_20261016.md`.
 
 Switch panorama to EO single and back at varied raster phases, then switch
 through all EO single cameras. Repeat while changing pose, and with stopped

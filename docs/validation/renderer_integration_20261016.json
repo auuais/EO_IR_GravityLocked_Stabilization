@@ -691,21 +691,61 @@
     "sha256": "8cdfe959b09b7b0e51eb1e0e7386f7aa76770bb97a304798bc159fa9a6a14731",
     "scope": "Top wiring recorded for provenance; full-top synthesis/implementation is validated separately."
   },
-  "capture_budget": {
-    "panorama_six_envelopes_beats_per_second_at_30fps": 20217600,
-    "single_one_full_plus_five_envelopes_beats_per_second_at_30fps": 20736000,
-    "transition_two_full_plus_four_envelopes_beats_per_second_at_30fps": 21254400,
-    "historical_capture_write_rate_beats_per_second": 22300000,
-    "limitations": [
-      "Historical arithmetic is not a measured new system rate or proof of DDR burst margin.",
-      "Rapid camera selection can leave more than two full-window frames in flight until subsequent camera frame boundaries.",
-      "Configured source dimensions and complete source rasters are assumed; coverage metadata describes the admitted capture window."
-    ]
-  },
   "remaining_bench_acceptance": [
     "Exercise panorama-to-single and single camera changes before/after frame-start and with delayed marker retirement; no edge columns may contain stale bank contents.",
     "Stress asynchronous raster phases, long DDR stalls, rapid camera selection and camera stop/rejoin while observing FIFO levels, drop/overflow status and frame progress.",
     "Verify source-bank ownership/reuse cannot overwrite an active single-reader frame under worst-case stalls; the selector unit test does not model the complete DDR bank manager.",
     "Measure actual camera/output frame rates and sustained whole-system bandwidth; confirm routed timing and physical CDC separately."
-  ]
+  ],
+  "ddr_write_traffic": {
+    "assumed_capture_and_output_frames_per_second": 30,
+    "historical_measured_aggregate_write_beats_per_second": 22300000,
+    "historical_source": "docs/HANDOFF_EO_PANORAMA_30FPS_20260903.md:804-829",
+    "historical_fixed_map_eo_panorama_write_beats_per_second_at_30fps": 19422720,
+    "modes": {
+      "eo_panorama": {
+        "eo_capture_write_beats_per_second": 20217600,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 23673600,
+        "conditional_margin_against_historical_aggregate": -1373600
+      },
+      "eo_single": {
+        "eo_capture_write_beats_per_second": 20736000,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 129600,
+        "output_write_beats_per_second": 3888000,
+        "total_write_beats_per_second": 24624000,
+        "conditional_margin_against_historical_aggregate": -2324000
+      },
+      "ir_panorama": {
+        "eo_capture_write_beats_per_second": 0,
+        "ir_capture_write_beats_per_second": 1843200,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 5299200,
+        "conditional_margin_against_historical_aggregate": 17000800
+      },
+      "ir_single": {
+        "eo_capture_write_beats_per_second": 20217600,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 23673600,
+        "conditional_margin_against_historical_aggregate": -1373600
+      }
+    },
+    "two_full_plus_four_envelopes_and_eo_single_output_beats_per_second": 25142400,
+    "six_full_frames_and_eo_single_output_beats_per_second": 27216000,
+    "limitation": "The historical 22.3 Mbeat/s is aggregate DDR writes, including output writes, not capture capacity. These totals exclude DDR reads and do not measure the current writer. EO/IR DDR capture families are mutually gated in steady state; IR single retains EO background capture and uses BRAM for its IR source. At the historical aggregate rate the EO panorama, EO single and IR single 30fps demands do not fit. Current sustainable frame rate requires current whole-path measurement; no lower rate is guaranteed by this average arithmetic."
+  },
+  "bandwidth_accounting_correction": {
+    "date": "2026-10-16",
+    "scope": "Metadata correction only. Existing renderer simulations and exhaustive geometry proof retained; neither rerun.",
+    "report": "docs/validation/gravity_bandwidth_review_20261016.md",
+    "generator_sha256": "b8c8a190279dde313d6fd25526a9cb7f07a2b12bf6da967124e23c084d5bab62",
+    "corrected_envelope_json_sha256": "6c8b456583737bd737371323cf0f61182a2dbace9ea2bee743ddcf890a1e1abf",
+    "conclusion": "Historical22.3 Mbeat/s is aggregate writes. At30fps EO panorama/IR single need23.6736M and EO single24.624M; current writer throughput is unmeasured. IR trigger/pose association requires independent-family epoch histories before dual-family correctness can be claimed."
+  }
 }

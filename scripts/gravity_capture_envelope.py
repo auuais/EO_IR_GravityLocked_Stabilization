@@ -21,10 +21,58 @@ def signed(value, width):
     return value - (1 << width) if value & (1 << (width - 1)) else value
 
 
+def write_traffic(beats):
+    """Conditional traffic arithmetic, not a measurement of this candidate."""
+    rate = 30
+    historical = 22300000
+    pano_output = 1920 * 960 // 16
+    tall_output = 1920 * 1080 // 16
+    modes = {}
+    for name, eo_capture, ir_capture, output in (
+        ('eo_panorama', 6 * beats, 0, pano_output),
+        ('eo_single', 5 * beats + 120 * 1080, 0, tall_output),
+        ('ir_panorama', 0, 6 * 20 * 512, pano_output),
+        ('ir_single', 6 * beats, 0, pano_output),
+    ):
+        total = (eo_capture + ir_capture + output) * rate
+        modes[name] = {
+            'eo_capture_write_beats_per_second': eo_capture * rate,
+            'ir_capture_write_beats_per_second': ir_capture * rate,
+            'output_write_beats_per_frame': output,
+            'output_write_beats_per_second': output * rate,
+            'total_write_beats_per_second': total,
+            'conditional_margin_against_historical_aggregate': historical - total,
+        }
+    return {
+        'assumed_capture_and_output_frames_per_second': rate,
+        'historical_measured_aggregate_write_beats_per_second': historical,
+        'historical_source': 'docs/HANDOFF_EO_PANORAMA_30FPS_20260903.md:804-829',
+        'historical_fixed_map_eo_panorama_write_beats_per_second_at_30fps':
+            (6 * 88 * 1008 + pano_output) * rate,
+        'modes': modes,
+        'two_full_plus_four_envelopes_and_eo_single_output_beats_per_second':
+            (2 * 120 * 1080 + 4 * beats + tall_output) * rate,
+        'six_full_frames_and_eo_single_output_beats_per_second':
+            (6 * 120 * 1080 + tall_output) * rate,
+        'limitation': 'The historical 22.3 Mbeat/s is aggregate DDR writes, including output writes, not capture capacity. These totals exclude DDR reads and do not measure the current writer. EO/IR DDR capture families are mutually gated in steady state; IR single retains EO background capture and uses BRAM for its IR source. At the historical aggregate rate the EO panorama, EO single and IR single 30fps demands do not fit. Current sustainable frame rate requires current whole-path measurement; no lower rate is guaranteed by this average arithmetic.',
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT / 'docs/validation/gravity_capture_envelope.json')
+    parser.add_argument('--budget-only', action='store_true',
+                        help='Refresh traffic metadata in an existing proof; do not rerun geometry enumeration')
     args = parser.parse_args()
+    if args.budget_only:
+        report = json.loads(args.output.read_text())
+        for path, expected in report['sources'].items():
+            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected
+        report.pop('capture_write_budget', None)
+        report['ddr_write_traffic'] = write_traffic(report['fixed_capture']['beats_per_camera_frame'])
+        args.output.write_text(json.dumps(report, indent=2) + '\n')
+        print('UPDATED traffic metadata only; existing geometry proof retained:', args.output)
+        return
     run_path = ROOT / 'assets/rowruns/eo_v19_render_runs.mem'
     angle_path = ROOT / 'assets/rollpitch/eo_rp_angle.mem'
     records = [int(word, 16) for word in run_path.read_text().split()]
@@ -102,11 +150,7 @@ def main():
         'fixed_capture': {'row_lo': row_lo, 'row_hi': row_hi, 'beat_lo': beat_lo, 'beat_hi': beat_hi,
                           'pixel_columns_inclusive': [beat_lo * 16, beat_hi * 16 + 15],
                           'beats_per_camera_frame': beats},
-        'capture_write_budget': {'six_cameras_at_30fps_beats_per_second': beats * 6 * 30,
-                                 'six_full_frames_at_30fps_beats_per_second': 120 * 1080 * 6 * 30,
-                                 'historical_measured_write_beats_per_second': 22300000,
-                                 'remaining_against_historical_write_rate': 22300000 - beats * 6 * 30,
-                                 'limitation': 'Historical empirical write-path rate only; does not prove new whole-system DDR throughput, timing, frame rate, or burst-pressure margins.'},
+        'ddr_write_traffic': write_traffic(beats),
         'source_bank_layout': {'frame_stride_app_addresses': 1036800,
                                'maximum_full_frame_beat_start_offset': 1036792,
                                'camera_stride_app_addresses': 4147208,
@@ -116,7 +160,7 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report['fixed_capture']))
-    print(json.dumps(report['capture_write_budget']))
+    print(json.dumps(report['ddr_write_traffic']))
     print('PASS fixed EO capture envelope:', args.output)
 
 

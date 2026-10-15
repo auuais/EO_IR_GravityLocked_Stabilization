@@ -168,12 +168,21 @@ Implemented production sequence:
 The baseline table-build race is also fixed: `RpTables` receives the frozen
 `built_*` values, not live offsets one cycle after the build request.
 
-The fixed envelope needs 20,217,600 write beats/s for six cameras at 30 fps,
-below the historical measured write-path capacity of 22,300,000 beats/s.
-Six complete frames would need 23,328,000 beats/s. The exhaustive envelope
-proof is in `validation/gravity_capture_envelope.json`; this arithmetic is
-not a new whole-system throughput measurement. RowWindow occupancy, DDR
-burst pressure and sustained output rate still need integrated/bench checks.
+The fixed envelope needs 20,217,600 capture write beats/s for six cameras at
+30 fps. The 1920x960 output adds 3,456,000, for **23,673,600 aggregate write
+beats/s**. This exceeds the historical **aggregate** measured write rate of
+22,300,000; that historical figure is not a capture-only budget or a measured
+limit for the current writer. IR panorama needs 5,299,200 aggregate writes/s
+at the same assumed rates. EO and IR DDR capture are mutually gated; IR single
+nevertheless retains all six EO captures and the same output size, so it has
+the EO panorama write demand. EO single needs 24,624,000 writes/s. The
+exhaustive geometry proof remains in `validation/gravity_capture_envelope.json`;
+the corrected accounting and deployment limits are in
+`validation/gravity_bandwidth_review_20261016.md`. This build is an experimental
+function/timing candidate, with no 30 fps whole-system throughput claim.
+Current writer throughput, RowWindow occupancy, DDR burst pressure and unique
+output rate require measurement; lower frame rates are not guaranteed by
+average write arithmetic alone.
 
 Calibration revision combines both EO and IR update counters. Updating either
 bank can cause a static fallback for a source epoch captured under the old
