@@ -38,6 +38,8 @@ Implemented and simulated:
   acknowledged I2C transaction ends; rejects partial or malformed updates.
 - `GlPoseCdc`: transfers the coherent angle pair and receipt sequence between
   clocks, retaining the latest pending update under load.
+- `GlCameraProjection`: synthesizable, sequential camera-angle computation
+  using the exact C lookup tables; matches all 1,342 C-generated vectors.
 
 See [`reference/gravity_math/README.md`](reference/gravity_math/README.md) for
 the math API and evidence, and
@@ -55,10 +57,12 @@ python scripts/verify_gravity_baseline.py --archive  # local preserved build
 python scripts/test_gravity_math.py --ini config/parameters_unified.ini
 ./scripts/test_gl_pose_receiver.ps1
 ./scripts/test_gl_pose_cdc.ps1
+./scripts/test_gl_camera_projection.ps1
 ```
 
 The standalone test scripts create ignored `build/` or `builds/` products and
 do not access the hardware. The inherited XPR and historical scripts are kept
 for provenance; some contain old project paths. Use the dedicated gravity
-project creation entry point documented in `docs/GRAVITY_VIVADO_PROJECT.md`
-when available, rather than launching historical build/program scripts.
+project creation entry point documented in
+[`docs/GRAVITY_VIVADO_PROJECT.md`](docs/GRAVITY_VIVADO_PROJECT.md), rather than
+launching historical build/program scripts.

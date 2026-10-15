@@ -35,15 +35,18 @@ The source has a near-gimbal special case, a 36,000-entry centidegree trig
 table with unity 32767, a 4,097-entry atan-ratio table, integer square root,
 and prescribed signed rounding. The exact excerpts and their hashes are in
 `reference/gravity_math/`. Sensor yaw is not part of `Rsys`; this is not
-heading lock. Camera yaw affects the roll/pitch projection and must not be
-discarded. INI yaw 390 degrees is valid and wraps; it does not fit signed
+heading lock. Static mounting yaw affects the camera roll/pitch projection;
+the extracted camera-yaw output is diagnostic and unused by the renderer.
+INI yaw 390 degrees is valid and wraps; it does not fit signed
 16-bit centidegrees before normalization.
 
 The C limit is a **single global rescaling of sensor roll/pitch** based on the
 largest resulting camera angle, followed by recalculation. It is not six
 independent angle clamps. Static mounting trims remain unscaled; the single
-pass does not guarantee every final angle is inside ten degrees. Disabled
-live stabilization retains static mounting correction.
+pass does not guarantee every final angle is inside ten degrees. It also
+rescales live yaw for bookkeeping and runs only when a live angle is nonzero.
+Zero/disabled live stabilization retains static mounting correction without
+this limit.
 
 ## Stable-renderer differences requiring explicit validation
 
@@ -55,13 +58,29 @@ live stabilization retains static mounting correction.
 | IR panorama geometry | 3576-pixel folded renderer | INI requests 3240; current C also has a newer IR map path |
 | Angle limiting | Per-camera clamp to +/-10 degrees | One-pass global live-pose rescaling |
 
-These are observed differences, not evidence that a blind constant change
-will preserve the stable image. Trace the base-map coordinate spaces and
-compare coordinate probes and rendered fixtures before selecting production
-coefficients. Keep the user-selected calibration snapshot immutable; generated
-assets need their own source/profile hashes and validation results. The INI's
-IR image paths currently refer to EO test BMPs, so it cannot serve unchanged
-as an IR pixel-golden fixture.
+The coordinate-space audit confirms that the installed EO maps and segment
+ROMs already describe original 1920x1080 source pixels. All 31,680 segment
+origins match the installed base maps, without a resize conversion; the
+transform rotates around source center (960,540). Therefore a hidden coordinate
+resize does not explain the factor difference. Exact current-C translation
+requires the effective Q16 factor above.
+
+Changing only the factor would overflow another baseline interface: ten
+degrees requires a 174-row translation, but the angle-ROM/table/segment
+coefficient path stores a signed **8-bit** row shift. This path must be widened
+and capture/RowWindow bounds revalidated before using the current-C factor.
+
+The installed EO maps are byte-identical to the older `eo_20260806` package,
+whose profile has resize 0.5, field of view 57.56/48.56, crop 0.888/1.0 and
+overlap 50. The selected INI has resize 0.56296, field of view 77/54, crop
+0.79/0.70 and overlap 60. User choice of preserving the stable optical geometry
+versus regenerating maps from the selected INI is pending. The numeric gravity
+projection can be completed independently of this choice.
+
+Keep the user-selected calibration snapshot immutable; generated assets need
+their own source/profile hashes and validation results. The INI's IR image
+paths currently refer to EO test BMPs, so it cannot serve unchanged as an IR
+pixel-golden fixture.
 
 ## IMU transport findings
 
@@ -129,10 +148,14 @@ both the recorded identity and the builder's inputs.
 ## Implementation and acceptance stages
 
 Completed: exact baseline/profile/archive provenance; portable C oracle and
-independent Python reference; atomic pose receiver and coherent clock transfer.
+independent Python reference; atomic pose receiver and coherent clock transfer;
+camera projection RTL matching all 1,342 exact-C vectors; standalone KU15P
+synthesis; relocatable Vivado project setup with protected source/IP hashes.
+The projection needs 531-601 cycles and synthesizes to 1,414 LUTs, 1,513 FFs,
+67.5 BRAM tiles and two DSPs. Its positive post-synthesis slack is an estimate,
+not routed timing closure. See `validation/camera_projection_20261015.json`.
 
-In progress: standalone synthesizable camera projection against exact C
-vectors; relocatable Vivado project setup.
+In progress: epoch-tagged pose history with freshness and overwrite checks.
 
 Remaining: global multi-camera limiting/coefficient controller; explicit MCU
 transport/control updates; frame/lease binding; capture coverage strategy;
