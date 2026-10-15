@@ -71,3 +71,7 @@ dfx_runtime.txt
 clockInfo.txt
 xvlog.pb
 sim_out/
+
+# Gravity-lock development: local test products and preserved stable binaries.
+/build/
+/builds/

@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "numerical_source": "Compiled source_functions.inc; no Python-generated expected values",
+  "source_sha256": "f4dea4cbfba60bfe686644081c7bcfb4744c9d8b14771c0d916dad6702839495",
+  "source_excerpts": {
+    "source_functions.inc": "ca009916c55a0cdb0d84b717185c154c0c6a160b00ad6da710e4aa8e25605a73",
+    "source_projection.inc": "e0c58ac53ef2e14c2eedeaba7c0d278988b1148f70fc55b656fe5b5c2a2db7aa",
+    "source_clamp.inc": "bf2fdcf1b272e3a0e9543378fad8248291b5a8fa1b0f97710aa630f87e3286e8",
+    "source_camera_coefficients.inc": "c8d2286cdc0d72ca7e9d1a5adc4862ed7cff7dcb2c752946c8047f41e4feb562"
+  },
+  "oracle_source_sha256_canonical_lf": {
+    "oracle_main.cpp": "5f2db568f82abfb33eb38baf2f7b162a5b3b8de1f5f941fc33cf80830379bec5",
+    "oracle.hpp": "64fc6b9f6e96b82fbeaa193c9378679117ec26e22aedd621d3928f0c5a297502",
+    "export_rtl_assets.py": "4eed851761cb0dd75cbb4b337175f2fbafd69d589fb2b5a3fd1b061085672e11"
+  },
+  "generation_compiler": {
+    "family": "MSVC",
+    "installation": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community",
+    "flags": "/std:c++17 /EHsc /W4 /O2 /fp:precise"
+  },
+  "request_sha256": "54e41768a28930ee7399b047db43facb1ed5f8abd797b535c3ca5b3952a97743",
+  "oracle_response_sha256_canonical_lf": "c9177f513ada45059451a8a21eefefedec1897d5e87737c56592071a7b468318",
+  "trig_rom": {
+    "file": "reference/gravity_math/angle_centi_q15.mem",
+    "entries": 36000,
+    "word_bits": 32,
+    "address": "angle centidegrees modulo 36000, nonnegative",
+    "bits_31_16": "signed int16 cosine, scaled by 32767",
+    "bits_15_0": "signed int16 sine, scaled by 32767"
+  },
+  "atan_rom": {
+    "file": "reference/gravity_math/atan_ratio_centi.mem",
+    "entries": 4097,
+    "word_bits": 16,
+    "address": "rounded ratio index, 0..4096 inclusive",
+    "data": "atan(index / 4096) in integer centidegrees, 0..4500"
+  },
+  "engine_vectors": {
+    "file": "sim/gravity_math/engine_vectors.txt",
+    "count": 1342,
+    "format": "Eight signed decimal integers per line, no header; raw conversion, no global angle limit",
+    "fields": [
+      "sensor_roll",
+      "sensor_pitch",
+      "mount_yaw",
+      "mount_pitch",
+      "mount_roll",
+      "camera_roll",
+      "camera_pitch",
+      "camera_yaw"
+    ],
+    "units": "centidegrees",
+    "random_seed": "0x6c50524f",
+    "random_count": 1000,
+    "groups": {
+      "zero_live_heading": 18,
+      "ten_degree_sign_and_ring": 160,
+      "near_singular": 126,
+      "mixed_static_trims": 24,
+      "signed32_normalization": 14,
+      "random_signed32": 250,
+      "random_operating_range": 750
+    }
+  },
+  "assets": {
+    "reference/gravity_math/angle_centi_q15.mem": {
+      "sha256": "2f4f47949a63a34247b8639216cb4a7461af483415c5c34c679a159a226d1365",
+      "size_bytes": 324000
+    },
+    "reference/gravity_math/atan_ratio_centi.mem": {
+      "sha256": "2bf93fc4bf4caa827a4f02108b7783c825cc9c6198c31b90a6382dea0c6ef938",
+      "size_bytes": 20485
+    },
+    "sim/gravity_math/engine_vectors.txt": {
+      "sha256": "a568deef8c4871881d3581a15ca2400ee1ef4d13d0283e11f46ad7234edeb067",
+      "size_bytes": 58885
+    },
+    "sim/gravity_math/engine_vectors.json": {
+      "sha256": "fcd688afe6654dad40cfb00d3b0cb51c38c4e44557267f9c675e30ff8117b08f",
+      "size_bytes": 322352
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-15T23:43:30.6934876+09:00",
+  "baseline": {
+    "commit": "3479cacf2e512a5bde9aa3e0243755826e071ef4",
+    "tree": "487b59e66ddec0c58e23006b240b9a0fb6da0f8e",
+    "subject": "Fix EO single: write the displayed camera's whole frame",
+    "source_repository": "E:/Xylinx/EO_Panorama_V19_RollPitch",
+    "selection": "User identified this commit and build as the last stable correct-output baseline; excludes later experiments and uncommitted source-worktree changes."
+  },
+  "calibration": {
+    "source_path": "C:/SVNProjects/IMU_Stabilize_v40/EO_IR_TestCases/EO_Test4C_R_0.75_P_-5/480_test/parameters_unified.ini",
+    "local_path": "config/parameters_unified.ini",
+    "bytes": 5898,
+    "sha256": "7106b1f1ad56d545c6b3eef5b29f9608fdb1cfb02ce364b1ca85ca096c3eea3c",
+    "selection": "User-selected physical mounting calibration; orientation fields are desktop test fixtures, not a fixed live IMU pose."
+  },
+  "stable_archive": {
+    "source_directory": "E:/Xylinx/EO_Panorama_V19_RollPitch/builds/bit_archive/20260930_202000_eosingle_fullwrite_3479cac",
+    "files": [
+      {
+        "name": "build_progress.txt",
+        "bytes": 535,
+        "sha256": "42006e2d475f4c885d460cf2631cf9e5cb6e48c278b3069ce2d19e22a82ab21e",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/build_progress.txt"
+      },
+      {
+        "name": "build_sweep_result.txt",
+        "bytes": 186,
+        "sha256": "3b54d830cb2ac41f86a7def7d4f243697112f9045f781229b20e7df0feab4f78",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/build_sweep_result.txt"
+      },
+      {
+        "name": "eosingle_fullwrite.mcs",
+        "bytes": 60994402,
+        "sha256": "367d9b76e018ecde17ded699b38aa0d5b4a58dd33acdb79c294588fc5d1b00ee",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/eosingle_fullwrite.mcs"
+      },
+      {
+        "name": "eosingle_fullwrite.prm",
+        "bytes": 499,
+        "sha256": "7f7df34a30b28ed155c564bcd6cb4f3c4ca995bd8492d83db0b7cff8e97d9adb",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/eosingle_fullwrite.prm"
+      },
+      {
+        "name": "KintexTop_EO_IR_HD_SDI_panorama_base_timing_summary_routed.rpt",
+        "bytes": 9849921,
+        "sha256": "1400da88110292ef5276b8069257ab385616daa29c04c8df47233407db289c3a",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/KintexTop_EO_IR_HD_SDI_panorama_base_timing_summary_routed.rpt"
+      },
+      {
+        "name": "KintexTop_EO_IR_HD_SDI_panorama_base.bit",
+        "bytes": 21685063,
+        "sha256": "3ca44e693336f563921647999db8bea9942caf284e38cdd102a5c8ba4fff78ee",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/KintexTop_EO_IR_HD_SDI_panorama_base.bit"
+      },
+      {
+        "name": "KintexTop_EO_IR_HD_SDI_panorama_base.ltx",
+        "bytes": 233434,
+        "sha256": "98c4fba86a7140cd810cf3034cf6ea1bafa3bbf3c9e2f0ab7252486e1b359844",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/KintexTop_EO_IR_HD_SDI_panorama_base.ltx"
+      },
+      {
+        "name": "program.log",
+        "bytes": 2846,
+        "sha256": "5c5fce488c5d517570b08a70e5e359487a3d0a8f6633bf06054e2399e65f24a9",
+        "local_path": "builds/baseline_20260930_202000_eosingle_fullwrite_3479cac/program.log"
+      }
+    ],
+    "historical_build_result": "PASS with Default; WNS=0.032 TNS=0.000 WHS=0.010 THS=0.000 WPWS=0.058 TPWS=0.000",
+    "verification_scope": "Files copied byte-for-byte and hash-checked. Historical build logs only; no claim of reproducing timing or programming hardware in this task."
+  },
+  "c_reference": {
+    "source_path": "C:/SVNProjects/IMU_Stabilize_v40/IMU_stabilize_GYRO/IMU_stabilize_GYRO.cpp",
+    "sha256": "f4dea4cbfba60bfe686644081c7bcfb4744c9d8b14771c0d916dad6702839495",
+    "excerpt_provenance": "reference/gravity_math/provenance.json"
+  },
+  "repository": {
+    "local_path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization",
+    "github": "https://github.com/auuais/EO_IR_GravityLocked_Stabilization",
+    "visibility": "private"
+  }
+}

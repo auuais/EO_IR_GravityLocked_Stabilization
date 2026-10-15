@@ -1,0 +1,16 @@
+{
+  "description": "Synthetic geometry only; these are numerical regression vectors, not production calibration defaults. All angles are centidegrees. Factors are explicit Q16 integers.",
+  "cases": [
+    {"name": "identity", "live": [0, 0, 0], "mounts": [[0, 0, 0]], "enabled": true, "factor": -655360, "resize": 65536},
+    {"name": "yaw_90_axis_exchange", "live": [300, -500, 0], "mounts": [[0, 0, 0], [9000, 0, 0], [18000, 0, 0], [27000, 0, 0]], "enabled": true, "factor": -655360, "resize": 65536},
+    {"name": "full_circle_and_390", "live": [-425, 625, 0], "mounts": [[0, 0, 0], [36000, 0, 0], [-36000, 0, 0], [3000, 0, 0], [39000, 0, 0], [-33000, 0, 0]], "enabled": true, "factor": -571474, "resize": 65536},
+    {"name": "mixed_mount_trims", "live": [215, -175, 0], "mounts": [[0, 75, -50], [6000, -125, 250], [12000, 55, -75], [18000, -25, 100]], "enabled": true, "factor": -642253, "resize": 36894},
+    {"name": "disabled_keeps_static_trim", "live": [750, -925, 12500], "mounts": [[9000, 150, -75], [39000, -225, 110]], "enabled": false, "factor": -571474, "resize": 65536},
+    {"name": "disabled_large_trim_skips_limit", "live": [4000, 5000, 9000], "mounts": [[0, 2500, 1500]], "enabled": false, "factor": -655360, "resize": 65536},
+    {"name": "zero_live_large_trim_skips_limit", "live": [0, 0, 0], "mounts": [[0, 2500, 1500]], "enabled": true, "factor": -655360, "resize": 65536},
+    {"name": "yaw_only_triggers_limit_bookkeeping", "live": [0, 0, 100], "mounts": [[0, 2500, 1500]], "enabled": true, "factor": -655360, "resize": 65536},
+    {"name": "one_pass_leaves_large_trim", "live": [1600, 1800, -9000], "mounts": [[0, 1500, -100], [9000, 400, 1200]], "enabled": true, "factor": -642253, "resize": 36894},
+    {"name": "large_mixed_live_ring", "live": [-3500, 4200, 12345], "mounts": [[0, 0, 0], [6000, 0, 0], [12000, 0, 0], [18000, 0, 0], [24000, 0, 0], [30000, 0, 0]], "enabled": true, "factor": -642253, "resize": 36894},
+    {"name": "zero_resize_fallback", "live": [75, -500, 0], "mounts": [[0, 0, 0]], "enabled": true, "factor": -642253, "resize": 0}
+  ]
+}
