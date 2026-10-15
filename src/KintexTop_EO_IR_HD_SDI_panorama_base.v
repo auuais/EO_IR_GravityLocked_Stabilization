@@ -256,6 +256,11 @@ module KintexTop_EO_IR_HD_SDI_panorama_base(
     wire [3:0] cam_select_unused;
     wire [7:0] mode_current;
     wire [95:0] eo_pitch_cd_raw, eo_roll_cd_raw, ir_pitch_cd_raw, ir_roll_cd_raw;
+    wire pose_ui_clk, pose_ui_reset, pose_valid_ui, pose_update_ui;
+    wire signed [15:0] pose_roll_cd_ui, pose_pitch_cd_ui;
+    wire [31:0] pose_sequence_ui;
+    wire [7:0] gravity_control_byte_ui;
+    wire gravity_control_valid_ui, gravity_control_enabled_ui;
     Kintex_top_I2C_test #(
         .SLAVE_ADDR(7'h36),
         .SCLK_HZ(74_250_000),
@@ -267,6 +272,13 @@ module KintexTop_EO_IR_HD_SDI_panorama_base(
         .SDA       (SDA),
         .cam_select(cam_select_unused),
         .mode_out  (mode_current),
+        .pose_dst_clk(pose_ui_clk), .pose_reset(pose_ui_reset),
+        .pose_valid_ui(pose_valid_ui), .pose_update_ui(pose_update_ui),
+        .pose_roll_cd_ui(pose_roll_cd_ui), .pose_pitch_cd_ui(pose_pitch_cd_ui),
+        .pose_sequence_ui(pose_sequence_ui),
+        .control_byte_ui(gravity_control_byte_ui),
+        .control_valid_ui(gravity_control_valid_ui),
+        .control_enabled_ui(gravity_control_enabled_ui),
         .eo_pitch_cd_raw(eo_pitch_cd_raw),
         .eo_roll_cd_raw (eo_roll_cd_raw),
         .ir_pitch_cd_raw(ir_pitch_cd_raw),
@@ -546,6 +558,13 @@ module KintexTop_EO_IR_HD_SDI_panorama_base(
         .eo_roll_cd_raw       (eo_roll_cd_raw),
         .ir_pitch_cd_raw      (ir_pitch_cd_raw),
         .ir_roll_cd_raw       (ir_roll_cd_raw),
+        .pose_ui_clk_o        (pose_ui_clk),
+        .pose_ui_reset_o      (pose_ui_reset),
+        .pose_update_ui       (pose_update_ui && pose_valid_ui),
+        .pose_roll_cd_ui      (pose_roll_cd_ui),
+        .pose_pitch_cd_ui     (pose_pitch_cd_ui),
+        .pose_sequence_ui     (pose_sequence_ui),
+        .gravity_enabled_ui   (gravity_control_valid_ui && gravity_control_enabled_ui),
         .c0_sys_clk_p         (c0_sys_clk_p),
         .c0_sys_clk_n         (c0_sys_clk_n),
         .c0_ddr4_adr          (c0_ddr4_adr),

@@ -12,7 +12,8 @@
     "sim/gravity_math/frame_pose_vectors.txt": "804e5b702587c278ded90ffef88b732223243ef58c7115319a3e399a5d34ceba",
     "sim/gravity_math/frame_pose_manifest.json": "bdbf41dcc4d36946ae70c4f6ec146d25bed32cbb507ee9df35b63958ff0c9237",
     "reference/gravity_math/angle_centi_q15.mem": "2f4f47949a63a34247b8639216cb4a7461af483415c5c34c679a159a226d1365",
-    "reference/gravity_math/atan_ratio_centi.mem": "2bf93fc4bf4caa827a4f02108b7783c825cc9c6198c31b90a6382dea0c6ef938"
+    "reference/gravity_math/atan_ratio_centi.mem": "2bf93fc4bf4caa827a4f02108b7783c825cc9c6198c31b90a6382dea0c6ef938",
+    "scripts/audit_gravity_logic_timing.tcl": "32936529aeecd07b02579777fba3453daed94469ec774fdbd6c9472cda20b764"
   },
   "original_C_sha256": "f4dea4cbfba60bfe686644081c7bcfb4744c9d8b14771c0d916dad6702839495",
   "selected_profile_sha256": "7106b1f1ad56d545c6b3eef5b29f9608fdb1cfb02ce364b1ca85ca096c3eea3c",
@@ -134,8 +135,44 @@
     "builds/frame_pose/synth.log": "bcd27e5ba6e5a1269d2d1a8a3cc373e5a734f9d9dcc46afd8629cf4d7f0ec3cc",
     "builds/frame_pose/synth_check.tcl": "65f2bc490aef1e314a56ec3050c65c55369bf072f8df92386aa23276f9275c56",
     "builds/frame_pose/utilization_synth.rpt": "85b79d89d7e56a807e6453f04d67d940215ab833832313c7e6f4c4d74afedab6",
-    "builds/frame_pose/timing_synth.rpt": "2654ed936a45684366605cd102417a2cc61a4435a6b4ec67f088babc967339aa"
+    "builds/frame_pose/timing_synth.rpt": "2654ed936a45684366605cd102417a2cc61a4435a6b4ec67f088babc967339aa",
+    "builds/frame_pose/audit_proc_smoke.tcl": "44b9355dd91d90981b2f7e388753bb7e097ba01f1127a861fa7241c41b90304a",
+    "builds/frame_pose/audit_proc_smoke.log": "851ac3a738939b9278fdee96429b2ecb9d8b499ec288a1fd9a1fc7846adb326b",
+    "builds/frame_pose/gravity_timing_smoke_clean.rpt": "1a7ab87f64d73fbc0de9a9d21bee9fec152d84b69d97b6c143e984e4c985f0b6",
+    "builds/frame_pose/gravity_ignored_smoke_clean.rpt": "aec1009230721c7b964e1094ebb2248f773739765eca50b52c1c3536b1e87d97",
+    "builds/frame_pose/gravity_ignored_smoke_false_path.rpt": "990e4e33afe6a3da42cd09cf6c2dfeba04c80f8817be02b143de52eb838784a0"
   },
   "hardware_programmed": false,
-  "production_bitstream_generated_by_this_validation": false
+  "production_bitstream_generated_by_this_validation": false,
+  "timing_audit_smoke": {
+    "result": "PASS",
+    "script": "scripts/audit_gravity_logic_timing.tcl",
+    "entrypoint": "gl_audit_logic_timing $output_dir stage ?hierarchy_pattern?",
+    "default_hierarchy_pattern": "*u_gravity_pose",
+    "tested_hierarchy": "u_projection inside GlFramePose_synth.dcp",
+    "sequential_cells": 1513,
+    "coverage": {
+      "no_clock": 0,
+      "constant_clock": 0,
+      "multiple_clock": 0,
+      "unconstrained_internal_endpoints": 0,
+      "loops": 0,
+      "latch_loops": 0
+    },
+    "clean_internal_user_ignored_paths": 0,
+    "injected_internal_false_path_rejected": true,
+    "missing_scope_rejected": true,
+    "constrained_internal_path_clocks": [
+      "ui_clk",
+      "ui_clk"
+    ],
+    "route_guard_observation": {
+      "synthesis_checkpoint_PLACED_FULLY": 0,
+      "synthesis_checkpoint_ROUTED_FULLY": 1,
+      "synthesis_checkpoint_ERRORS_IN_ROUTES": 0,
+      "conclusion": "Route guard must require PLACED_FULLY plus ROUTED_FULLY and absence of ERRORS_IN_ROUTES."
+    },
+    "local_command": "vivado -mode batch -notrace -source audit_proc_smoke.tcl -log audit_proc_smoke.log -journal audit_proc_smoke.jou (cwd builds/frame_pose)",
+    "scope_limit": "Internal GlLeasePose sequential paths only; existing external I/O and CDC constraints are audited separately."
+  }
 }

@@ -22,6 +22,7 @@
 module EoV19DdrCamWriter #(
     parameter integer PIX_W = 16,               // 16 = EO YUV422, 8 = IR luma
     parameter integer INPUT_W = `EO_V19_INPUT_W,
+    parameter integer INPUT_H = 1080,
     parameter [28:0] CAM_BASE_ADDR = 29'd0,
     parameter [28:0] FRAME_STRIDE_ADDR = 29'd1036800,
     parameter [28:0] ROW_STRIDE_ADDR = 29'd960,
@@ -107,6 +108,9 @@ module EoV19DdrCamWriter #(
     output reg         desc_valid_ui,
     output reg  [1:0]  desc_bank_ui,
     output reg  [EPOCH_W-1:0] desc_epoch_ui,
+    // Capture-window coverage of this descriptor, carried in marker payload
+    // bit zero. It describes the published frame, not the current UI window.
+    output reg         desc_full_frame_ui,
     output reg         fifo_overflow_seen_ui,
     output wire [11:0] fifo_level_ui,
     output wire [10:0] dbg_row_ui,
@@ -164,6 +168,12 @@ module EoV19DdrCamWriter #(
     wire [6:0]  eff_beat_hi = (DYN_WINDOW != 0) ? win_beat_hi : WR_BEAT_HI;
     wire [10:0] eff_row_lo  = (DYN_WINDOW != 0) ? win_row_lo  : WR_ROW_LO;
     wire [10:0] eff_row_hi  = (DYN_WINDOW != 0) ? win_row_hi  : WR_ROW_HI;
+    wire [35:0] next_frame_window = ((DYN_WINDOW != 0) && (win_sync == win_prev))
+        ? win_sync : {eff_beat_lo, eff_beat_hi, eff_row_lo, eff_row_hi};
+    wire next_frame_full = (next_frame_window[35:29] == 0) &&
+        (next_frame_window[28:22] >= ((INPUT_W + PIX_PER_BEAT - 1) / PIX_PER_BEAT - 1)) &&
+        (next_frame_window[21:11] == 0) && (next_frame_window[10:0] >= INPUT_H - 1);
+    reg frame_full_window;
     wire beat_in_write_window = (wr_beat_idx >= eff_beat_lo) &&
                                 (wr_beat_idx <= eff_beat_hi) &&
                                 (row_y >= eff_row_lo) && (row_y <= eff_row_hi);
@@ -430,6 +440,7 @@ module EoV19DdrCamWriter #(
             have_bank <= 1'b0;
             wr_bank <= 2'd0;
             frame_epoch <= {EPOCH_W{1'b0}};
+            frame_full_window <= 1'b0;
             row_y <= 11'd0;
             pix_x <= 11'd0;
             pack_count <= {PACK_CW{1'b0}};
@@ -448,6 +459,10 @@ module EoV19DdrCamWriter #(
             free_bank_rd_en <= 1'b0;
 
             if (frame_start) begin
+                // The window register and this flag adopt the same next
+                // value. A marker emitted here still uses the PREVIOUS
+                // frame's flag, behind all of that frame's payload writes.
+                frame_full_window <= next_frame_full;
                 frame_seen <= 1'b1;
                 row_y <= 11'd0;
                 pix_x <= 11'd0;
@@ -461,7 +476,7 @@ module EoV19DdrCamWriter #(
                     if (!fifo_full) begin
                         fifo_wr_en <= 1'b1;
                         fifo_din <= {29'd0, 1'b1, wr_bank,
-                                     frame_epoch, 256'd0};
+                                     frame_epoch, 255'd0, frame_full_window};
                         have_bank <= 1'b0;
 
                         // A new frame may start immediately only after claiming
@@ -664,6 +679,7 @@ module EoV19DdrCamWriter #(
             desc_valid_ui <= 1'b0;
             desc_bank_ui <= 2'd0;
             desc_epoch_ui <= {EPOCH_W{1'b0}};
+            desc_full_frame_ui <= 1'b0;
             row_meta <= 11'd0;
             row_sync <= 11'd0;
             overflow_meta <= 1'b0;
@@ -679,6 +695,7 @@ module EoV19DdrCamWriter #(
                 desc_valid_ui <= 1'b1;
                 desc_bank_ui <= fifo_marker_bank;
                 desc_epoch_ui <= fifo_marker_epoch;
+                desc_full_frame_ui <= fifo_dout[0];
             end
         end
     end
@@ -724,6 +741,73 @@ module EoV19DdrCamWriter #(
                             pfull_sync[1],     ffull_sync[1],
                             fea_sync[1],       fifo_overflow_seen_ui,
                             fifo_level_ui[11:4]};
+endmodule
+
+// EO single may consume a source bank only after a descriptor proves that
+// frame was captured at full width/height. Selection changes invalidate cached
+// readiness; a newer narrow descriptor invalidates an older full bank. Inputs
+// to an accepted copy are immutable, including when selection changes later.
+module EoV19SingleFrameSelect #(
+    parameter integer STALE_WIDTH = 26
+) (
+    input wire clk, rst, eo_mode,
+    input wire [2:0] cam_sel,
+    input wire [5:0] desc_valid, desc_full_frame,
+    input wire [11:0] desc_bank,
+    input wire copy_start, copy_active,
+    output wire start_pending, stale,
+    output wire [2:0] reader_cam,
+    output wire [1:0] reader_bank,
+    output reg copy_has_frame
+);
+    reg [2:0] selection_q, copy_cam;
+    reg [1:0] last_bank [0:5];
+    reg [1:0] copy_bank;
+    reg [5:0] has_frame;
+    reg [STALE_WIDTH-1:0] age [0:5];
+    reg pending;
+    wire selection_changed = (cam_sel != selection_q);
+    wire selection_valid = (cam_sel < 6);
+    wire [2:0] selected = selection_valid ? cam_sel : 3'd0;
+    // Consider a same-edge descriptor before admitting a copy. In particular,
+    // a narrow descriptor must not leave an older cached full bank eligible.
+    wire selected_ready = eo_mode && selection_valid && !selection_changed &&
+        (desc_valid[selected] ? desc_full_frame[selected] : has_frame[selected]);
+    wire [1:0] selected_bank = desc_valid[selected]
+        ? desc_bank[selected*2 +: 2] : last_bank[selected];
+    assign start_pending = pending && selected_ready;
+    assign stale = !selected_ready;
+    // The reader latches these while disabled, including the actual copy-start
+    // edge. Expose the next selection while idle; latch it for the whole copy.
+    assign reader_cam = copy_active ? copy_cam : selected;
+    assign reader_bank = copy_active ? copy_bank : selected_bank;
+    integer k;
+    always @(posedge clk) begin
+        if (rst) begin
+            selection_q <= 0; copy_cam <= 0; copy_bank <= 0;
+            has_frame <= 0; pending <= 0; copy_has_frame <= 0;
+            for (k=0; k<6; k=k+1) begin last_bank[k] <= 0; age[k] <= 0; end
+        end else begin
+            selection_q <= cam_sel;
+            for (k=0; k<6; k=k+1) begin
+                if (desc_valid[k]) begin
+                    last_bank[k] <= desc_bank[k*2 +: 2];
+                    has_frame[k] <= desc_full_frame[k];
+                    age[k] <= 0;
+                end else if (!(&age[k])) age[k] <= age[k] + 1'b1;
+                else has_frame[k] <= 1'b0;
+            end
+            if (!eo_mode || selection_changed) begin
+                has_frame <= 0;
+                pending <= 0;
+            end else if (copy_start) pending <= 0;
+            else if (desc_valid[selected]) pending <= desc_full_frame[selected];
+            if (copy_start) begin
+                copy_cam <= selected; copy_bank <= selected_bank;
+                copy_has_frame <= selected_ready;
+            end
+        end
+    end
 endmodule
 
 // DDR frame replay engine. It reads one 16-pixel beat from each camera bank,

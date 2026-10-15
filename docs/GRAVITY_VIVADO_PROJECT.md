@@ -39,8 +39,9 @@ build directory.
   incremental checkpoint reuse disabled and no inherited generated checkpoint.
 - Checked-in `ddr4_sub64`, `dbg_ila_0`, and `dbg_ila_1` IP definitions, unchanged.
   XPM CDC/FIFO/memory libraries are enabled as in the baseline full-build flow.
-- Both baseline board constraint files, all `src/*.v` and `src/*.vh`, all
-  `sim/*.v` and `sim/*.sv`, and the row-run/rollpitch `.mem` files.
+- Both baseline board constraint files plus `gravity_cdc.xdc` loaded late,
+  all `src/*.v` and `src/*.vh`, all `sim/*.v` and `sim/*.sv`, and the
+  row-run/rollpitch/gravity `.mem` files.
 
 The script calls `v19_refresh_fileset`, which includes new `Gl*.v` modules
 automatically, then adds SystemVerilog testbenches and the IR memory files that
@@ -54,12 +55,28 @@ point copies ROMs into `builds/vivado_project/assets` and byte-compares each
 copy with its source. Run the entry point again after changing source ROMs.
 The original assets and DDR XCI are not modified.
 
-The standalone gravity projection/math modules and assets under
-`reference/gravity_math` are not yet connected to the production top. Their
-unit-test scripts own their ROM setup; inclusion of a module in this project
-does not establish production integration or coefficient/profile correctness.
-Likewise, full-top behavioral simulation may require ROM staging appropriate
-to its simulator working directory; this creation-only check does not run it.
+The integrated `GlLeasePose` / `GlFramePose` / `GlCameraProjection` path reads
+the two C ROMs under `../../reference/gravity_math`. Creation also stages and
+byte-compares those files under the generated project's matching directory.
+Standalone unit-test scripts own their ROM setup. Full-top behavioral
+simulation may require staging appropriate to its simulator working directory;
+this creation-only entry point does not run it.
+
+## Guarded full build
+
+After project creation, run `scripts/build_gravity.tcl` with Vivado batch mode.
+An optional single Tcl argument selects the placement directive (default
+`Default`). It opens only the relocated XPR, checks the top/part/fileset,
+refreshes the staged ROM bytes, and runs synthesis then explicit optimization,
+placement, physical optimization and routing. It runs the gravity CDC endpoint
+and effective-delay audit, and writes reports beneath a unique
+`builds/gravity_YYYYMMDD_HHMMSS` directory. It refuses bitstream generation if
+timing, bus skew or DRC checks fail, or any snapshotted source/staged ROM changes
+during the build. The output is a volatile-programming `.bit` and matching `.ltx`;
+the script never connects to hardware or writes flash.
+
+No timing, throughput or hardware success is implied by starting this script.
+Inspect the actual reports and recorded outcome before using its output.
 
 ## Verification outputs and limits
 

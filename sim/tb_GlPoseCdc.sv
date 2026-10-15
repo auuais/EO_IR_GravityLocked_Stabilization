@@ -5,6 +5,8 @@ module tb_GlPoseCdc;
     parameter integer DST_PHASE_NS = 3;
     reg src_clk = 0;
     reg dst_clk = 0;
+    reg src_run = 1;
+    reg dst_run = 1;
     reg rst = 0;
     reg src_update = 0;
     reg signed [15:0] src_roll_cd = 0;
@@ -16,10 +18,10 @@ module tb_GlPoseCdc;
     wire [63:0] dst_bus = {dst_receipt_sequence, dst_roll_cd, dst_pitch_cd};
     GlPoseCdc dut (.*);
 
-    always #(SRC_HALF_NS) src_clk = ~src_clk;
+    always #(SRC_HALF_NS) if (src_run) src_clk = ~src_clk; else src_clk = 0;
     initial begin
         #(DST_PHASE_NS);
-        forever #(DST_HALF_NS) dst_clk = ~dst_clk;
+        forever #(DST_HALF_NS) if (dst_run) dst_clk = ~dst_clk; else dst_clk = 0;
     end
 
     function automatic [63:0] pattern(input [31:0] seq);
@@ -154,6 +156,31 @@ module tb_GlPoseCdc;
         repeat (40) @(negedge dst_clk);
         #0.001;
         if (received_count != stable_count) $fatal(1, "duplicate delivery during idle");
+
+        // A stopped destination delays delivery, but retains the latest pose.
+        @(negedge dst_clk); dst_run = 0;
+        drive(32'd200); drive(32'd201); drive(32'd202); stop_source();
+        repeat (20) @(negedge src_clk);
+        if (received_count != stable_count) $fatal(1, "delivery with destination stopped");
+        dst_run = 1;
+        wait_latest(32'd202);
+
+        // Common reset must assert without either clock, and each local reset
+        // must stay asserted until that domain has clocked its release chain.
+        @(negedge src_clk); src_run = 0;
+        @(negedge dst_clk); dst_run = 0;
+        #3 rst = 1;
+        #1;
+        if (dst_valid || dst_update || dst_bus !== 64'd0)
+            $fatal(1, "reset needs running clocks to assert");
+        #19 rst = 0;
+        #30;
+        if (!dut.src_reset || !dut.dst_reset)
+            $fatal(1, "reset released while clocks stopped");
+        src_run = 1; dst_run = 1;
+        repeat (5) @(negedge src_clk);
+        repeat (5) @(negedge dst_clk);
+        if (dst_valid || received_count != 0) $fatal(1, "stopped-clock reset leaked an old pose");
 
         // Common reset before the new request can cross into the destination.
         drive(32'h71234567);

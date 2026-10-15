@@ -7,6 +7,7 @@
 #include "proto_uart.h"
 #include "fpga_i2c.h"
 #include "fpga_regs.h"
+#include "gl_control.h"
 #include "imu_handler.h"
 #include "imu_config.h"
 
@@ -183,6 +184,7 @@ static uint8_t s_icd_video_contrast = 0u;
 static uint8_t s_icd_ir_image_polarity = 0u;
 static uint8_t s_icd_video_stabilization = 0u;
 static uint8_t s_icd_video_stabilization_method = 0u;
+static gl_control_t s_gl_control;
 static uint16_t s_icd_blending_area_px = 0u;
 static uint8_t s_icd_env_temp_c = 0u;
 static uint8_t s_icd_env_humidity_pct = 0u;
@@ -458,7 +460,7 @@ static bool cfg_mode_valid(uint8_t mode)
 
 static bool cfg_mode_uses_vsync(uint8_t mode)
 {
-    return (mode == 0x01u || mode == 0x02u);
+    return gl_mode_uses_vsync(mode);
 }
 
 static void cfg_set_bank_defaults(ParamBankQ16* bank, uint8_t which)
@@ -1135,6 +1137,7 @@ void mcu_fsm_init(McuContext *ctx)
     s_icd_ir_image_polarity = 0u;
     s_icd_video_stabilization = 0u;
     s_icd_video_stabilization_method = 0u;
+    gl_control_init(&s_gl_control);
     s_icd_blending_area_px = 0u;
     s_vsync_pending = false;
     s_orient_tx_seq = 0;
@@ -1357,6 +1360,8 @@ void mcu_fsm_step(McuContext *ctx)
 
 
     case ST_INIT_FPGA_CAL: {
+        // Explicit startup Off is independent of the optional bank push.
+        gl_control_service(&s_gl_control, &g_fpga, HAL_GetTick());
         ui_send_log(ctx, "FPGA init build: full-regmap diag v9\r\n");
         int st = fpga_rw_smoke_test();
 
@@ -2965,6 +2970,11 @@ static uint8_t icd_apply_panorama_camera_params(const uint8_t *payload)
         overall = ERR_BADARG;
     }
 
+    // Only the exact existing UI pair On + Attitude Sensor enables gravity.
+    // Invalid raw values request Off; transport errors remain pending.
+    gl_control_set_ui(&s_gl_control, payload[4], payload[5]);
+    gl_control_service(&s_gl_control, &g_fpga, HAL_GetTick());
+
     uint16_t blend = icd_read_u16(&payload[6]);
     if (blend <= 999u) {
         s_icd_blending_area_px = blend;
@@ -3182,6 +3192,8 @@ static void icd_fill_ibit(uint8_t p[28])
 
 static void icd_service_periodic(McuContext *ctx)
 {
+    if (ctx->state == ST_OPERATION)
+        gl_control_service(&s_gl_control, &g_fpga, HAL_GetTick());
     if (!s_icd_enabled || ctx->state != ST_OPERATION) {
         return;
     }

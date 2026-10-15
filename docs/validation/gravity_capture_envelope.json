@@ -1,0 +1,102 @@
+{
+  "scope": "Stable EO optical segment geometry, renderer clamp +/-1000 cd, checked-in -9.8 pitch translation ROM",
+  "sources": {
+    "assets/rowruns/eo_v19_render_runs.mem": "d7a724124a545ed862f697bfcd3219ffbb6f6333f352514792781f03ed9489ca",
+    "assets/rollpitch/eo_rp_angle.mem": "91f7e6e2c83dcf667e16b777acf9abf14658f5fe42de428811e5a67b0f1f76a4"
+  },
+  "proof": {
+    "roll_values_exhausted": 2001,
+    "pitch_cd_domain": [
+      -1000,
+      1000
+    ],
+    "pitch_shift_limits_rows": [
+      -98,
+      98
+    ],
+    "segments": 31680,
+    "endpoints_per_segment": 2,
+    "endpoint_evaluations": 253566720,
+    "argument": "For fixed roll, transformed segment endpoints are monotone in integer pitch shift. Pixels are affine between endpoints after exact step truncation. Endpoint bounds cover all pitches/pixels; eight-beat expansion also covers qx_phase parity and replay batches.",
+    "stage1_signed27_range_verified": true,
+    "accumulator_signed32_range_verified": true,
+    "step_signed24_range_verified": true,
+    "maximum_absolute_steps_q16": [
+      160278,
+      55620
+    ]
+  },
+  "coordinate_extrema_q16": {
+    "x_min": 12031686,
+    "x_max": 111324914,
+    "y_min": -10491786,
+    "y_max": 82415297
+  },
+  "extrema_witnesses": {
+    "x_min": {
+      "roll_cd": 1000,
+      "pitch_shift_rows": 98,
+      "output_row": 477,
+      "camera": 0,
+      "segment": 0,
+      "pixel_in_segment": 0
+    },
+    "x_max": {
+      "roll_cd": -1000,
+      "pitch_shift_rows": 98,
+      "output_row": 477,
+      "camera": 1,
+      "segment": 10,
+      "pixel_in_segment": 14
+    },
+    "y_min": {
+      "roll_cd": 1000,
+      "pitch_shift_rows": -98,
+      "output_row": 0,
+      "camera": 0,
+      "segment": 0,
+      "pixel_in_segment": 0
+    },
+    "y_max": {
+      "roll_cd": -1000,
+      "pitch_shift_rows": 98,
+      "output_row": 477,
+      "camera": 0,
+      "segment": 0,
+      "pixel_in_segment": 0
+    }
+  },
+  "clamped_endpoint_columns": [
+    183,
+    1698
+  ],
+  "table_column_limits_including_upper_guard": [
+    183,
+    1699
+  ],
+  "fixed_capture": {
+    "row_lo": 0,
+    "row_hi": 1079,
+    "beat_lo": 8,
+    "beat_hi": 111,
+    "pixel_columns_inclusive": [
+      128,
+      1791
+    ],
+    "beats_per_camera_frame": 112320
+  },
+  "capture_write_budget": {
+    "six_cameras_at_30fps_beats_per_second": 20217600,
+    "six_full_frames_at_30fps_beats_per_second": 23328000,
+    "historical_measured_write_beats_per_second": 22300000,
+    "remaining_against_historical_write_rate": 2082400,
+    "limitation": "Historical empirical write-path rate only; does not prove new whole-system DDR throughput, timing, frame rate, or burst-pressure margins."
+  },
+  "source_bank_layout": {
+    "frame_stride_app_addresses": 1036800,
+    "maximum_full_frame_beat_start_offset": 1036792,
+    "camera_stride_app_addresses": 4147208,
+    "banks_per_camera": 4,
+    "conclusion": "Existing allocation already reserves complete 1920x1080 frames. Fixed window changes no bank stride/address or stagger."
+  }
+}

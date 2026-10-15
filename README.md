@@ -25,9 +25,18 @@ is on `codex/gravity-lock`.
 
 ## Current status
 
-This is **implementation in progress**, not a new hardware-qualified build.
-The existing renderer has not yet been connected to live gravity coefficients.
-No FPGA programming or MCU firmware change has been performed for this work.
+This is **implementation in progress**, not a hardware-qualified build.
+The live gravity path is connected to the EO/IR panorama renderer and the MCU
+source is updated. Hardware has not been programmed for this work.
+
+The user selected the existing UI **On + Attitude Sensor** controls and
+preservation of the stable optical maps/pixel geometry. The selected INI supplies
+the camera mounting yaw angles; the existing EO/IR static roll/pitch banks remain
+the mounting trims. Its test orientation and differing optical-map settings are
+not applied. Disabling stabilization preserves static-offset rendering exactly.
+The existing MCU saved-calibration policy is still pending confirmation: its
+older EO defaults contain alternating +/-5 degree pitch, unlike the selected
+INI's zero mounting roll/pitch. Firmware has not been flashed.
 
 Implemented and simulated:
 
@@ -42,11 +51,21 @@ Implemented and simulated:
   using the exact C lookup tables; matches all 1,342 C-generated vectors.
 - `GlPoseEpochHistory`: saves a coherent pose with a complete frame-epoch tag,
   calibration revision, enable state and freshness; rejects overwritten tags.
+- `GlFramePose`: computes all six cameras and the C global limit, publishing
+  one atomic result; 266 reference/bypass cases pass.
+- `GlLeasePose`: chooses the historical pose for the actual source lease and
+  freezes coefficients through the render. Missing/stale/disabled data selects
+  static offsets. The default freshness threshold is 100 ms at 233.4 MHz.
+- `RpRenderer`: accepts the frozen set, builds from that same snapshot, and
+  holds it throughout the frame. The EO writer uses a proven fixed capture
+  region so old source banks contain every pixel needed by any allowed angle.
+- MCU firmware under `firmware/eo_osd_remote`: sends acknowledged/retryable
+  stabilization control at register `0x04` and forwards poses in panorama modes.
 
 See [`reference/gravity_math/README.md`](reference/gravity_math/README.md) for
 the math API and evidence, and
-[`docs/GRAVITY_IMPLEMENTATION.md`](docs/GRAVITY_IMPLEMENTATION.md) for remaining
-integration work and the differences that must be resolved before hardware use.
+[`docs/GRAVITY_IMPLEMENTATION.md`](docs/GRAVITY_IMPLEMENTATION.md) for
+implementation details, validation limits and remaining hardware checks.
 
 ## Verification
 
@@ -61,6 +80,10 @@ python scripts/test_gravity_math.py --ini config/parameters_unified.ini
 ./scripts/test_gl_pose_cdc.ps1
 ./scripts/test_gl_camera_projection.ps1
 ./scripts/test_gl_pose_epoch_history.ps1
+./scripts/test_gl_frame_pose.ps1
+./scripts/test_gl_lease_pose.ps1
+./scripts/test_gl_i2c_input.ps1
+./scripts/test_rp_renderer.ps1
 python scripts/audit_gravity_geometry.py
 ```
 

@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-16",
+  "scope": "GlLeasePose with real GlFramePose, GlCameraProjection and GlPoseEpochHistory",
+  "result": "PASS",
+  "leases_checked": 8,
+  "coverage": [
+    "older leased epoch selects saved pose after newer sample arrives",
+    "active-pass pose/calibration/static inputs frozen",
+    "calibration mismatch exact static fallback",
+    "missing/overwritten tag static fallback",
+    "stale pose static fallback",
+    "disabled epoch exact static bypass",
+    "lease change cancels in-flight calculation",
+    "sensor/mode handoff and reset"
+  ],
+  "freshness_policy": {
+    "production_ui_cycles": 23340000,
+    "nominal_clock_hz": 233400000,
+    "nominal_ms": 100,
+    "evaluated_at": "epoch capture",
+    "bench_ui_cycles": 10
+  },
+  "limits": [
+    "not physical exposure timing",
+    "not whole-top timing closure or live gravity-lock proof"
+  ],
+  "sha256": {
+    "src/GlLeasePose.v": "97cbc68e895efad1c75655703665de38d2507c604f641d720e007bebd0a85c66",
+    "sim/tb_GlLeasePose.sv": "6db4cea8c1d4d80f4729de850dd666ec42519771b836d0a5e2a6c77d3f1f5897",
+    "scripts/test_gl_lease_pose.ps1": "eee2ba6ecafb1f72359b368a54b8172525a15aea09f7776ed634a0d138d89621",
+    "builds/lease_pose/xsim.log": "1917b63399fc6a1091442fc0c27f70642564fdce8a4a00717566705d37f24741"
+  }
+}

@@ -56,6 +56,9 @@ set_property XPM_LIBRARIES {XPM_CDC XPM_FIFO XPM_MEMORY} [current_project]
 # It does not open another project or call legacy absolute-path helpers.
 source [file join $project_root scripts v19_fileset.tcl]
 v19_refresh_fileset $project_root 0
+set gravity_xdc [file join $project_root constraints gravity_cdc.xdc]
+v19_add_if_missing $gravity_xdc constrs_1
+set_property PROCESSING_ORDER LATE [get_files $gravity_xdc]
 foreach path [lsort [glob -nocomplain [file join $project_root sim *.sv]]] {
     v19_add_if_missing $path sim_1
 }
@@ -77,6 +80,19 @@ foreach subdir {rowruns rollpitch} {
             error "ROM staging mismatch: $path"
         }
     }
+}
+# GlLeasePose forwards these paths to the exact-C angle engine. Keep the same
+# two-level relative layout used by synthesis runs, and verify staged bytes.
+set gravity_destination [file join $project_dir reference gravity_math]
+file mkdir $gravity_destination
+foreach name {angle_centi_q15.mem atan_ratio_centi.mem} {
+    set path [file join $project_root reference gravity_math $name]
+    if {![file exists $path]} { error "Missing gravity ROM: $path" }
+    v19_add_if_missing $path
+    lappend memory_paths $path
+    set staged [file join $gravity_destination $name]
+    file copy -force $path $staged
+    if {[gl_read_file $path] ne [gl_read_file $staged]} { error "ROM staging mismatch: $path" }
 }
 
 set_property top $design_top [get_filesets sources_1]
@@ -102,7 +118,7 @@ set expected_sim [lsort [concat \
     [glob -nocomplain [file join $project_root sim *.sv]]]]
 set expected_constraints [list \
     [file join $project_root constraints camera_base.xdc] \
-    [file join $project_root constraints ddr4_sub64_firstpass.xdc]]
+    [file join $project_root constraints ddr4_sub64_firstpass.xdc] $gravity_xdc]
 foreach fileset {sources_1 sim_1 constrs_1} expected [list \
     $expected_design $expected_sim $expected_constraints] {
     set registered [get_files -quiet -of_objects [get_filesets $fileset]]

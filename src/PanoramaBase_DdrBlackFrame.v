@@ -102,6 +102,13 @@ module PanoramaBase_DdrBlackFrame(
     input  wire [95:0] eo_roll_cd_raw,
     input  wire [95:0] ir_pitch_cd_raw,
     input  wire [95:0] ir_roll_cd_raw,
+    // Atomic pose/control are already transferred into this exported UI clock.
+    output wire        pose_ui_clk_o,
+    output wire        pose_ui_reset_o,
+    input  wire        pose_update_ui,
+    input  wire signed [15:0] pose_roll_cd_ui, pose_pitch_cd_ui,
+    input  wire [31:0] pose_sequence_ui,
+    input  wire        gravity_enabled_ui,
     input  wire        c0_sys_clk_p,
     input  wire        c0_sys_clk_n,
     output wire [16:0] c0_ddr4_adr,
@@ -424,6 +431,8 @@ module PanoramaBase_DdrBlackFrame(
     );
 
     wire ui_rst = c0_ddr4_ui_clk_sync_rst;
+    assign pose_ui_clk_o = c0_ddr4_ui_clk;
+    assign pose_ui_reset_o = ui_rst || !rst_n;
 
     // EO synchronization visibility.  STROBE_OUT0 is asynchronous to ui_clk;
     // measure its rising-edge period and expose it in the unused high bits of
@@ -943,6 +952,7 @@ module PanoramaBase_DdrBlackFrame(
     wire [5:0]  ir_pano_cam_present;
     wire        ir_pano_abort_copy;
     wire        ir_pano_start_ready;
+    wire        gravity_pose_ready;
     // The source-read port is shared: the six-camera panorama replay owns it
     // normally, the single-camera reader owns it in EO single.  Only one is
     // ever enabled, so this is a select rather than an arbiter.
@@ -997,6 +1007,7 @@ module PanoramaBase_DdrBlackFrame(
     reg         irv19_cap0_pop, irv19_cap1_pop, irv19_cap2_pop;
     reg         irv19_cap3_pop, irv19_cap4_pop, irv19_cap5_pop;
     wire [5:0]  v19_cap_desc_valid;
+    wire [5:0]  v19_cap_desc_full_frame;
     wire [5:0]  irv19_cap_desc_valid;
     wire [1:0]  v19_cap0_desc_bank, v19_cap1_desc_bank, v19_cap2_desc_bank;
     wire [1:0]  v19_cap3_desc_bank, v19_cap4_desc_bank, v19_cap5_desc_bank;
@@ -1432,8 +1443,10 @@ module PanoramaBase_DdrBlackFrame(
         (v19_dbg_bus[44:43] == 2'b10) &&  // renderer OUTPUT state
         (v19_dbg_bus[42:34] == V19_CONTENT_FIRST_ROW);
     wire [63:0] v19_dbg_rows_word0_strobe =
+        (EO_RP_RENDERER != 0) ? v19_dbg_rows_word0 :
         v19_dbg_rows_word0 | {eo_strobe_period_ui[8:0], 55'd0};
     wire [63:0] v19_dbg_rows_word1_strobe =
+        (EO_RP_RENDERER != 0) ? v19_dbg_rows_word1 :
         v19_dbg_rows_word1 | {eo_strobe_period_ui[17:9], 55'd0};
     wire [63:0] v19_dbg_rows_word2_strobe;
 
@@ -1548,7 +1561,9 @@ module PanoramaBase_DdrBlackFrame(
     wire copy_arm_ok = (SRC_SEL == SRC_V19) && v19_panorama_consuming
                        ? 1'b1 : (copy_armed || frame_edge);
     wire copy_start_accept = copy_start_trig && !copy_active && copy_arm_ok &&
-                             copy_bank_available && !backend_transition_block;
+                             copy_bank_available && !backend_transition_block &&
+                             ((SRC_SEL != SRC_V19) || ir_single_ui || eo_single_ui ||
+                              (EO_RP_RENDERER == 0) || gravity_pose_ready);
 
     // Set when this lease has launched its copy; cleared only once the lease
     // has actually gone away, so a held lease can never launch twice.
@@ -1801,16 +1816,45 @@ module PanoramaBase_DdrBlackFrame(
             .roll_cd(irv19_rp_roll_cd), .pitch_cd(irv19_rp_pitch_cd),
             .update_count(irv19_rp_offset_updates));
 
-        // EO single reads ONE camera's whole frame from these same buffers, so
-        // that camera has to be written whole.  The panorama write window
-        // (beats 16..103, rows 46..1053) covers only what the renderer
-        // addresses, which is why EO single showed unwritten DDR as a noise
-        // border around the picture.
-        //
-        // Only the displayed camera is widened.  Writing all six whole is what
-        // c83e29d removed to reach 30 fps: six full captures need ~23.3
-        // Mbeat/s against the ~22.3 Mbeat/s the write path delivers, while
-        // five windowed plus one whole is ~17 Mbeat/s.
+        wire [95:0] gravity_roll_cd, gravity_pitch_cd;
+        // Preserve the full receipt identifier through the mailbox/history even
+        // though this compact ILA page displays only its low 16 bits.
+        (* keep = "true" *) wire [31:0] gravity_applied_sequence;
+        wire [31:0] gravity_applied_revision;
+        wire [15:0] gravity_applied_epoch;
+        wire gravity_applied_enable, gravity_fallback, gravity_history_miss;
+        wire gravity_stale, gravity_calibration_mismatch, gravity_limited, gravity_range;
+        GlLeasePose u_gravity_pose (
+            .clk(c0_ddr4_ui_clk), .rst(ui_rst || !rst_n),
+            .epoch_capture(eo_strobe_edge_ui), .epoch_id(v19_global_epoch_next),
+            .pose_update(pose_update_ui), .pose_roll_cd(pose_roll_cd_ui),
+            .pose_pitch_cd(pose_pitch_cd_ui), .pose_sequence(pose_sequence_ui),
+            .stabilization_enabled(gravity_enabled_ui),
+            .calibration_revision({v19_rp_offset_updates, irv19_rp_offset_updates}),
+            .panorama_enable(running && !ir_single_ui && !eo_single_ui && !backend_transition_block),
+            .sensor_ir(ir_stack_ui),
+            .lease_valid(ir_stack_ui ? irv19_frameset_lease_valid : v19_frameset_lease_valid),
+            .lease_epoch(ir_stack_ui ? irv19_frameset_lease_epoch : v19_frameset_lease_epoch),
+            .render_active(copy_active && !backend_transition_block),
+            .static_roll_cd(ir_stack_ui ? irv19_rp_roll_cd : v19_rp_roll_cd),
+            .static_pitch_cd(ir_stack_ui ? irv19_rp_pitch_cd : v19_rp_pitch_cd),
+            .ready(gravity_pose_ready), .camera_roll_cd(gravity_roll_cd),
+            .camera_pitch_cd(gravity_pitch_cd),
+            .applied_sequence(gravity_applied_sequence), .applied_epoch(gravity_applied_epoch),
+            .applied_revision(gravity_applied_revision), .applied_enable(gravity_applied_enable),
+            .fallback(gravity_fallback), .history_miss(gravity_history_miss),
+            .stale_pose(gravity_stale), .calibration_mismatch(gravity_calibration_mismatch),
+            .limited(gravity_limited), .out_of_range(gravity_range)
+        );
+
+        // Capture a FIXED envelope for every future allowed roll/pitch pose.
+        // A leased older bank must never be rendered using rows/columns that
+        // were excluded by the pose used when that bank was captured.
+        // scripts/gravity_capture_envelope.py proves rows0..1079, beats8..111
+        // for all clamped +/-10deg stable-map transforms, including neighbor
+        // pixels and replay batching. Six cameras@30Hz need20.218Mbeat/s,
+        // below the historical22.3Mbeat/s write budget; six full widths exceed
+        // it. EO single still captures the selected camera's whole width.
         wire [6:0]  v19_cap_wr_beat_lo [0:5];
         wire [6:0]  v19_cap_wr_beat_hi [0:5];
         wire [10:0] v19_cap_wr_row_lo  [0:5];
@@ -1818,15 +1862,17 @@ module PanoramaBase_DdrBlackFrame(
         genvar wk;
         for (wk = 0; wk < 6; wk = wk + 1) begin : g_wr_win
             wire full = eo_single_ui && (eo_sel_ui == wk[2:0]);
-            assign v19_cap_wr_beat_lo[wk] = full ? 7'd0     : v19_wr_beat_lo;
-            assign v19_cap_wr_beat_hi[wk] = full ? 7'd119   : v19_wr_beat_hi;
-            assign v19_cap_wr_row_lo[wk]  = full ? 11'd0    : v19_wr_row_lo;
-            assign v19_cap_wr_row_hi[wk]  = full ? 11'd1079 : v19_wr_row_hi;
+            assign v19_cap_wr_beat_lo[wk] = full ? 7'd0   : 7'd8;
+            assign v19_cap_wr_beat_hi[wk] = full ? 7'd119 : 7'd111;
+            assign v19_cap_wr_row_lo[wk]  = 11'd0;
+            assign v19_cap_wr_row_hi[wk]  = 11'd1079;
         end
 
         EoV19DdrCamWriter #(.CAM_BASE_ADDR(V19_SRC_BASE_ADDR + (V19_SRC_CAM_STRIDE * 0)),
-                                  .WR_BEAT_LO(7'd16), .WR_BEAT_HI(7'd103),
-                                  .WR_ROW_LO(11'd46), .WR_ROW_HI(11'd1053),
+                                  .WR_BEAT_LO((EO_RP_RENDERER != 0) ? 7'd8 : 7'd16),
+                                  .WR_BEAT_HI((EO_RP_RENDERER != 0) ? 7'd111 : 7'd103),
+                                  .WR_ROW_LO((EO_RP_RENDERER != 0) ? 11'd0 : 11'd46),
+                                  .WR_ROW_HI((EO_RP_RENDERER != 0) ? 11'd1079 : 11'd1053),
                                   .DYN_WINDOW(EO_RP_RENDERER)) u_v19_cap0 (
             .rst_n(rst_n), .capture_enable(running && !ir_stack_ui),
             .wr_beat_lo_ui(v19_cap_wr_beat_lo[0]), .wr_beat_hi_ui(v19_cap_wr_beat_hi[0]),
@@ -1844,12 +1890,15 @@ module PanoramaBase_DdrBlackFrame(
             .free_bank_valid_ui(v19_free_valid[0]), .free_bank_ui(v19_free_bank0),
             .free_bank_ready_ui(v19_free_ready[0]),
             .desc_valid_ui(v19_cap_desc_valid[0]), .desc_bank_ui(v19_cap0_desc_bank),
+            .desc_full_frame_ui(v19_cap_desc_full_frame[0]),
             .desc_epoch_ui(v19_cap0_desc_epoch), .fifo_overflow_seen_ui(v19_cap0_overflow),
             .fifo_level_ui(v19_cap0_level), .dbg_row_ui(v19_cap0_row),
             .dbg_writer_ui(v19_dbg_writer0));
         EoV19DdrCamWriter #(.CAM_BASE_ADDR(V19_SRC_BASE_ADDR + (V19_SRC_CAM_STRIDE * 1)),
-                                  .WR_BEAT_LO(7'd16), .WR_BEAT_HI(7'd103),
-                                  .WR_ROW_LO(11'd46), .WR_ROW_HI(11'd1053),
+                                  .WR_BEAT_LO((EO_RP_RENDERER != 0) ? 7'd8 : 7'd16),
+                                  .WR_BEAT_HI((EO_RP_RENDERER != 0) ? 7'd111 : 7'd103),
+                                  .WR_ROW_LO((EO_RP_RENDERER != 0) ? 11'd0 : 11'd46),
+                                  .WR_ROW_HI((EO_RP_RENDERER != 0) ? 11'd1079 : 11'd1053),
                                   .DYN_WINDOW(EO_RP_RENDERER)) u_v19_cap1 (
             .rst_n(rst_n), .capture_enable(running && !ir_stack_ui),
             .wr_beat_lo_ui(v19_cap_wr_beat_lo[1]), .wr_beat_hi_ui(v19_cap_wr_beat_hi[1]),
@@ -1867,12 +1916,15 @@ module PanoramaBase_DdrBlackFrame(
             .free_bank_valid_ui(v19_free_valid[1]), .free_bank_ui(v19_free_bank1),
             .free_bank_ready_ui(v19_free_ready[1]),
             .desc_valid_ui(v19_cap_desc_valid[1]), .desc_bank_ui(v19_cap1_desc_bank),
+            .desc_full_frame_ui(v19_cap_desc_full_frame[1]),
             .desc_epoch_ui(v19_cap1_desc_epoch), .fifo_overflow_seen_ui(v19_cap1_overflow),
             .fifo_level_ui(v19_cap1_level), .dbg_row_ui(v19_cap1_row),
             .dbg_writer_ui(v19_dbg_writer1));
         EoV19DdrCamWriter #(.CAM_BASE_ADDR(V19_SRC_BASE_ADDR + (V19_SRC_CAM_STRIDE * 2)),
-                                  .WR_BEAT_LO(7'd16), .WR_BEAT_HI(7'd103),
-                                  .WR_ROW_LO(11'd46), .WR_ROW_HI(11'd1053),
+                                  .WR_BEAT_LO((EO_RP_RENDERER != 0) ? 7'd8 : 7'd16),
+                                  .WR_BEAT_HI((EO_RP_RENDERER != 0) ? 7'd111 : 7'd103),
+                                  .WR_ROW_LO((EO_RP_RENDERER != 0) ? 11'd0 : 11'd46),
+                                  .WR_ROW_HI((EO_RP_RENDERER != 0) ? 11'd1079 : 11'd1053),
                                   .DYN_WINDOW(EO_RP_RENDERER)) u_v19_cap2 (
             .rst_n(rst_n), .capture_enable(running && !ir_stack_ui),
             .wr_beat_lo_ui(v19_cap_wr_beat_lo[2]), .wr_beat_hi_ui(v19_cap_wr_beat_hi[2]),
@@ -1890,12 +1942,15 @@ module PanoramaBase_DdrBlackFrame(
             .free_bank_valid_ui(v19_free_valid[2]), .free_bank_ui(v19_free_bank2),
             .free_bank_ready_ui(v19_free_ready[2]),
             .desc_valid_ui(v19_cap_desc_valid[2]), .desc_bank_ui(v19_cap2_desc_bank),
+            .desc_full_frame_ui(v19_cap_desc_full_frame[2]),
             .desc_epoch_ui(v19_cap2_desc_epoch), .fifo_overflow_seen_ui(v19_cap2_overflow),
             .fifo_level_ui(v19_cap2_level), .dbg_row_ui(v19_cap2_row),
             .dbg_writer_ui(v19_dbg_writer2));
         EoV19DdrCamWriter #(.CAM_BASE_ADDR(V19_SRC_BASE_ADDR + (V19_SRC_CAM_STRIDE * 3)),
-                                  .WR_BEAT_LO(7'd16), .WR_BEAT_HI(7'd103),
-                                  .WR_ROW_LO(11'd46), .WR_ROW_HI(11'd1053),
+                                  .WR_BEAT_LO((EO_RP_RENDERER != 0) ? 7'd8 : 7'd16),
+                                  .WR_BEAT_HI((EO_RP_RENDERER != 0) ? 7'd111 : 7'd103),
+                                  .WR_ROW_LO((EO_RP_RENDERER != 0) ? 11'd0 : 11'd46),
+                                  .WR_ROW_HI((EO_RP_RENDERER != 0) ? 11'd1079 : 11'd1053),
                                   .DYN_WINDOW(EO_RP_RENDERER)) u_v19_cap3 (
             .rst_n(rst_n), .capture_enable(running && !ir_stack_ui),
             .wr_beat_lo_ui(v19_cap_wr_beat_lo[3]), .wr_beat_hi_ui(v19_cap_wr_beat_hi[3]),
@@ -1913,12 +1968,15 @@ module PanoramaBase_DdrBlackFrame(
             .free_bank_valid_ui(v19_free_valid[3]), .free_bank_ui(v19_free_bank3),
             .free_bank_ready_ui(v19_free_ready[3]),
             .desc_valid_ui(v19_cap_desc_valid[3]), .desc_bank_ui(v19_cap3_desc_bank),
+            .desc_full_frame_ui(v19_cap_desc_full_frame[3]),
             .desc_epoch_ui(v19_cap3_desc_epoch), .fifo_overflow_seen_ui(v19_cap3_overflow),
             .fifo_level_ui(v19_cap3_level), .dbg_row_ui(v19_cap3_row),
             .dbg_writer_ui(v19_dbg_writer3));
         EoV19DdrCamWriter #(.CAM_BASE_ADDR(V19_SRC_BASE_ADDR + (V19_SRC_CAM_STRIDE * 4)),
-                                  .WR_BEAT_LO(7'd16), .WR_BEAT_HI(7'd103),
-                                  .WR_ROW_LO(11'd46), .WR_ROW_HI(11'd1053),
+                                  .WR_BEAT_LO((EO_RP_RENDERER != 0) ? 7'd8 : 7'd16),
+                                  .WR_BEAT_HI((EO_RP_RENDERER != 0) ? 7'd111 : 7'd103),
+                                  .WR_ROW_LO((EO_RP_RENDERER != 0) ? 11'd0 : 11'd46),
+                                  .WR_ROW_HI((EO_RP_RENDERER != 0) ? 11'd1079 : 11'd1053),
                                   .DYN_WINDOW(EO_RP_RENDERER)) u_v19_cap4 (
             .rst_n(rst_n), .capture_enable(running && !ir_stack_ui),
             .wr_beat_lo_ui(v19_cap_wr_beat_lo[4]), .wr_beat_hi_ui(v19_cap_wr_beat_hi[4]),
@@ -1936,12 +1994,15 @@ module PanoramaBase_DdrBlackFrame(
             .free_bank_valid_ui(v19_free_valid[4]), .free_bank_ui(v19_free_bank4),
             .free_bank_ready_ui(v19_free_ready[4]),
             .desc_valid_ui(v19_cap_desc_valid[4]), .desc_bank_ui(v19_cap4_desc_bank),
+            .desc_full_frame_ui(v19_cap_desc_full_frame[4]),
             .desc_epoch_ui(v19_cap4_desc_epoch), .fifo_overflow_seen_ui(v19_cap4_overflow),
             .fifo_level_ui(v19_cap4_level), .dbg_row_ui(v19_cap4_row),
             .dbg_writer_ui(v19_dbg_writer4));
         EoV19DdrCamWriter #(.CAM_BASE_ADDR(V19_SRC_BASE_ADDR + (V19_SRC_CAM_STRIDE * 5)),
-                                  .WR_BEAT_LO(7'd16), .WR_BEAT_HI(7'd103),
-                                  .WR_ROW_LO(11'd46), .WR_ROW_HI(11'd1053),
+                                  .WR_BEAT_LO((EO_RP_RENDERER != 0) ? 7'd8 : 7'd16),
+                                  .WR_BEAT_HI((EO_RP_RENDERER != 0) ? 7'd111 : 7'd103),
+                                  .WR_ROW_LO((EO_RP_RENDERER != 0) ? 11'd0 : 11'd46),
+                                  .WR_ROW_HI((EO_RP_RENDERER != 0) ? 11'd1079 : 11'd1053),
                                   .DYN_WINDOW(EO_RP_RENDERER)) u_v19_cap5 (
             .rst_n(rst_n), .capture_enable(running && !ir_stack_ui),
             .wr_beat_lo_ui(v19_cap_wr_beat_lo[5]), .wr_beat_hi_ui(v19_cap_wr_beat_hi[5]),
@@ -1959,6 +2020,7 @@ module PanoramaBase_DdrBlackFrame(
             .free_bank_valid_ui(v19_free_valid[5]), .free_bank_ui(v19_free_bank5),
             .free_bank_ready_ui(v19_free_ready[5]),
             .desc_valid_ui(v19_cap_desc_valid[5]), .desc_bank_ui(v19_cap5_desc_bank),
+            .desc_full_frame_ui(v19_cap_desc_full_frame[5]),
             .desc_epoch_ui(v19_cap5_desc_epoch), .fifo_overflow_seen_ui(v19_cap5_overflow),
             .fifo_level_ui(v19_cap5_level), .dbg_row_ui(v19_cap5_row),
             .dbg_writer_ui(v19_dbg_writer5));
@@ -2534,55 +2596,26 @@ module PanoramaBase_DdrBlackFrame(
         // fanned out to presence detection and the rejoin supervisor, so
         // tapping them changes no handshake.
         //--------------------------------------------------------------------
-        reg  [1:0] cam_last_bank [0:5];
-        reg  [5:0] cam_has_frame;
-        reg [25:0] cam_stale_cnt [0:5];      // ~0.29 s at 233 MHz, as for IR
-        wire [5:0] cam_desc = v19_cap_desc_valid;
-        wire [1:0] cam_desc_bank [0:5];
-        assign cam_desc_bank[0] = v19_cap0_desc_bank;
-        assign cam_desc_bank[1] = v19_cap1_desc_bank;
-        assign cam_desc_bank[2] = v19_cap2_desc_bank;
-        assign cam_desc_bank[3] = v19_cap3_desc_bank;
-        assign cam_desc_bank[4] = v19_cap4_desc_bank;
-        assign cam_desc_bank[5] = v19_cap5_desc_bank;
-
-        integer bi;
-        always @(posedge c0_ddr4_ui_clk) begin
-            if (ui_rst) begin
-                cam_has_frame <= 6'd0;
-                for (bi = 0; bi < 6; bi = bi + 1) begin
-                    cam_last_bank[bi] <= 2'd0;
-                    cam_stale_cnt[bi] <= 26'd0;
-                end
-            end else begin
-                for (bi = 0; bi < 6; bi = bi + 1) begin
-                    if (cam_desc[bi]) begin
-                        cam_last_bank[bi] <= cam_desc_bank[bi];
-                        cam_has_frame[bi] <= 1'b1;
-                        cam_stale_cnt[bi] <= 26'd0;
-                    end else if (!(&cam_stale_cnt[bi])) begin
-                        cam_stale_cnt[bi] <= cam_stale_cnt[bi] + 1'b1;
-                    end else begin
-                        cam_has_frame[bi] <= 1'b0;   // camera has stopped
-                    end
-                end
-            end
-        end
-
         wire       eo_mode      = (SRC_SEL == SRC_V19) && eo_single_ui;
-        wire       eo_cam_ready = cam_has_frame[eo_sel_ui];
-        wire       eo_stale     = !eo_cam_ready;
-        reg  [1:0] eo_bank_q;                       // latched for the whole pass
-        reg        eo_start_pending;
+        wire       eo_stale, eo_copy_has_frame;
+        wire [2:0] eo_reader_cam;
+        wire [1:0] eo_reader_bank;
+        wire       eo_start_pending;
         assign v19_eo_start_pending = eo_start_pending;
         assign v19_eo_stale         = eo_stale;
-
-        always @(posedge c0_ddr4_ui_clk) begin
-            if (ui_rst || !eo_mode)          eo_start_pending <= 1'b0;
-            else if (cam_desc[eo_sel_ui])    eo_start_pending <= 1'b1;
-            else if (copy_start_accept)      eo_start_pending <= 1'b0;
-            if (copy_start_accept) eo_bank_q <= cam_last_bank[eo_sel_ui];
-        end
+        // A pending narrow frame from before the mode change must never feed
+        // the full-width reader. The marker describes actual capture coverage.
+        // The selector also freezes readiness/camera/bank for an active copy.
+        EoV19SingleFrameSelect u_eo_single_select (
+            .clk(c0_ddr4_ui_clk), .rst(ui_rst), .eo_mode(eo_mode), .cam_sel(eo_sel_ui),
+            .desc_valid(v19_cap_desc_valid), .desc_full_frame(v19_cap_desc_full_frame),
+            .desc_bank({v19_cap5_desc_bank, v19_cap4_desc_bank, v19_cap3_desc_bank,
+                        v19_cap2_desc_bank, v19_cap1_desc_bank, v19_cap0_desc_bank}),
+            .copy_start(copy_start_accept && eo_mode), .copy_active(copy_active),
+            .start_pending(eo_start_pending), .stale(eo_stale),
+            .reader_cam(eo_reader_cam), .reader_bank(eo_reader_bank),
+            .copy_has_frame(eo_copy_has_frame)
+        );
 
         wire        eo_rd_valid;
         wire [28:0] eo_rd_addr;
@@ -2612,8 +2645,8 @@ module PanoramaBase_DdrBlackFrame(
             .ROW_CROP      (0)
         ) u_eo_single_reader (
             .clk(c0_ddr4_ui_clk), .rst_n(rst_n), .ui_rst(ui_rst),
-            .run_enable(eo_mode && copy_active && !eo_stale),
-            .cam_sel(eo_sel_ui), .bank_sel(eo_bank_q),
+            .run_enable(eo_mode && copy_active && eo_copy_has_frame),
+            .cam_sel(eo_reader_cam), .bank_sel(eo_reader_bank),
             .rd_req_valid(eo_rd_valid), .rd_req_addr(eo_rd_addr),
             .rd_req_ready(v19_src_rd_ready && v19_src_owner_is_eo),
             .rd_data_valid(eo_src_rd_data_valid),
@@ -2624,14 +2657,14 @@ module PanoramaBase_DdrBlackFrame(
         );
 
         assign copy_px_valid = ir_mode ? (ir_vld[IR_SELECTED_FB_READ_LATENCY] && ir_en)
-                             : eo_mode ? (eo_stale ? eo_px_ready : eo_px_valid)
+                             : eo_mode ? (!eo_copy_has_frame ? eo_px_ready : eo_px_valid)
                              : ir_stack_ui ? v19_ir_fmt_valid
                                            : v19_fifo_pop;
         assign copy_px_data  = ir_mode
                              ? ((ir_box[IR_SELECTED_FB_READ_LATENCY] && !ir_stale)
                                 ? {sel_rd_pixel, 8'h80} : BLACK_PIXEL)
                              : eo_mode
-                             ? (eo_stale ? BLACK_PIXEL : eo_px_data)
+                             ? (!eo_copy_has_frame ? BLACK_PIXEL : eo_px_data)
                              : ir_stack_ui ? v19_ir_fmt_data
                                            : v19_fifo_head;
         always @(posedge c0_ddr4_ui_clk) begin
@@ -2660,10 +2693,13 @@ module PanoramaBase_DdrBlackFrame(
             wire [15:0] rp_px_data;
             wire rp_need_valid;
             wire [10:0] rp_need_row, rp_start_row;
-            RpRenderer u_v19_renderer (
+            RpRenderer #(.GRAVITY_POSE_INPUTS(1)) u_v19_renderer (
                 .rst_n(rst_n), .clk(c0_ddr4_ui_clk),
                 .sensor_ir(ir_stack_ui),
                 .start_copy(v19_render_active),
+                .pose_ready(gravity_pose_ready),
+                .pose_roll_cd(gravity_roll_cd), .pose_pitch_cd(gravity_pitch_cd),
+                .pose_revision(gravity_applied_sequence),
                 .cam_present(ir_stack_ui ? irv19_cam_present : v19_cam_present),
                 .source_frame_reset(ir_stack_ui ? irv19_replay_frame_edge_ui : v19_replay_frame_edge_ui),
                 .beat_valid  (ir_stack_ui ? irv19_beat_valid   : v19_beat_valid),
@@ -2711,10 +2747,15 @@ module PanoramaBase_DdrBlackFrame(
             assign v19_dbg_rows_peak  = v19_rp_dbg[28:18];
             assign v19_dbg_seen_out   = eo_rnd_px_valid;
             assign v19_dbg_seen_done  = v19_rp_status[0];
-            // word0: {"RP", build count, status flags, offset updates}
-            assign v19_dbg_rows_word0 = {16'h5250, v19_rp_build_count[15:0], v19_rp_status, v19_rp_offset_updates};
-            // word1: cam0 and cam1 roll/pitch as applied
-            assign v19_dbg_rows_word1 = {v19_rp_roll_cd[31:0], v19_rp_pitch_cd[31:0]};
+            // Gravity image signature + applied lease/sample + explicit status.
+            // Flags[7:0]: ready,on,fallback,missing,stale,cal_mismatch,limited,range.
+            assign v19_dbg_rows_word0 = {16'h474c, gravity_applied_epoch,
+                gravity_applied_sequence[15:0], gravity_pose_ready, gravity_applied_enable,
+                gravity_fallback, gravity_history_miss, gravity_stale,
+                gravity_calibration_mismatch, gravity_limited, gravity_range,
+                v19_rp_status[7:0]};
+            // word1: cam0 and cam1 roll/pitch actually supplied to the renderer.
+            assign v19_dbg_rows_word1 = {gravity_roll_cd[31:0], gravity_pitch_cd[31:0]};
             assign v19_dbg_rows_word2 = v19_rp_dbg;
 
             reg [13:0] rp_done_count;

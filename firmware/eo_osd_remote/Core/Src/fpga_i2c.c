@@ -3,6 +3,14 @@
 
 static inline uint16_t addr8(uint8_t addr7) { return (uint16_t)(addr7 << 1); }
 
+HAL_StatusTypeDef fpga_write_verify_reg8_value(fpga_i2c_t* dev, uint8_t reg, uint8_t value, uint32_t timeout_ms)
+{
+  uint8_t actual = 0u;
+  HAL_StatusTypeDef st = fpga_write_read_reg8(dev, reg, value, &actual, timeout_ms);
+  if (st != HAL_OK) return st;
+  return actual == value ? HAL_OK : HAL_ERROR;
+}
+
 void fpga_i2c_init(fpga_i2c_t* dev, I2C_HandleTypeDef* hi2c, uint8_t addr7)
 {
   if (!dev) return;

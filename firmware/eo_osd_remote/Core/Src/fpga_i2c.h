@@ -23,6 +23,7 @@ HAL_StatusTypeDef fpga_read_reg8 (fpga_i2c_t* dev, uint8_t reg, uint8_t* out,  u
 
 // Convenience for your smoke test (write then read same reg)
 HAL_StatusTypeDef fpga_write_read_reg8(fpga_i2c_t* dev, uint8_t reg, uint8_t wr, uint8_t* rd, uint32_t timeout_ms);
+HAL_StatusTypeDef fpga_write_verify_reg8_value(fpga_i2c_t* dev, uint8_t reg, uint8_t value, uint32_t timeout_ms);
 
 #ifdef __cplusplus
 }

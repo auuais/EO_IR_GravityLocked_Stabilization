@@ -55,14 +55,11 @@ module GlPoseCdc (
     wire src_busy = req_toggle != ack_sync[1];
     wire [63:0] src_bus = {src_receipt_sequence, src_roll_cd, src_pitch_cd};
 
-    always @(posedge src_clk or posedge rst) begin
-        if (rst) begin
-            ack_sync <= 2'b00;
-            req_toggle <= 1'b0;
-            transfer_bus <= 64'd0;
-            pending_bus <= 64'd0;
-            pending_valid <= 1'b0;
-        end else if (src_reset) begin
+    // Reset all state from the domain-local reset: assertion propagates
+    // asynchronously from common rst; release occurs only on local edges.
+    // Avoid an additional synchronous reset mux between synchronizer stages.
+    always @(posedge src_clk or posedge src_reset) begin
+        if (src_reset) begin
             ack_sync <= 2'b00;
             req_toggle <= 1'b0;
             transfer_bus <= 64'd0;
@@ -85,16 +82,8 @@ module GlPoseCdc (
         end
     end
 
-    always @(posedge dst_clk or posedge rst) begin
-        if (rst) begin
-            req_sync <= 2'b00;
-            ack_toggle <= 1'b0;
-            dst_valid <= 1'b0;
-            dst_update <= 1'b0;
-            dst_roll_cd <= 16'sd0;
-            dst_pitch_cd <= 16'sd0;
-            dst_receipt_sequence <= 32'd0;
-        end else if (dst_reset) begin
+    always @(posedge dst_clk or posedge dst_reset) begin
+        if (dst_reset) begin
             req_sync <= 2'b00;
             ack_toggle <= 1'b0;
             dst_valid <= 1'b0;

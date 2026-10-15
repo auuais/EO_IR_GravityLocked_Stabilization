@@ -13,6 +13,11 @@ extern "C" {
 
 #define FPGA_I2C_ADDR7              0x36u
 
+// Exact A0/A1 codes, committed by one data byte + ACK + STOP. Reset is invalid.
+#define FPGA_REG_GL_CONTROL 0x04u
+#define FPGA_GL_CONTROL_OFF 0xA0u
+#define FPGA_GL_CONTROL_ON  0xA1u
+
 // ---------- CTRL / MODE ----------
 #define FPGA_REG_MODE_CURRENT       0x00u // u8
 #define FPGA_REG_MODE_FUTURE        0x01u // reserved
