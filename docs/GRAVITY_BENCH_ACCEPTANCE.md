@@ -68,8 +68,17 @@ result silently treats MCU defaults or saved data as the selected INI.
 
 ## 3. Decode observations before interpreting motion
 
-With the candidate's matching `.ltx`, confirm the gravity debug page signature.
-Locate signals by the loaded probe mapping rather than assuming probe indices.
+With the candidate's matching `.ltx`, confirm the gravity status signature.
+The current gravity RTL connects `dbg_ila_0` as follows; verify that the loaded
+probe mapping matches this wiring before decoding a capture. The definitions
+and connections are in `src/PanoramaBase_DdrBlackFrame.v` (word0/word1 at
+lines2763–2769, probe connections at lines4422–4430).
+
+| Current probe | Connected signal and observation |
+| --- | --- |
+| probe22 | `v19_dbg_rows_word0_strobe`: gravity word0 status below when `SRC_SEL == SRC_V19` |
+| probe23 | `v19_capture_dbg`: EO FIFO capture telemetry; **not** the camera-angle word1 |
+| probe24 | `ir_render_dbg` in IR panorama, otherwise `v19_eo_done_dbg`: renderer diagnostics; **not** the word2 integrity overlay |
 
 | `v19_dbg_rows_word0` field | Meaning |
 | --- | --- |
@@ -81,22 +90,32 @@ Locate signals by the loaded probe mapping rather than assuming probe indices.
 | 9 / 8 | C global limiting / final camera angle outside renderer range |
 | 7:0 | Renderer status |
 
-`word1[63:48]` is camera1 roll, `[47:32]` camera0 roll, `[31:16]`
-camera1 pitch and `[15:0]` camera0 pitch; each is signed int16 centidegrees.
-This page exposes two cameras, not all six. Additional internal signals require
-verified probe access or a separately built instrumented candidate.
+The RTL defines an internal `v19_dbg_rows_word1`: `[63:48]` is camera1 roll,
+`[47:32]` camera0 roll, `[31:16]` camera1 pitch and `[15:0]` camera0 pitch;
+each is signed int16 centidegrees. **This word is not connected to the current
+ILA, so the current probe map exposes no numerical camera-angle values.** It
+cannot be enabled merely by choosing another GUI display or interpreting
+probe23 differently. Observing it requires a separately built, validated
+instrumented candidate and its matching `.ltx`; observing all six cameras
+requires additional angle signals beyond word1. Unprobed internal wires may
+also be optimized away.
 
-The old word0/word1 strobe-period overlay is disabled for this page. Do not
-decode those bits as clock periods. The top-level word2 overlay retains start,
-bank-ready and integrity information; inspect its current RTL definition.
-Its bit53 combines capture overflow, descriptor collision and no-common-epoch
-alarms, so diagnose the underlying cause before calling it a FIFO overflow.
-`v19_capture_dbg` reports six EO FIFO peaks in units of eight entries and
-individual sticky overflow bits when that signal is present in the probe map.
+The old word0/word1 strobe-period overlay is disabled for this gravity path.
+Do not decode word0 bits as clock periods. The internal
+`v19_dbg_rows_word2_strobe` defines start, bank-ready and integrity information,
+but is also **unconnected to the current ILA**. Its bit53 combines capture
+overflow, descriptor collision and no-common-epoch alarms; that decoding is
+usable only if a future instrumented candidate actually probes this signal.
+Current probe23 instead has signature `0xC` at bits63:60, EO cam5..cam0
+overflow flags at bits59:54, and six nine-bit EO FIFO peaks in units of eight
+entries (cam0 at bits8:0 through cam5 at bits53:45). These remain EO telemetry
+in IR mode; they do not report IR capture FIFO peaks.
 
-**Pass:** signature and field decoding are consistent with the candidate;
-stationary values and sign extension are sensible. A missing probe is an
-observability gap, not a zero-valued measurement.
+**Pass:** observed signatures, status fields and telemetry decode consistently
+with the candidate's actual probe map. Check signed-angle extension only on an
+instrumented candidate that exposes those angles. A missing probe is an
+observability gap, not a zero-valued measurement; mark dependent hardware
+checks NOT RUN rather than inferring them from image appearance or simulation.
 
 ## 4. Verify controls and receipt freshness on a stationary rig
 
@@ -153,21 +172,34 @@ the stable optical model. Live camera captures contain noise and exposure
 variation: compare geometry, seams, crops, black/absent-camera behavior and
 stationary target-position statistics, rather than demanding identical hashes.
 If approved zero trims and a verified zero live pose are available, also test
-On + Attitude. Compare the angles with the exact-C model; do not replace its
-integer quantization with an ideal floating-point identity.
+On + Attitude. Numerical angle comparison with the exact-C model requires an
+instrumented candidate exposing the applied angles; mark that subtest NOT RUN
+with the current ILA. Keep the image comparison as a separate result. Do not
+replace the model's integer quantization with an ideal floating-point identity.
 
 **Pass:** Off preserves baseline static geometry and offsets; no new missing
-rows/columns, magenta diagnostics, seam jumps or corruption; zero-pose angles
-match the numerical reference and the stationary image remains stable. A
-zeroed UI trim does not by itself prove the live sensor pose is zero.
+rows/columns, magenta diagnostics, seam jumps or corruption; the stationary
+image remains stable. The separate numerical subtest passes only when observed
+zero-pose angles match the reference. A zeroed UI trim does not by itself prove
+the live sensor pose is zero.
 
 ## 6. Verify source-frame and coefficient coherence
 
-Capture complete render intervals while pose updates continue. Correlate
-accepted-copy/render-active, source lease epoch, applied epoch/receipt sequence,
-prepared angles, table build count and source requirements using available
-probes. Trigger an update during a table build and during active output.
-Repeat an identical angle set with a new receipt sequence.
+Capture render intervals while pose updates continue. In the current ILA,
+probe17 includes `copy_active`; probe22 exposes the applied epoch, low16 receipt
+sequence and status flags. These support status/interval correlation, but do
+not expose the prepared angles or table build count. Probe19 supplies EO lease
+validity and cam0/cam4 low8 descriptor epochs, not the full leased epoch for
+both sensor families.
+
+The complete check below requires a future instrumented candidate exposing
+accepted-copy/render-active, the full source lease epoch and receipt sequence,
+all prepared angles, table readiness/build identity and source requirements.
+Verify those probe connections before claiming complete coherence. With that
+instrumentation, trigger an update during table build and active output, and
+repeat an identical angle set with a new receipt sequence. With the current
+ILA, retain the observed status subset and mark the unobservable subtests
+NOT RUN; static word0 fields alone do not prove fixed coefficients or table reuse.
 
 **Pass:** applied epoch identifies the leased source frameset; accepted angles,
 sequence/control and table identity remain fixed throughout that pass. Replay
@@ -198,9 +230,12 @@ are inspected in all six camera sectors, including different mounting yaw
 positions. Pure yaw should still pan: this implementation does not lock heading.
 
 For each direction compare Off and On traces of target position/horizon angle.
-Check observed camera angles against the exact-C projection using the recorded
-live pose and trim bank. The default debug page numerically checks cameras0/1;
-do not claim six-camera hardware angle agreement without observing the others.
+Check camera angles against the exact-C projection only with an instrumented
+candidate that exposes them, using the recorded live pose and trim bank. The
+current ILA does not numerically observe even cameras0/1; internal word1 is
+unconnected. Mark numerical hardware angle checks NOT RUN until instrumented,
+and do not claim six-camera angle agreement from a two-camera probe. Image
+motion and the current word0 status flags remain separately observable.
 Separate out-of-source black borders from an in-range image defect. Test global
 limiting only after low-angle behavior is correct and the operator approves the
 larger excursion; compare its single rescale/recalculate result with C.
@@ -246,6 +281,14 @@ collisions, no-common-epoch events, output FIFO alarms, displayed-bank write
 conflicts, completed passes and unique content rate. Clear/record sticky flags
 through the established reset procedure before each run so old alarms are not
 misattributed.
+
+Current probe23 provides the EO capture peaks/overflow subset, and probe19
+provides EO descriptor-collision/no-common-epoch flags. IR capture peaks and
+other requested quantities absent from the verified probe map require a future
+instrumented candidate or an independently verified observation method. In
+particular, do not decode current probe24 as the unconnected word2 integrity
+overlay. Mark each unobservable hardware subtest NOT RUN and retain the measured
+subset separately.
 
 The fixed EO envelope is rows0..1079 and beats8..111. At six cameras x30fps its
 capture-only arithmetic is 20,217,600 beats/s. At 30 output copies/s, the
