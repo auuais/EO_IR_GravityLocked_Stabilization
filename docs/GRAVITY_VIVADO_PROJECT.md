@@ -94,6 +94,16 @@ Exit code zero also permits pending evidence; automation must inspect
 `overall_state`. An explicit `--log` may include a known associated Vivado log;
 the helper never guesses which build owns a shared project log.
 
+The corrected full build `builds/gravity_20261016_020605/` completed on
+2026-10-16 at 02:54:19 KST and reports `complete_verified`. Its source commit
+is `cbb95ad`, with expanded timing-audit tools at `c01baeb`. Setup/hold/pulse
+slack is +0.075/+0.010/+0.064 ns; all 143,118 routable nets are routed, all
+80 bus-skew checks pass, and there are no DRC errors. The scoped gravity audits
+pass after routing; the full CDC report retains open findings. No hardware was
+programmed. Exact artifact/report hashes and acceptance limits are committed in
+`validation/full_build_20261016_020605.json`. The local bundle includes copied
+build log/journal and `mcu_candidate/`; MCU storage policy is still pending.
+
 ## Verification outputs and limits
 
 The generated directory contains `project_manifest.txt`, `compile_order.txt`,

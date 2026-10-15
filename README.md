@@ -29,6 +29,18 @@ This is **implementation in progress**, not a hardware-qualified build.
 The live gravity path is connected to the EO/IR panorama renderer and the MCU
 source is updated. Hardware has not been programmed for this work.
 
+The first corrected full FPGA candidate completed on 2026-10-16 at 02:54 KST
+from RTL commit `cbb95ad`. Routed setup/hold/pulse-width slack is
+**+0.075 / +0.010 / +0.064 ns**, with zero failing endpoints. All 143,118
+routable nets are routed; bus-skew, DRC-error and scoped gravity timing/CDC
+guards pass. The matched `.bit` and `.ltx`, routed checkpoint, reports and MCU
+candidate are retained locally under `builds/gravity_20261016_020605/`.
+The committed [build record](docs/validation/full_build_20261016_020605.json)
+contains their hashes. These files are build candidates, not bench results.
+The [full CDC review](docs/validation/gravity_full_cdc_review_20261016.md)
+retains inherited open findings. Sustained DDR throughput, source-bank ownership
+under long stalls, rig axis signs and physical stabilization remain unqualified.
+
 The user selected the existing UI **On + Attitude Sensor** controls and
 preservation of the stable optical maps/pixel geometry. The selected INI supplies
 the camera mounting yaw angles; the existing EO/IR static roll/pitch banks remain

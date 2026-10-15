@@ -9,7 +9,9 @@ is user-selected commit `3479cacf2e512a5bde9aa3e0243755826e071ef4`, not the
 later experimental HEAD. The selected INI is recorded in
 `BASELINE_PROVENANCE.json` and copied to `config/parameters_unified.ini`.
 
-No new production bitstream or live stabilization behavior is claimed yet.
+A timing-passing FPGA candidate has been built; no live stabilization behavior
+or production qualification is claimed. Its exact artifacts and remaining
+acceptance items are recorded in `validation/full_build_20261016_020605.json`.
 The desktop C program calculates a test pose before replaying static images;
 it is a numerical reference, not an existing real-time transport/scheduler.
 
@@ -214,7 +216,17 @@ The corrected implementation has independent IR trigger tags and history;
 21 lease cases and a trigger test covering all 65,536 counter increments,
 phase, reset and capture/Gray alignment pass. Equal numeric EO/IR tags cannot
 borrow the other family's pose. See `validation/ir_epoch_association_20261016.json`.
-The corrected revision requires a fresh complete implementation run.
+The corrected revision completed a fresh full implementation run on 2026-10-16.
+Source `cbb95ad`, with timing-audit tools from `c01baeb`, produced the matched
+bitstream/probes under `builds/gravity_20261016_020605/`. Routed setup, hold and
+pulse-width slack is +0.075, +0.010 and +0.064 ns, respectively; all failing
+endpoint counts are zero. All 143,118 routable nets are fully routed. The 80
+bus-skew checks pass (minimum slack +1.785 ns), and DRC has zero Error checks.
+The post-route audit covers 3,524 gravity/IR-epoch sequential cells without
+missing clocks, unconstrained internal endpoints or ignored internal paths.
+Both mailbox bounds remain effective at 4.000 ns for all 64+8 endpoints.
+After completion, all 137 guarded input hashes, 14 staged ROM hashes and three
+validation-script hashes still match. See the full build record above.
 
 Renderer pixel/scheduling regression is complete: eight EO/IR table cases and
 eight rasters in each legacy/gravity mode passed, with 14,112,000 bit-exact
@@ -222,9 +234,10 @@ pixels per mode. Gravity-mode assertions also cover pending-input changes,
 ready gating and identical-pose table reuse. Focused capture/selection tests
 pass 116 coverage checks, 19 selection checks and the original marker-ordering
 regression; source/output hashes are recorded in
-`validation/renderer_integration_20261016.json`. Remaining acceptance is
-whole-top synthesis/place/route and physical CDC checks, followed by
-instrumented bench tests and rig sign/latency verification. Bench tests must
+`validation/renderer_integration_20261016.json`. Whole-top synthesis, placement,
+routing and scoped gravity timing/CDC checks now pass. Remaining acceptance
+includes the inherited full-design CDC findings, instrumented bench tests and
+rig sign/latency verification. Bench tests must
 include camera selection and panorama/single transitions at arbitrary raster
 phases, delayed descriptor retirement, rapid mode changes, source-bank reuse
 under DDR stalls, and sustained capture/FIFO pressure. No live gravity-lock
