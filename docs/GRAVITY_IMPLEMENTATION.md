@@ -212,16 +212,43 @@ result is claimed.
 
 ## ILA observation
 
-The existing 64-bit `v19_dbg_rows_word0` now has signature `0x474c` in bits
+The existing 64-bit `v19_dbg_rows_word0`, connected to `dbg_ila_0` **probe22**,
+has signature `0x474c` in bits
 63:48, applied source epoch in 47:32, low 16 bits of applied receipt sequence
 in 31:16, and flags in 15:8. Those flags, high to low, are ready, enabled,
 static fallback, history miss, stale pose, calibration mismatch, global limit
-and final angle out-of-range. Bits 7:0 retain renderer status. `word1` holds
+and final angle out-of-range. Bits 7:0 retain renderer status. Logical `word1` holds
 camera 0/1 roll in its upper 32 bits and pitch in its lower 32 bits, with camera
 0 in each pair's low half; angles are signed centidegrees. `word2` retains
 renderer progress. The old word0/word1 high-bit strobe-period overlay is disabled
 for this page so it cannot corrupt the signature or signed angles. Sequence is
-a local receipt count, not a sensor timestamp.
+a local receipt count, not a sensor or exposure timestamp; this page cannot
+reconstruct the complete 32-bit count. When ready is false, the applied fields
+can retain the previous completed result.
+
+**Logical `word1` is not connected to a current ILA probe.** Probe23 carries
+capture telemetry and probe24 carries renderer/completion diagnostics. A later
+reviewed probe-mux change could expose camera angles; it is not implemented in
+this build. The word1 angles are before the renderer's +/-1000-centidegree clamp.
+
+Decode a copied numeric probe22 value without hardware access:
+
+```powershell
+python scripts/decode_gravity_ila.py 0x474c1234abcdc35a
+```
+
+The tool accepts unsigned decimal or `0x` hexadecimal, rejects a wrong GL
+signature or values wider than 64 bits, and emits JSON. An optional second word
+decodes the logical angle signal from simulation or a future probe change:
+
+```powershell
+python scripts/decode_gravity_ila.py 0x474c1234abcdc35a 0xff3800640190fed4
+```
+
+That example gives camera0 roll/pitch `100/-300` and camera1 `-200/400`
+centidegrees. Current bench captures can observe epoch, sequence-low16 and
+flags; angle/pixel expectations remain available from the C oracle and renderer
+regressions.
 
 Bench acceptance must include stabilization disabled with static offsets,
 zero live attitude, roll-only, pitch-only and combined motion at several yaw
