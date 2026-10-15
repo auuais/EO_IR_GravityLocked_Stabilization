@@ -88,7 +88,7 @@ def check_counts(text):
 
 def route(text, result, guards):
     counts = {}
-    for name, value in re.findall(r"(?m)^\s*#?\s*(?:of\s+)?([^:\n]+?)\s*:\s*(\d[\d,]*)\s*$", text):
+    for name, value in re.findall(r"(?m)^\s*#?\s*(?:of\s+)?([^:\n]+?)\s*:\s*(\d[\d,]*)\s*:?\s*$", text):
         counts[name.strip().rstrip(".").strip().lower()] = int(value.replace(",", ""))
     result["counts"] = counts
     bad_names = ("routing errors", "unrouted", "unplaced", "partially routed")
