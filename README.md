@@ -54,7 +54,8 @@ Implemented and simulated:
 - `GlFramePose`: computes all six cameras and the C global limit, publishing
   one atomic result; 266 reference/bypass cases pass.
 - `GlLeasePose`: chooses the historical pose for the actual source lease and
-  freezes coefficients through the render. Missing/stale/disabled data selects
+  sensor family, with separate EO-strobe and IR-genlock histories, and freezes
+  coefficients through the render. Missing/stale/disabled data selects
   static offsets. The default freshness threshold is 100 ms at 233.4 MHz.
 - `RpRenderer`: accepts the frozen set, builds from that same snapshot, and
   holds it throughout the frame. The EO writer uses a proven fixed capture

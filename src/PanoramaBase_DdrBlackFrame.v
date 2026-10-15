@@ -481,6 +481,16 @@ module PanoramaBase_DdrBlackFrame(
     // Gray coding lets each writer cross this into its own clock with a plain
     // two-flop synchroniser: the count changes at the ~60 Hz trigger rate, so
     // only one bit is ever in flight.
+    // IR cameras have an independent genlock. Its epoch tags both the IR
+    // capture writers and their pose history; EO numeric tags cannot substitute.
+    wire ir_genlock_edge_ui;
+    wire [15:0] irv19_global_epoch_next, irv19_global_epoch_gray;
+    GlTriggerEpoch u_ir_epoch (
+        .clk(c0_ddr4_ui_clk), .rst(ui_rst), .trigger_async(ir_genlock_pulse),
+        .epoch_capture(ir_genlock_edge_ui), .next_epoch(irv19_global_epoch_next),
+        .epoch_gray(irv19_global_epoch_gray)
+    );
+
     reg [15:0] v19_global_epoch;
     reg [15:0] v19_global_epoch_gray;
     wire [15:0] v19_global_epoch_next = v19_global_epoch + 16'd1;
@@ -1827,6 +1837,7 @@ module PanoramaBase_DdrBlackFrame(
         GlLeasePose u_gravity_pose (
             .clk(c0_ddr4_ui_clk), .rst(ui_rst || !rst_n),
             .epoch_capture(eo_strobe_edge_ui), .epoch_id(v19_global_epoch_next),
+            .ir_epoch_capture(ir_genlock_edge_ui), .ir_epoch_id(irv19_global_epoch_next),
             .pose_update(pose_update_ui), .pose_roll_cd(pose_roll_cd_ui),
             .pose_pitch_cd(pose_pitch_cd_ui), .pose_sequence(pose_sequence_ui),
             .stabilization_enabled(gravity_enabled_ui),
@@ -2039,7 +2050,7 @@ module PanoramaBase_DdrBlackFrame(
             .free_fifo_rst_req(irv19_free_fifo_rst[0]),
             .cam_alive_tgl(irv19_cam_alive_tgl[0]),
             .rejoin_busy_ui(irv19_rejoin_busy[0]),
-            .global_epoch_gray_ui(v19_global_epoch_gray),
+            .global_epoch_gray_ui(irv19_global_epoch_gray),
             .cam_clk(ir0_wr_clk), .cam_hsync(ir0_wr_hsync), .cam_vsync(~ir0_wr_vsync), .cam_pixel({ir0_wr_pixel, 12'd0}),
             .ui_clk(c0_ddr4_ui_clk), .ui_rst(ui_rst), .fifo_rd_en(irv19_cap0_pop), .fifo_empty(irv19_cap0_empty),
             .fifo_addr(irv19_cap0_addr), .fifo_data(irv19_cap0_data), .fifo_is_marker(irv19_cap0_marker),
@@ -2064,7 +2075,7 @@ module PanoramaBase_DdrBlackFrame(
             .free_fifo_rst_req(irv19_free_fifo_rst[1]),
             .cam_alive_tgl(irv19_cam_alive_tgl[1]),
             .rejoin_busy_ui(irv19_rejoin_busy[1]),
-            .global_epoch_gray_ui(v19_global_epoch_gray),
+            .global_epoch_gray_ui(irv19_global_epoch_gray),
             .cam_clk(ir1_wr_clk), .cam_hsync(ir1_wr_hsync), .cam_vsync(~ir1_wr_vsync), .cam_pixel({ir1_wr_pixel, 12'd0}),
             .ui_clk(c0_ddr4_ui_clk), .ui_rst(ui_rst), .fifo_rd_en(irv19_cap1_pop), .fifo_empty(irv19_cap1_empty),
             .fifo_addr(irv19_cap1_addr), .fifo_data(irv19_cap1_data), .fifo_is_marker(irv19_cap1_marker),
@@ -2089,7 +2100,7 @@ module PanoramaBase_DdrBlackFrame(
             .free_fifo_rst_req(irv19_free_fifo_rst[2]),
             .cam_alive_tgl(irv19_cam_alive_tgl[2]),
             .rejoin_busy_ui(irv19_rejoin_busy[2]),
-            .global_epoch_gray_ui(v19_global_epoch_gray),
+            .global_epoch_gray_ui(irv19_global_epoch_gray),
             .cam_clk(ir2_wr_clk), .cam_hsync(ir2_wr_hsync), .cam_vsync(~ir2_wr_vsync), .cam_pixel({ir2_wr_pixel, 12'd0}),
             .ui_clk(c0_ddr4_ui_clk), .ui_rst(ui_rst), .fifo_rd_en(irv19_cap2_pop), .fifo_empty(irv19_cap2_empty),
             .fifo_addr(irv19_cap2_addr), .fifo_data(irv19_cap2_data), .fifo_is_marker(irv19_cap2_marker),
@@ -2114,7 +2125,7 @@ module PanoramaBase_DdrBlackFrame(
             .free_fifo_rst_req(irv19_free_fifo_rst[3]),
             .cam_alive_tgl(irv19_cam_alive_tgl[3]),
             .rejoin_busy_ui(irv19_rejoin_busy[3]),
-            .global_epoch_gray_ui(v19_global_epoch_gray),
+            .global_epoch_gray_ui(irv19_global_epoch_gray),
             .cam_clk(ir3_wr_clk), .cam_hsync(ir3_wr_hsync), .cam_vsync(~ir3_wr_vsync), .cam_pixel({ir3_wr_pixel, 12'd0}),
             .ui_clk(c0_ddr4_ui_clk), .ui_rst(ui_rst), .fifo_rd_en(irv19_cap3_pop), .fifo_empty(irv19_cap3_empty),
             .fifo_addr(irv19_cap3_addr), .fifo_data(irv19_cap3_data), .fifo_is_marker(irv19_cap3_marker),
@@ -2139,7 +2150,7 @@ module PanoramaBase_DdrBlackFrame(
             .free_fifo_rst_req(irv19_free_fifo_rst[4]),
             .cam_alive_tgl(irv19_cam_alive_tgl[4]),
             .rejoin_busy_ui(irv19_rejoin_busy[4]),
-            .global_epoch_gray_ui(v19_global_epoch_gray),
+            .global_epoch_gray_ui(irv19_global_epoch_gray),
             .cam_clk(ir4_wr_clk), .cam_hsync(ir4_wr_hsync), .cam_vsync(~ir4_wr_vsync), .cam_pixel({ir4_wr_pixel, 12'd0}),
             .ui_clk(c0_ddr4_ui_clk), .ui_rst(ui_rst), .fifo_rd_en(irv19_cap4_pop), .fifo_empty(irv19_cap4_empty),
             .fifo_addr(irv19_cap4_addr), .fifo_data(irv19_cap4_data), .fifo_is_marker(irv19_cap4_marker),
@@ -2164,7 +2175,7 @@ module PanoramaBase_DdrBlackFrame(
             .free_fifo_rst_req(irv19_free_fifo_rst[5]),
             .cam_alive_tgl(irv19_cam_alive_tgl[5]),
             .rejoin_busy_ui(irv19_rejoin_busy[5]),
-            .global_epoch_gray_ui(v19_global_epoch_gray),
+            .global_epoch_gray_ui(irv19_global_epoch_gray),
             .cam_clk(ir5_wr_clk), .cam_hsync(ir5_wr_hsync), .cam_vsync(~ir5_wr_vsync), .cam_pixel({ir5_wr_pixel, 12'd0}),
             .ui_clk(c0_ddr4_ui_clk), .ui_rst(ui_rst), .fifo_rd_en(irv19_cap5_pop), .fifo_empty(irv19_cap5_empty),
             .fifo_addr(irv19_cap5_addr), .fifo_data(irv19_cap5_data), .fifo_is_marker(irv19_cap5_marker),

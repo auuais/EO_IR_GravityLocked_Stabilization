@@ -19,6 +19,8 @@ module GlLeasePose #(
     input wire clk, rst,
     input wire epoch_capture,
     input wire [15:0] epoch_id,
+    input wire ir_epoch_capture,
+    input wire [15:0] ir_epoch_id,
     input wire pose_update,
     input wire signed [15:0] pose_roll_cd, pose_pitch_cd,
     input wire [31:0] pose_sequence,
@@ -58,7 +60,27 @@ module GlLeasePose #(
     wire cancel_work = (state != IDLE) && !render_active && !lease_matches;
     assign ready = (state == READY) && (render_active || lease_matches);
 
-    GlPoseEpochHistory u_history (
+    // Both histories record continuously. The sensor family is part of the
+    // lookup identity even when EO and IR happen to have equal numeric tags.
+    wire eo_history_response, eo_history_found, eo_history_usable, eo_history_enable;
+    wire [15:0] eo_history_epoch;
+    wire signed [15:0] eo_history_roll, eo_history_pitch;
+    wire [31:0] eo_history_sequence, eo_history_revision;
+    wire ir_history_response, ir_history_found, ir_history_usable, ir_history_enable;
+    wire [15:0] ir_history_epoch;
+    wire signed [15:0] ir_history_roll, ir_history_pitch;
+    wire [31:0] ir_history_sequence, ir_history_revision;
+    assign history_response = sensor_l ? ir_history_response : eo_history_response;
+    assign history_found = sensor_l ? ir_history_found : eo_history_found;
+    assign history_usable = sensor_l ? ir_history_usable : eo_history_usable;
+    assign history_enable = sensor_l ? ir_history_enable : eo_history_enable;
+    assign history_epoch = sensor_l ? ir_history_epoch : eo_history_epoch;
+    assign history_roll = sensor_l ? ir_history_roll : eo_history_roll;
+    assign history_pitch = sensor_l ? ir_history_pitch : eo_history_pitch;
+    assign history_sequence = sensor_l ? ir_history_sequence : eo_history_sequence;
+    assign history_revision = sensor_l ? ir_history_revision : eo_history_revision;
+
+    GlPoseEpochHistory u_eo_history (
         .clk(clk), .rst(rst), .pose_update(pose_update),
         .pose_roll_cd(pose_roll_cd), .pose_pitch_cd(pose_pitch_cd),
         .pose_receipt_sequence(pose_sequence),
@@ -66,14 +88,31 @@ module GlLeasePose #(
         .max_age_cycles(MAX_POSE_AGE_CYCLES),
         .stabilization_enable(stabilization_enabled),
         .calibration_revision(calibration_revision),
-        .lookup_req(history_req), .lookup_epoch(epoch_l),
-        .response_valid(history_response), .response_found(history_found),
-        .response_epoch(history_epoch), .response_roll_cd(history_roll),
-        .response_pitch_cd(history_pitch),
-        .response_receipt_sequence(history_sequence), .response_age_cycles(),
-        .response_sample_valid(), .response_usable(history_usable),
-        .response_age_overflow(), .response_enable(history_enable),
-        .response_calibration_revision(history_revision)
+        .lookup_req(history_req && !sensor_l), .lookup_epoch(epoch_l),
+        .response_valid(eo_history_response), .response_found(eo_history_found),
+        .response_epoch(eo_history_epoch), .response_roll_cd(eo_history_roll),
+        .response_pitch_cd(eo_history_pitch),
+        .response_receipt_sequence(eo_history_sequence), .response_age_cycles(),
+        .response_sample_valid(), .response_usable(eo_history_usable),
+        .response_age_overflow(), .response_enable(eo_history_enable),
+        .response_calibration_revision(eo_history_revision)
+    );
+    GlPoseEpochHistory u_ir_history (
+        .clk(clk), .rst(rst), .pose_update(pose_update),
+        .pose_roll_cd(pose_roll_cd), .pose_pitch_cd(pose_pitch_cd),
+        .pose_receipt_sequence(pose_sequence),
+        .epoch_capture(ir_epoch_capture), .epoch_id(ir_epoch_id),
+        .max_age_cycles(MAX_POSE_AGE_CYCLES),
+        .stabilization_enable(stabilization_enabled),
+        .calibration_revision(calibration_revision),
+        .lookup_req(history_req && sensor_l), .lookup_epoch(epoch_l),
+        .response_valid(ir_history_response), .response_found(ir_history_found),
+        .response_epoch(ir_history_epoch), .response_roll_cd(ir_history_roll),
+        .response_pitch_cd(ir_history_pitch),
+        .response_receipt_sequence(ir_history_sequence), .response_age_cycles(),
+        .response_sample_valid(), .response_usable(ir_history_usable),
+        .response_age_overflow(), .response_enable(ir_history_enable),
+        .response_calibration_revision(ir_history_revision)
     );
     reg math_start, math_enable;
     reg signed [15:0] math_roll, math_pitch;
@@ -141,6 +180,37 @@ module GlLeasePose #(
                 READY: ; // Replaced only when the lease goes away/changes.
                 default: state <= IDLE;
             endcase
+        end
+    end
+endmodule
+
+// Synchronize a long external trigger level into clk and count its rising
+// edges. epoch_capture and next_epoch are consumed on the same clock edge
+// that advances epoch_gray, matching the established EO capture convention.
+// The genlock pulse must span at least two destination clock edges.
+module GlTriggerEpoch (
+    input wire clk, rst, trigger_async,
+    output wire epoch_capture,
+    output wire [15:0] next_epoch,
+    output reg [15:0] epoch_gray
+);
+    (* ASYNC_REG = "TRUE" *) reg trigger_meta, trigger_sync;
+    reg trigger_previous;
+    reg [15:0] epoch;
+    assign epoch_capture = trigger_sync && !trigger_previous;
+    assign next_epoch = epoch + 16'd1;
+    always @(posedge clk) begin
+        if (rst) begin
+            trigger_meta <= 0; trigger_sync <= 0; trigger_previous <= 0;
+            epoch <= 0; epoch_gray <= 0;
+        end else begin
+            trigger_meta <= trigger_async;
+            trigger_sync <= trigger_meta;
+            trigger_previous <= trigger_sync;
+            if (epoch_capture) begin
+                epoch <= next_epoch;
+                epoch_gray <= next_epoch ^ (next_epoch >> 1);
+            end
         end
     end
 endmodule

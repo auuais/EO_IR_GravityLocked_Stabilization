@@ -105,7 +105,7 @@ fetch and coverage changes and new pixel regressions.
 
 ## Additional concrete deployment gaps
 
-**IR pose association is currently incorrect by construction.** The IR cameras
+**IR pose association was incorrect in the reviewed candidate.** The IR cameras
 are driven by independent `IrGenlockGenerator` (module default29.97Hz;
 `KintexTop_EO_IR_HD_SDI_panorama_base.v:645-657`), but the six IR DDR writers
 currently receive the EO `v19_global_epoch_gray` (`PanoramaBase_DdrBlackFrame.v:2042`
@@ -118,6 +118,13 @@ the existing IR pulse already enters the compositor, so no new hardware signal
 is required. Current lease tests with a single abstract epoch source do not
 prove this physical dual-family association. Do not label this only a bench
 throughput limitation or claim dual EO/IR association from the current build.
+
+Correction status: that build was subsequently stopped during placement.
+Independent IR trigger tags and two continuously captured family histories
+have been implemented and passed 21 lease cases plus trigger alignment/reset/
+full-wrap tests. See `ir_epoch_association_20261016.json` for source hashes.
+The corrected source needs a fresh full implementation/CDC result; it still
+does not establish physical genlock-to-exposure or IMU latency.
 
 **EO single freezes a bank number, not ownership.** The selector fixes camera,
 bank and readiness for a copy, but `v19_consumer_done` is always asserted in

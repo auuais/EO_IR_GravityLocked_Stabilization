@@ -140,16 +140,19 @@ and bus-skew constraints must be checked in the implemented netlist.
 
 The baseline increments 16-bit `v19_global_epoch` at the common EO strobe,
 associates source banks with epochs, and renders the selected frameset lease.
-The implementation binds coefficients to the **leased source frameset**.
-This inherited epoch is a trigger-association tag, not an exposure timestamp.
+IR now has an independent counter driven by its existing genlock pulse; all
+six IR writers use that counter's Gray epoch. The implementation binds
+coefficients to the **leased source frameset and sensor family**. These are
+trigger-association tags, not exposure timestamps.
 
 Implemented production sequence:
 
 1. Receive one coherent pose and receipt sequence in the UI clock domain.
-2. At the common strobe, save pose, age, enable and calibration revision against
-   `v19_global_epoch_next`, the epoch assigned on that same edge. History holds
-   16 full-tag entries and rejects overwritten entries.
-3. `GlLeasePose` looks up the selected EO/IR lease epoch and freezes its inputs.
+2. At each family's trigger, save pose, age, enable and calibration revision
+   against the next epoch assigned on that same edge. Separate EO and IR
+   histories each hold 16 full-tag entries and reject overwritten entries.
+   Both record continuously, including while another view is selected.
+3. `GlLeasePose` looks up the selected family's lease epoch and freezes its inputs.
    The freshness policy defaults to 23,340,000 UI cycles (100 ms at 233.4 MHz),
    evaluated at epoch capture. Missing/stale/disabled data or calibration
    revision mismatch uses exact static offsets. No exposure-time alignment is
@@ -204,6 +207,14 @@ cases, including global limiting, signed extremes and atomic output checks.
 The lease bridge passes directed frame association, active-pass freeze,
 fallback, history overwrite, cancellation and reset tests. Wire-level I2C
 tests pass, and the copied MCU project builds with the installed ARM compiler.
+
+An integration review found that the first candidate incorrectly used EO
+epochs for IR captures. That candidate's build was stopped during placement.
+The corrected implementation has independent IR trigger tags and history;
+21 lease cases and a trigger test covering all 65,536 counter increments,
+phase, reset and capture/Gray alignment pass. Equal numeric EO/IR tags cannot
+borrow the other family's pose. See `validation/ir_epoch_association_20261016.json`.
+The corrected revision requires a fresh complete implementation run.
 
 Renderer pixel/scheduling regression is complete: eight EO/IR table cases and
 eight rasters in each legacy/gravity mode passed, with 14,112,000 bit-exact

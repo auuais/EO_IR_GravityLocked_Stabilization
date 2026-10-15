@@ -7,12 +7,18 @@ Push-Location $taskBuild
 try {
     $taskSources = @('GlCameraProjection.v','GlFramePose.v','GlPoseEpochHistory.v','GlLeasePose.v') |
         ForEach-Object { Join-Path $taskRoot ('src/' + $_) }
-    & (Join-Path $VivadoBin 'xvlog.bat') --sv @taskSources (Join-Path $taskRoot 'sim/tb_GlLeasePose.sv') --log xvlog.log
+    & (Join-Path $VivadoBin 'xvlog.bat') --sv @taskSources `
+        (Join-Path $taskRoot 'sim/tb_GlLeasePose.sv') `
+        (Join-Path $taskRoot 'sim/tb_GlTriggerEpoch.sv') --log xvlog.log
     if ($LASTEXITCODE -ne 0) { throw 'xvlog failed' }
-    & (Join-Path $VivadoBin 'xelab.bat') tb_GlLeasePose -s gl_lease_pose --log xelab.log
-    if ($LASTEXITCODE -ne 0) { throw 'xelab failed' }
-    & (Join-Path $VivadoBin 'xsim.bat') gl_lease_pose -runall --log xsim.log
-    if ($LASTEXITCODE -ne 0) { throw 'xsim failed' }
-    $taskLog = Get-Content xsim.log -Raw
-    if ($taskLog -notmatch 'PASS GlLeasePose:' -or $taskLog -match '(?im)^\s*(Fatal|Error):') { throw 'Lease pose simulation failed' }
+    foreach ($taskTop in @('GlLeasePose','GlTriggerEpoch')) {
+        & (Join-Path $VivadoBin 'xelab.bat') ('tb_' + $taskTop) -s $taskTop --log ($taskTop + '_xelab.log')
+        if ($LASTEXITCODE -ne 0) { throw 'xelab failed' }
+        & (Join-Path $VivadoBin 'xsim.bat') $taskTop -runall --log ($taskTop + '_xsim.log')
+        if ($LASTEXITCODE -ne 0) { throw 'xsim failed' }
+        $taskLog = Get-Content ($taskTop + '_xsim.log') -Raw
+        if ($taskLog -notmatch ('PASS ' + $taskTop + ':') -or $taskLog -match '(?im)^\s*(Fatal|Error):') {
+            throw ('Simulation failed: ' + $taskTop)
+        }
+    }
 } finally { Pop-Location }

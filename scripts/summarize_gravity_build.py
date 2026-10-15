@@ -7,7 +7,7 @@ Usage: python scripts/summarize_gravity_build.py builds/gravity_TIMESTAMP
 An explicit --log must belong to this build; shared Vivado logs are never guessed.
 Pending means incomplete evidence, not proof that Vivado is still running.
 Completion validates recorded build guards, not hardware or blanket CDC safety.
-Exit status: 0 for complete/pending evidence, 1 for failed/missing builds, 2 for
+Exit status: 0 for complete/pending evidence, 1 for failed/missing/superseded builds, 2 for
 CLI errors. Automation must inspect overall_state before treating a build as complete.
 """
 import argparse
@@ -284,8 +284,9 @@ def summarize(root, log=None):
     failed = bool(errors) or any(r["state"] == "fail" for r in reports.values()) or any(
         a["state"] == "fail" for group in audits.values() for a in group.values())
     missing = [k for k, ok in required.items() if not ok]
-    state = "failed" if failed else ("complete_verified" if not missing else
-            ("missing" if not root.is_dir() else "pending_or_incomplete"))
+    state = "superseded" if has("SUPERSEDED ") else ("failed" if failed else
+            ("complete_verified" if not missing else
+             ("missing" if not root.is_dir() else "pending_or_incomplete")))
     return {"schema_version": 1, "build_dir": str(root),
             "observed_at_utc": datetime.now(timezone.utc).isoformat(), "overall_state": state,
             "completion_requirements_not_met": missing, "explicit_errors": errors,
@@ -317,7 +318,7 @@ def main():
         except OSError as exc:
             parser.error(str(exc))
     print(encoded, end="")
-    return 1 if result["overall_state"] in ("failed", "missing") else 0
+    return 1 if result["overall_state"] in ("failed", "missing", "superseded") else 0
 
 
 if __name__ == "__main__":

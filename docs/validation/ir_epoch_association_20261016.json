@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-16",
+  "status": "PASS_DIRECTED_TESTS_PROMOTED_REBUILD_REQUIRED",
+  "candidate_files": {
+    "src/GlLeasePose.v": {
+      "registered_sha256": "97cbc68e895efad1c75655703665de38d2507c604f641d720e007bebd0a85c66",
+      "candidate_sha256": "b98d8016f529d77ddd44610f598f94fdbe29836a14ac3c8a31da75c5f61651f4"
+    },
+    "src/PanoramaBase_DdrBlackFrame.v": {
+      "registered_sha256": "8cdfe959b09b7b0e51eb1e0e7386f7aa76770bb97a304798bc159fa9a6a14731",
+      "candidate_sha256": "bc02dc489e1df82efb6ddf747dd764ca03e79d78ed7e87f4fd129310e8ce66ea"
+    },
+    "sim/tb_GlLeasePose.sv": {
+      "registered_sha256": "6db4cea8c1d4d80f4729de850dd666ec42519771b836d0a5e2a6c77d3f1f5897",
+      "candidate_sha256": "237c67454e2edaaabc3d7386bfbc22cb3a54c99f509601b52964c20b74e33ffc"
+    },
+    "sim/tb_GlTriggerEpoch.sv": {
+      "registered_sha256": null,
+      "candidate_sha256": "2ba70de4303511b4e3cc2c7092f8b26025d292d7c4e35d628bd0e40e7d957b27"
+    },
+    "scripts/test_gl_lease_pose.ps1": {
+      "registered_sha256": "eee2ba6ecafb1f72359b368a54b8172525a15aea09f7776ed634a0d138d89621",
+      "candidate_sha256": "2513dd215e3dfa56881556c35962ac3412377c4d7be959d91af11c0ded1caae6"
+    }
+  },
+  "patch": {
+    "path": "builds/ir_epoch_fix/ir_epoch_fix.patch",
+    "sha256": "7b4c7ce067c3f7788403ae635ebe357c91a3997d6efda3b3b840d0de06492a6e"
+  },
+  "commands": [
+    "powershell -NoProfile -ExecutionPolicy Bypass -File builds/ir_epoch_fix/test_ir_epoch_fix.ps1",
+    "From builds/ir_epoch_fix: C:/AMDDesignTools/2025.2/Vivado/bin/xvlog.bat --sv -i ../../src src/PanoramaBase_DdrBlackFrame.v --log top_syntax_xvlog.log"
+  ],
+  "results": {
+    "lease_cases_passed": 21,
+    "trigger_counter_full_wrap_increments": 65536,
+    "top_syntax_analysis": "PASS xvlog 2025.2",
+    "top_structural_mapping": "PASS all six EO writers retain EO Gray epoch; all six IR writers use IR Gray epoch; IR history capture/id use the same IR counter",
+    "full_top_elaboration": "NOT RUN; syntax analysis and structural mapping are not full elaboration",
+    "production_render_pixel_regression": "NOT REPEATED; optical projection/renderer unchanged"
+  },
+  "coverage": [
+    "EO legacy history/fallback/overwrite/enable/calibration checks retained",
+    "Equal EO/IR numeric tags retain different signed poses and receipt sequences",
+    "Missing and stale IR history cannot borrow a valid same-number EO sample",
+    "Simultaneous EO/IR captures",
+    "Histories capture while panorama is disabled and while other sensor is selected",
+    "Family switch during math cancels old result even when numeric tag is unchanged",
+    "Accepted IR pass freezes family/epoch/receipt/angles despite new inputs",
+    "Same-tag IR capture on exact lookup edge returns new receipt without changing EO snapshot",
+    "Reset invalidates both histories",
+    "Trigger synchronizer independent phase, simultaneous pulses, held-high pulse, full16-bit wrap and reset",
+    "History next_epoch capture matches post-edge writer Gray epoch"
+  ],
+  "logs": {
+    "GlLeasePose_xsim.log": {
+      "sha256": "5ce4861380fbe307282df8f2b69f5f1c04a3b140965c6ba2d7283d86ddc6c4b1",
+      "path": "builds/ir_epoch_fix/GlLeasePose_xsim.log"
+    },
+    "GlTriggerEpoch_xsim.log": {
+      "sha256": "1643777836f605958d9b129c1b45ec805fab73cd473abd615c8ea2735a795469",
+      "path": "builds/ir_epoch_fix/GlTriggerEpoch_xsim.log"
+    },
+    "top_syntax_xvlog.log": {
+      "sha256": "63c828d620ea708c0af4550b00291a4a16dc8876b030637571025ebd84c5292e",
+      "path": "builds/ir_epoch_fix/top_syntax_xvlog.log"
+    },
+    "xvlog.log": {
+      "sha256": "938a5c84df5bc8a760d6b75f24f796dd9bfdfa9b921b76b3e004ecdc8edf792d",
+      "path": "builds/ir_epoch_fix/xvlog.log"
+    },
+    "GlLeasePose_xelab.log": {
+      "sha256": "d9372fb0311128f929943cdc0158e360919ac82447cd31d84187b1f5ff692731",
+      "path": "builds/ir_epoch_fix/GlLeasePose_xelab.log"
+    },
+    "GlTriggerEpoch_xelab.log": {
+      "sha256": "063efc9b762b948ccebc1114e91c18c0ee8599b96786147f56457519ee8534b1",
+      "path": "builds/ir_epoch_fix/GlTriggerEpoch_xelab.log"
+    }
+  },
+  "limitations": [
+    "Scratch testing did not alter registered sources; verified candidate was then promoted. No hardware accessed.",
+    "GlTriggerEpoch is appended to existing GlLeasePose.v, so no new project source file is required. New IR synchronizer requires full-top CDC/timing validation.",
+    "Physical genlock-to-raster/exposure and IMU latency remain separate calibration/bench questions.",
+    "Bandwidth deficit against historical aggregate rate and inherited EO-single bank ownership risk remain independent."
+  ],
+  "registered_files_unchanged_during_scratch_tests": true,
+  "promotion": "All five files copied after superseding the old build, with exact before/after SHA256 verification.",
+  "production_runner_validation": {
+    "command": "./scripts/test_gl_lease_pose.ps1",
+    "status": "PASS",
+    "lease_cases": 21,
+    "trigger_wrap_increments": 65536,
+    "logs": {
+      "builds\\lease_pose\\GlLeasePose_xsim.log": "fbb2218a299060fe3e1c916baf42347a18b147b19d33a05e3d0a5eb4954768e0",
+      "builds\\lease_pose\\GlTriggerEpoch_xsim.log": "5ff5190316e4a5e72f574762a32ece57b910384924f99c541fcf71615bb3f54a"
+    }
+  }
+}
