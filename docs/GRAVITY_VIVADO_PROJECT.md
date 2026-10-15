@@ -39,7 +39,8 @@ build directory.
   incremental checkpoint reuse disabled and no inherited generated checkpoint.
 - Checked-in `ddr4_sub64`, `dbg_ila_0`, and `dbg_ila_1` IP definitions, unchanged.
   XPM CDC/FIFO/memory libraries are enabled as in the baseline full-build flow.
-- Both baseline board constraint files plus `gravity_cdc.xdc` loaded late,
+- Both baseline board constraint files plus `gravity_cdc.xdc` loaded late for
+  implementation (after the MIG IP checkpoint provides its UI clock),
   all `src/*.v` and `src/*.vh`, all `sim/*.v` and `sim/*.sv`, and the
   row-run/rollpitch/gravity `.mem` files.
 

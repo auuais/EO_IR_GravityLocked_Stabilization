@@ -59,6 +59,12 @@ v19_refresh_fileset $project_root 0
 set gravity_xdc [file join $project_root constraints gravity_cdc.xdc]
 v19_add_if_missing $gravity_xdc constrs_1
 set_property PROCESSING_ORDER LATE [get_files $gravity_xdc]
+# The MIG UI clock and final mailbox register endpoints exist after the OOC
+# IP checkpoints are linked. Loading this during RTL synthesis only generates
+# unresolved-clock/endpoint warnings; open_run loads implementation XDC before
+# the guarded netlist audit and physical build.
+set_property USED_IN_SYNTHESIS false [get_files $gravity_xdc]
+set_property USED_IN_IMPLEMENTATION true [get_files $gravity_xdc]
 foreach path [lsort [glob -nocomplain [file join $project_root sim *.sv]]] {
     v19_add_if_missing $path sim_1
 }
