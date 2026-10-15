@@ -1,0 +1,3 @@
+# Preserve imported MCU source/build metadata bytes across clone and checkout.
+# Their original hashes are recorded in firmware/source_provenance.json.
+firmware/eo_osd_remote/** -text
