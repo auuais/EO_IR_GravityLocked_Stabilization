@@ -26,6 +26,7 @@ Create a run record containing the following before programming:
 | MCU candidate | Exact flashed artifact path/hash, source commit and build log; identify the previously installed image separately |
 | Profile | SHA-256 of `config/parameters_unified.ini`; actual six-camera EO and IR mounting/trim banks read from the running system |
 | Bench | Identified board/target, connected cameras and sector labels, actual input/output formats and measured rates, display/capture path, test instruments and their timebases |
+| Camera timing | Per-camera free-run/trigger mode, external trigger/genlock rate, shutter/exposure, external-trigger delay and DNR settings, verified on the current rig |
 | State | UI mode, On/Off, method selection, camera selection, calibration revision and all initial integrity/status flags |
 | Evidence | Raw video/frames, ILA exports with matched probe file, bus traces if available, operator motion notes and analysis outputs |
 
@@ -33,6 +34,14 @@ Use SHA-256 of actual files, for example PowerShell `Get-FileHash -Algorithm
 SHA256 -LiteralPath <file>` after replacing the placeholder with the verified
 path. A source build or filename is not proof of the image currently programmed.
 Record programming/readback evidence through the bench's established procedure.
+
+Earlier camera experiments used differing free-run/trigger settings. Do not
+assume that every camera exposes at the shared trigger, or infer exposure
+synchronization from equal frame tags. Hold the recorded exposure/DNR/delay
+settings fixed when comparing stabilization Off and On; repeat latency and
+inter-camera spread measurements when those settings change. The implemented
+EO and IR histories use their own trigger families, but neither provides a
+per-camera exposure timestamp.
 
 **Pass:** rollback hashes match; FPGA/MCU artifacts and calibration state are
 identified; the whole candidate has passed its build and physical CDC checks.
