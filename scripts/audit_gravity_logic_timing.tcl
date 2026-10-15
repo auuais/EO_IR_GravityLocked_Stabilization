@@ -3,14 +3,19 @@
 #   gl_audit_logic_timing $output_dir routed
 # Optional third argument selects a hierarchy for standalone smoke tests:
 #   gl_audit_logic_timing $output_dir smoke u_projection
-# Default NAME pattern matches the rebuilt GlLeasePose instance regardless of
-# its parent prefix or Vivado's spelling of generated-block separators.
+# Default full-design scope requires the rebuilt GlLeasePose and its sibling
+# IR trigger counter. Explicit standalone scopes remain supported.
 # This checks internal logic only. Baseline external I/O exceptions are outside
 # the scope; routed setup/hold/pulse-width and bus-skew guards remain separate.
 proc gl_audit_logic_timing {output_dir stage {hierarchy_pattern {*u_gravity_pose}}} {
     if {![regexp {^[A-Za-z0-9_-]+$} $stage]} { error "Invalid gravity audit stage: $stage" }
     set roots [get_cells -hierarchical -filter "NAME =~ $hierarchy_pattern && IS_PRIMITIVE == 0"]
     if {[llength $roots] == 0} { error "Gravity timing scope missing: $hierarchy_pattern" }
+    if {$hierarchy_pattern eq "*u_gravity_pose"} {
+        set ir_roots [get_cells -hierarchical -filter {NAME =~ *u_ir_epoch && IS_PRIMITIVE == 0}]
+        if {[llength $ir_roots] != 1} { error "Expected exactly one IR trigger timing scope: $ir_roots" }
+        set roots [concat $roots $ir_roots]
+    }
     set registers [list]
     foreach root_cell $roots {
         set root_name [get_property NAME $root_cell]
@@ -35,7 +40,8 @@ proc gl_audit_logic_timing {output_dir stage {hierarchy_pattern {*u_gravity_pose
         if {$count != 0} { error "Gravity timing coverage failed: $check=$count; inspect $coverage_path" }
     }
 
-    # Within GlLeasePose all sequential paths use UI clock; there is no CDC.
+    # All selected registers use UI clock, including both IR synchronizer
+    # stages. The external trigger launch is outside this internal scope.
     # A false path or asynchronous clock-group cut here is an accidental cut.
     # Do not use -quiet: it can convert an analysis error into an empty result.
     set ignored [get_timing_paths -user_ignored -from $registers -to $registers -max_paths 10]
