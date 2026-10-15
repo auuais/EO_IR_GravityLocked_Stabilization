@@ -74,8 +74,9 @@ not prove elaboration, ROM consumption by synthesis, physical CDC correctness,
 timing closure, hardware behavior, or a working gravity-stabilized image.
 IP output products may need generation during a subsequent full build.
 
-Creation was verified on 2026-10-15 with Vivado 2025.2: 49 RTL `.v` files,
-66 design inputs, 43 simulation inputs, and 12 staged ROMs. SHA-256 checks
+Creation was verified on 2026-10-15 with Vivado 2025.2 and refreshed after
+the epoch-history module was added: 50 RTL `.v` files, 67 design inputs,
+44 simulation inputs, and 12 staged ROMs. SHA-256 checks
 matched all 12 source/staged ROM pairs and confirmed that the inherited XPR
 and all three XCI files were unchanged. The verification record is
 `builds/vivado_project/source_hash_verification.json`. Counts can grow as new

@@ -80,14 +80,17 @@ projection can be completed independently of this choice.
 Keep the user-selected calibration snapshot immutable; generated assets need
 their own source/profile hashes and validation results. The INI's IR image
 paths currently refer to EO test BMPs, so it cannot serve unchanged as an IR
-pixel-golden fixture.
+pixel-golden fixture. Run `python scripts/audit_gravity_geometry.py` to
+reproduce the coordinate/profile/shift-width audit; the recorded result is
+`validation/gravity_geometry_20261015.json`.
 
 ## IMU transport findings
 
 Read-only audit source:
 `EO_OSD_Remote_20260812/ST_Link-test/Core` within the original C project.
 This is the compiled source tree; the installed MCU binary has not been
-identified or verified.
+identified or verified. Audited source hashes are recorded in
+`validation/firmware_source_audit_20261015.json`.
 
 - MCU writes I2C address `0x36`, one four-byte transaction starting at register
   `0x10`: signed int16 roll then pitch, little-endian, in centidegrees.
@@ -155,7 +158,13 @@ The projection needs 531-601 cycles and synthesizes to 1,414 LUTs, 1,513 FFs,
 67.5 BRAM tiles and two DSPs. Its positive post-synthesis slack is an estimate,
 not routed timing closure. See `validation/camera_projection_20261015.json`.
 
-In progress: epoch-tagged pose history with freshness and overwrite checks.
+Also completed: `GlPoseEpochHistory`, with full epoch tags, caller-supplied
+freshness threshold, age-overflow rejection, enable/calibration revision
+snapshot, and explicit same-edge pose/capture/lookup behavior. It is still
+standalone. The downstream renderer must freeze its returned snapshot for
+the full pass. When integrating with the baseline strobe increment, supply
+the epoch assigned to the new capture (the next epoch value), not a stale
+pre-increment register value.
 
 Remaining: global multi-camera limiting/coefficient controller; explicit MCU
 transport/control updates; frame/lease binding; capture coverage strategy;

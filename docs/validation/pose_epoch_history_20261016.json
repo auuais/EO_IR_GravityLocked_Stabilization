@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-10-16T00:00:55.2536146+09:00",
+  "tool": "Vivado 2025.2 xvlog/xelab/xsim",
+  "status": "PASS",
+  "cases": [
+    {
+      "depth": 1,
+      "age_width": 1,
+      "checked_cycles": 131
+    },
+    {
+      "depth": 1,
+      "age_width": 4,
+      "checked_cycles": 145
+    },
+    {
+      "depth": 4,
+      "age_width": 4,
+      "checked_cycles": 145
+    },
+    {
+      "depth": 16,
+      "age_width": 4,
+      "checked_cycles": 145
+    }
+  ],
+  "coverage": [
+    "Never-received sample",
+    "Inclusive stale threshold",
+    "Saturating age and sticky overflow",
+    "Complete epoch-tag match",
+    "Epoch and receipt-counter wrap",
+    "Same-edge pose/capture/lookup",
+    "Overwrite existing same tag",
+    "Reject overwritten alias on lookup edge",
+    "Captured enable/calibration revision",
+    "Reset dominance",
+    "Held response payload without lookup"
+  ],
+  "independent_review": "No functional findings",
+  "scope": "Standalone functional simulation and plain Verilog compile. No production wiring, exposure-time alignment or physical timing claim.",
+  "files": [
+    {
+      "path": "src/GlPoseEpochHistory.v",
+      "sha256": "472e82d751b323a0b4f325c818353e1a41bcd507cc4af06b1b1f25d9e3aa64d7"
+    },
+    {
+      "path": "sim/tb_GlPoseEpochHistory.sv",
+      "sha256": "610ad262c89791f7df75278ce05072b853678265cd8d0227adadd3bd100c5eb8"
+    },
+    {
+      "path": "scripts/test_gl_pose_epoch_history.ps1",
+      "sha256": "a0d3d9761eb8a480bb95247414b8fd6d6c965424b5950f641e35aefd79edcbb7"
+    }
+  ],
+  "logs": "builds/pose_epoch_history"
+}

@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-10-15T23:56:13.7336953+09:00",
+  "source_root": "C:/SVNProjects/IMU_Stabilize_v40/EO_OSD_Remote_20260812/ST_Link-test",
+  "files": [
+    {
+      "relative_path": "Core/Src/mcu_fsm.c",
+      "sha256": "a6468b4aadd51c23e2575a67814556222bfabb5e6aff81c54a88a9282a9fd072",
+      "bytes": 123678
+    },
+    {
+      "relative_path": "Core/Src/fpga_i2c.c",
+      "sha256": "1ec200f8b8c58a3da54d5d48a8e6c29693ad0970932ccfc6eab62d0139b026c1",
+      "bytes": 2099
+    },
+    {
+      "relative_path": "Core/Src/imu_handler.c",
+      "sha256": "3f852ce7894be15a8e849703c7e7f2751b940a5bccb5079089b173f03d5f25d8",
+      "bytes": 9676
+    },
+    {
+      "relative_path": "Core/Src/stm32g0xx_it.c",
+      "sha256": "8d0b7d80d8c906d4301320f760ba4e3255826fd7ed67a21a6e7af1e644e27e9d",
+      "bytes": 6212
+    },
+    {
+      "relative_path": ".cproject",
+      "sha256": "8fe322b64c3a1fd61d204d52c8adae9ee6e16b93152540562f513601d2bcf767",
+      "bytes": 25906
+    },
+    {
+      "relative_path": "Master_firmware1.ioc",
+      "sha256": "2d050b7ecf45b9336c64ac453770e3987471cf113c7d1f71ae929a4e0a270e05",
+      "bytes": 7707
+    },
+    {
+      "relative_path": "todo_later.md",
+      "sha256": "12f87bff7ac7252c6e60be54ed9e2bcd566a8b45062002ce17aba916c60dac04",
+      "bytes": 655
+    }
+  ],
+  "scope": "Read-only source audit. Source files were not copied or changed. Installed MCU firmware identity, physical wiring and axis alignment remain unverified.",
+  "findings_document": "docs/GRAVITY_IMPLEMENTATION.md"
+}

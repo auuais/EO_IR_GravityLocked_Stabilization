@@ -40,6 +40,8 @@ Implemented and simulated:
   clocks, retaining the latest pending update under load.
 - `GlCameraProjection`: synthesizable, sequential camera-angle computation
   using the exact C lookup tables; matches all 1,342 C-generated vectors.
+- `GlPoseEpochHistory`: saves a coherent pose with a complete frame-epoch tag,
+  calibration revision, enable state and freshness; rejects overwritten tags.
 
 See [`reference/gravity_math/README.md`](reference/gravity_math/README.md) for
 the math API and evidence, and
@@ -58,6 +60,8 @@ python scripts/test_gravity_math.py --ini config/parameters_unified.ini
 ./scripts/test_gl_pose_receiver.ps1
 ./scripts/test_gl_pose_cdc.ps1
 ./scripts/test_gl_camera_projection.ps1
+./scripts/test_gl_pose_epoch_history.ps1
+python scripts/audit_gravity_geometry.py
 ```
 
 The standalone test scripts create ignored `build/` or `builds/` products and

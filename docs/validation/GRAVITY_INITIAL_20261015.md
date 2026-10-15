@@ -16,6 +16,8 @@ These are standalone functional tests, not integrated FPGA timing or image tests
 | Camera projection RTL versus exact C++ vectors | PASS: all 1,342, 531-601 cycles |
 | Camera projection standalone KU15P synthesis | PASS: 1,414 LUTs, 1,513 FFs, 67.5 BRAM tiles, 2 DSPs |
 | Relocated Vivado project creation/source/IP audit | PASS: all three IPs up to date; protected XPR/XCI hashes unchanged |
+| Epoch history: depth 1 with 1-bit age; depths 1/4/16 with 4-bit age | PASS: 131 + 3 x 145 checked cycles |
+| EO map/segment, calibration and shift-width audit | PASS: reproducible evidence, 31,680 matching segment origins |
 
 The C comparison uses the copied user-selected config/parameters_unified.ini
 (SHA-256 7106b1f1ad56d545c6b3eef5b29f9608fdb1cfb02ce364b1ca85ca096c3eea3c).

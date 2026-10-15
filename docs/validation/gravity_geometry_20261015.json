@@ -1,0 +1,573 @@
+{
+  "schema": "gravity-geometry-readonly-audit-v1",
+  "scope": "Existing artifacts only: no production ROM/map/INI/RTL writes and no hardware access",
+  "selected_baseline_commit": "3479cacf2e512a5bde9aa3e0243755826e071ef4",
+  "script": {
+    "path": "scripts/audit_gravity_geometry.py",
+    "available": true,
+    "size_bytes": 15344,
+    "sha256": "2e0ed1ed283a93bd744aa66e6d0b2a5da6c856913a3218e22dcae13c8e7bee25"
+  },
+  "renderer_geometry": {
+    "rows": 480,
+    "cameras": 6,
+    "segments": 11,
+    "segment_width": 64,
+    "source_width": 1920,
+    "source_height": 1080
+  },
+  "segment_rom": {
+    "path": "assets/rowruns/eo_v19_render_runs.mem",
+    "available": true,
+    "size_bytes": 1203840,
+    "sha256": "d7a724124a545ed862f697bfcd3219ffbb6f6333f352514792781f03ed9489ca"
+  },
+  "map_packages": [
+    {
+      "folder": "assets/maps",
+      "x": {
+        "path": "assets/maps/eo_base_x_q16.bin",
+        "available": true,
+        "size_bytes": 1257600,
+        "sha256": "280a245f03ce71a3754a7d7328082b7c7bdda4cbdb1bba6f1597e8944018a017"
+      },
+      "y": {
+        "path": "assets/maps/eo_base_y_q16.bin",
+        "available": true,
+        "size_bytes": 1257600,
+        "sha256": "c36d86257ebf91e386d132326021d613b978d5288c5f732557b43267ebf66721"
+      },
+      "entries": 314400,
+      "width_inferred_from_renderer_rows": 655,
+      "rows": 480,
+      "x_source_pixel_range": [
+        271.6574401855469,
+        1609.4967041015625
+      ],
+      "y_source_pixel_range": [
+        46.337310791015625,
+        1052.781982421875
+      ],
+      "origin_comparison": {
+        "status": "all_match",
+        "matched_records": 31680,
+        "record_count": 31680,
+        "first_mismatches": []
+      },
+      "probe": {
+        "destination_row": 240,
+        "local_x": 320,
+        "source_q16": [
+          60714228,
+          36405248
+        ],
+        "source_pixels": [
+          926.4255981445312,
+          555.5
+        ]
+      }
+    },
+    {
+      "folder": "assets/packages/eo_20260806",
+      "x": {
+        "path": "assets/packages/eo_20260806/eo_base_x_q16.bin",
+        "available": true,
+        "size_bytes": 1257600,
+        "sha256": "280a245f03ce71a3754a7d7328082b7c7bdda4cbdb1bba6f1597e8944018a017"
+      },
+      "y": {
+        "path": "assets/packages/eo_20260806/eo_base_y_q16.bin",
+        "available": true,
+        "size_bytes": 1257600,
+        "sha256": "c36d86257ebf91e386d132326021d613b978d5288c5f732557b43267ebf66721"
+      },
+      "entries": 314400,
+      "width_inferred_from_renderer_rows": 655,
+      "rows": 480,
+      "x_source_pixel_range": [
+        271.6574401855469,
+        1609.4967041015625
+      ],
+      "y_source_pixel_range": [
+        46.337310791015625,
+        1052.781982421875
+      ],
+      "origin_comparison": {
+        "status": "all_match",
+        "matched_records": 31680,
+        "record_count": 31680,
+        "first_mismatches": []
+      },
+      "probe": {
+        "destination_row": 240,
+        "local_x": 320,
+        "source_q16": [
+          60714228,
+          36405248
+        ],
+        "source_pixels": [
+          926.4255981445312,
+          555.5
+        ]
+      }
+    },
+    {
+      "folder": "assets/packages/eo_20260831",
+      "x": {
+        "path": "assets/packages/eo_20260831/eo_base_x_q16.bin",
+        "available": true,
+        "size_bytes": 1257600,
+        "sha256": "280a245f03ce71a3754a7d7328082b7c7bdda4cbdb1bba6f1597e8944018a017"
+      },
+      "y": {
+        "path": "assets/packages/eo_20260831/eo_base_y_q16.bin",
+        "available": true,
+        "size_bytes": 1257600,
+        "sha256": "c36d86257ebf91e386d132326021d613b978d5288c5f732557b43267ebf66721"
+      },
+      "entries": 314400,
+      "width_inferred_from_renderer_rows": 655,
+      "rows": 480,
+      "x_source_pixel_range": [
+        271.6574401855469,
+        1609.4967041015625
+      ],
+      "y_source_pixel_range": [
+        46.337310791015625,
+        1052.781982421875
+      ],
+      "origin_comparison": {
+        "status": "all_match",
+        "matched_records": 31680,
+        "record_count": 31680,
+        "first_mismatches": []
+      },
+      "probe": {
+        "destination_row": 240,
+        "local_x": 320,
+        "source_q16": [
+          60714228,
+          36405248
+        ],
+        "source_pixels": [
+          926.4255981445312,
+          555.5
+        ]
+      }
+    }
+  ],
+  "selected_profile": {
+    "path": "config/parameters_unified.ini",
+    "available": true,
+    "size_bytes": 5898,
+    "sha256": "7106b1f1ad56d545c6b3eef5b29f9608fdb1cfb02ce364b1ca85ca096c3eea3c",
+    "sensors": {
+      "eo": {
+        "width": 1920.0,
+        "height": 1080.0,
+        "num_cams": 6.0,
+        "fx": 1141.83474,
+        "fy": 1142.43496,
+        "cx_ratio": 0.489836,
+        "cy_ratio": 0.5143,
+        "resize_factor": 0.56296,
+        "cylindrical_h_fov_deg": 77.0,
+        "cylindrical_v_fov_deg": 54.0,
+        "panorama_crop_height_scale": 0.79,
+        "panorama_crop_width_scale": 0.7,
+        "pitch_to_translation_factor": -9.8,
+        "overlap_px": 60.0,
+        "pano_width": 3840.0,
+        "pano_height": 480.0
+      },
+      "ir": {
+        "width": 640.0,
+        "height": 512.0,
+        "num_cams": 6.0,
+        "fx": 564.83506,
+        "fy": 564.024805,
+        "cx_ratio": 0.49733,
+        "cy_ratio": 0.476162,
+        "resize_factor": 1.0,
+        "cylindrical_h_fov_deg": 65.0,
+        "cylindrical_v_fov_deg": 52.0,
+        "panorama_crop_height_scale": 0.65,
+        "panorama_crop_width_scale": 0.9,
+        "pitch_to_translation_factor": -8.72,
+        "overlap_px": 30.0,
+        "pano_width": 3240.0,
+        "pano_height": 480.0
+      }
+    }
+  },
+  "installed_map_package_profile": {
+    "path": "assets/packages/eo_20260806/source_parameters_unified.ini",
+    "available": true,
+    "size_bytes": 6084,
+    "sha256": "d93191c869cb86d737a51f4dbfcb4b6f011b454b957605f21d645f48f6754c11",
+    "sensors": {
+      "eo": {
+        "width": 1920.0,
+        "height": 1080.0,
+        "num_cams": 6.0,
+        "fx": 1141.83474,
+        "fy": 1142.43496,
+        "cx_ratio": 0.489836,
+        "cy_ratio": 0.5143,
+        "resize_factor": 0.5,
+        "cylindrical_h_fov_deg": 57.56,
+        "cylindrical_v_fov_deg": 48.56,
+        "panorama_crop_height_scale": 0.888,
+        "panorama_crop_width_scale": 1.0,
+        "pitch_to_translation_factor": -9.8,
+        "overlap_px": 50.0,
+        "pano_width": 3840.0,
+        "pano_height": 480.0
+      },
+      "ir": {
+        "width": 640.0,
+        "height": 512.0,
+        "num_cams": 6.0,
+        "fx": 564.83506,
+        "fy": 564.024805,
+        "cx_ratio": 0.49733,
+        "cy_ratio": 0.476162,
+        "resize_factor": 1.0,
+        "cylindrical_h_fov_deg": 65.0,
+        "cylindrical_v_fov_deg": 52.0,
+        "panorama_crop_height_scale": 0.65,
+        "panorama_crop_width_scale": 0.9,
+        "pitch_to_translation_factor": -8.72,
+        "overlap_px": 30.0,
+        "pano_width": 3240.0,
+        "pano_height": 480.0
+      }
+    }
+  },
+  "eo_profile_differences": {
+    "resize_factor": {
+      "installed_map_package_profile": 0.5,
+      "selected_profile": 0.56296
+    },
+    "cylindrical_h_fov_deg": {
+      "installed_map_package_profile": 57.56,
+      "selected_profile": 77.0
+    },
+    "cylindrical_v_fov_deg": {
+      "installed_map_package_profile": 48.56,
+      "selected_profile": 54.0
+    },
+    "panorama_crop_height_scale": {
+      "installed_map_package_profile": 0.888,
+      "selected_profile": 0.79
+    },
+    "panorama_crop_width_scale": {
+      "installed_map_package_profile": 1.0,
+      "selected_profile": 0.7
+    },
+    "overlap_px": {
+      "installed_map_package_profile": 50.0,
+      "selected_profile": 60.0
+    }
+  },
+  "pitch_factors": {
+    "eo": {
+      "configured_pitch_factor": -9.8,
+      "configured_pitch_factor_q16": -642253,
+      "configured_resize": 0.56296,
+      "configured_resize_q16": 36894,
+      "source_normalized_factor_q16": -1140855,
+      "source_normalized_pixels_per_degree": -17.408065795898438,
+      "stable_factor_q16": -642253,
+      "stable_pixels_per_degree": -9.8,
+      "stable_angle_rom": {
+        "path": "assets/rollpitch/eo_rp_angle.mem",
+        "available": true,
+        "size_bytes": 13013,
+        "sha256": "91f7e6e2c83dcf667e16b777acf9abf14658f5fe42de428811e5a67b0f1f76a4"
+      },
+      "probes": [
+        {
+          "camera_pitch_centi": -1000,
+          "stable_shift_rows": 98,
+          "decoded_stable_rom_shift_rows": 98,
+          "current_c_shift_rows": 174,
+          "fits_current_shift_path": false,
+          "if_narrowed_to_current_width": -82
+        },
+        {
+          "camera_pitch_centi": -500,
+          "stable_shift_rows": 49,
+          "decoded_stable_rom_shift_rows": 49,
+          "current_c_shift_rows": 87,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": 87
+        },
+        {
+          "camera_pitch_centi": -100,
+          "stable_shift_rows": 10,
+          "decoded_stable_rom_shift_rows": 10,
+          "current_c_shift_rows": 17,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": 17
+        },
+        {
+          "camera_pitch_centi": 0,
+          "stable_shift_rows": 0,
+          "decoded_stable_rom_shift_rows": 0,
+          "current_c_shift_rows": 0,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": 0
+        },
+        {
+          "camera_pitch_centi": 100,
+          "stable_shift_rows": -10,
+          "decoded_stable_rom_shift_rows": -10,
+          "current_c_shift_rows": -17,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": -17
+        },
+        {
+          "camera_pitch_centi": 500,
+          "stable_shift_rows": -49,
+          "decoded_stable_rom_shift_rows": -49,
+          "current_c_shift_rows": -87,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": -87
+        },
+        {
+          "camera_pitch_centi": 1000,
+          "stable_shift_rows": -98,
+          "decoded_stable_rom_shift_rows": -98,
+          "current_c_shift_rows": -174,
+          "fits_current_shift_path": false,
+          "if_narrowed_to_current_width": 82
+        }
+      ],
+      "minimum_signed_bits_for_these_plus_minus_10deg_probes": 9
+    },
+    "ir": {
+      "configured_pitch_factor": -8.72,
+      "configured_pitch_factor_q16": -571474,
+      "configured_resize": 1.0,
+      "configured_resize_q16": 65536,
+      "source_normalized_factor_q16": -571474,
+      "source_normalized_pixels_per_degree": -8.720001220703125,
+      "stable_factor_q16": -571474,
+      "stable_pixels_per_degree": -8.72,
+      "stable_angle_rom": {
+        "path": "assets/rollpitch/ir_rp_angle.mem",
+        "available": true,
+        "size_bytes": 13013,
+        "sha256": "d02ae9fd486b537ae5f18630bc5bc5698f0a1659bf3bfb589291211dacbea7fa"
+      },
+      "probes": [
+        {
+          "camera_pitch_centi": -1000,
+          "stable_shift_rows": 87,
+          "decoded_stable_rom_shift_rows": 87,
+          "current_c_shift_rows": 87,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": 87
+        },
+        {
+          "camera_pitch_centi": -500,
+          "stable_shift_rows": 44,
+          "decoded_stable_rom_shift_rows": 44,
+          "current_c_shift_rows": 44,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": 44
+        },
+        {
+          "camera_pitch_centi": -100,
+          "stable_shift_rows": 9,
+          "decoded_stable_rom_shift_rows": 9,
+          "current_c_shift_rows": 9,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": 9
+        },
+        {
+          "camera_pitch_centi": 0,
+          "stable_shift_rows": 0,
+          "decoded_stable_rom_shift_rows": 0,
+          "current_c_shift_rows": 0,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": 0
+        },
+        {
+          "camera_pitch_centi": 100,
+          "stable_shift_rows": -9,
+          "decoded_stable_rom_shift_rows": -9,
+          "current_c_shift_rows": -9,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": -9
+        },
+        {
+          "camera_pitch_centi": 500,
+          "stable_shift_rows": -44,
+          "decoded_stable_rom_shift_rows": -44,
+          "current_c_shift_rows": -44,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": -44
+        },
+        {
+          "camera_pitch_centi": 1000,
+          "stable_shift_rows": -87,
+          "decoded_stable_rom_shift_rows": -87,
+          "current_c_shift_rows": -87,
+          "fits_current_shift_path": true,
+          "if_narrowed_to_current_width": -87
+        }
+      ],
+      "minimum_signed_bits_for_these_plus_minus_10deg_probes": 8
+    }
+  },
+  "shift_path_widths": [
+    {
+      "signal": "cam_ysh",
+      "bits": 8,
+      "range": [
+        -128,
+        127
+      ],
+      "evidence": {
+        "path": "src/RpTables.v",
+        "line": 169,
+        "text": "reg signed [7:0]  cam_ysh [0:5];"
+      }
+    },
+    {
+      "signal": "xf_ysh",
+      "bits": 8,
+      "range": [
+        -128,
+        127
+      ],
+      "evidence": {
+        "path": "src/RpTables.v",
+        "line": 206,
+        "text": "reg signed [7:0]   xf_ysh;"
+      }
+    },
+    {
+      "signal": "in_ysh",
+      "bits": 8,
+      "range": [
+        -128,
+        127
+      ],
+      "evidence": {
+        "path": "src/RpSegXform.v",
+        "line": 44,
+        "text": "input  wire signed [7:0]  in_ysh,      // rows"
+      }
+    }
+  ],
+  "source_evidence": {
+    "rom_origins_copied_without_scaling": [
+      {
+        "path": "scripts/v19_generate_render_runs.py",
+        "line": 121,
+        "text": "ax0, ay0 = x[i0], y[i0]"
+      }
+    ],
+    "model_translation_in_source_q16": [
+      {
+        "path": "model/rpcore.py",
+        "line": 159,
+        "text": "cx, cy = s.src_w << 15, s.src_h << 15"
+      },
+      {
+        "path": "model/rpcore.py",
+        "line": 161,
+        "text": "dy = rom[\"ay0\"][:, cam, :] + (ysh << 16) - cy"
+      },
+      {
+        "path": "model/rpcore.py",
+        "line": 163,
+        "text": "Ay = ((-sn * dx + c * dy) >> 15) + cy"
+      }
+    ],
+    "rtl_translation_in_source_q16": [
+      {
+        "path": "src/RpSegXform.v",
+        "line": 62,
+        "text": "localparam signed [31:0] EO_CX = SRC_W <<< 15;"
+      },
+      {
+        "path": "src/RpSegXform.v",
+        "line": 63,
+        "text": "localparam signed [31:0] EO_CY = SRC_H <<< 15;"
+      },
+      {
+        "path": "src/RpSegXform.v",
+        "line": 95,
+        "text": "dy1   <= in_ay0 + ($signed({{8{in_ysh[7]}}, in_ysh}) <<< 16) - CY;"
+      }
+    ],
+    "rom_shift_field_and_generator_range": [
+      {
+        "path": "model/gen_rp_roms.py",
+        "line": 6,
+        "text": "{ysh[40:33] signed rows for +|angle| pitch, sin[32:17], cos[16:0]}"
+      },
+      {
+        "path": "model/gen_rp_roms.py",
+        "line": 54,
+        "text": "assert 0 <= c <= 32768 and 0 <= s < 32768 and -128 <= ysh < 128"
+      },
+      {
+        "path": "model/gen_rp_roms.py",
+        "line": 55,
+        "text": "f.write(f\"{((ysh & 0xFF) << 33) | (s << 17) | c:011x}\\n\")"
+      }
+    ],
+    "frozen_c_contract": [
+      {
+        "start_line": 1007,
+        "end_line": 1016,
+        "text": "    resize_factor = cfg.resize_factor;\r\n    resize_factor_q16 = cfg.resize_factor_q16;\r\n    if (resize_factor_q16 == 0) resize_factor_q16 = (1 << 16);\r\n\r\n    PITCH_TO_TRANSLATION_FACTOR_q16 = div_round_i64((int64_t)cfg.pitch_to_translation_factor_q16 << 16, resize_factor_q16);\r\n    YAW_TO_TRANSLATION_FACTOR_q16 = cfg.yaw_to_translation_factor_q16;\r\n\r\n    const float inv_resize_for_pitch = (std::fabs(resize_factor) > 1.0e-6f) ? (1.0f / resize_factor) : 1.0f;\r\n    PITCH_TO_TRANSLATION_FACTOR = cfg.pitch_to_translation_factor * inv_resize_for_pitch;\r\n    YAW_TO_TRANSLATION_FACTOR   = cfg.yaw_to_translation_factor;\r\n",
+        "sha256": "665b7d08eb45400f113b268667a5a9be1ad94db89123e52b12a3f2448868f380"
+      }
+    ]
+  },
+  "optional_external_original_c": {
+    "path": "C:\\SVNProjects\\IMU_Stabilize_v40\\IMU_stabilize_GYRO\\IMU_stabilize_GYRO.cpp",
+    "available": true,
+    "size_bytes": 190788,
+    "sha256": "f4dea4cbfba60bfe686644081c7bcfb4744c9d8b14771c0d916dad6702839495",
+    "optional": true,
+    "expected_frozen_source_sha256": "f4dea4cbfba60bfe686644081c7bcfb4744c9d8b14771c0d916dad6702839495",
+    "matches_frozen_source": true,
+    "source_evidence": [
+      {
+        "path": "C:\\SVNProjects\\IMU_Stabilize_v40\\IMU_stabilize_GYRO\\IMU_stabilize_GYRO.cpp",
+        "line": 1011,
+        "text": "PITCH_TO_TRANSLATION_FACTOR_q16 = div_round_i64((int64_t)cfg.pitch_to_translation_factor_q16 << 16, resize_factor_q16);"
+      },
+      {
+        "path": "C:\\SVNProjects\\IMU_Stabilize_v40\\IMU_stabilize_GYRO\\IMU_stabilize_GYRO.cpp",
+        "line": 1569,
+        "text": "float src_x = src_x_r * inv_resize;"
+      },
+      {
+        "path": "C:\\SVNProjects\\IMU_Stabilize_v40\\IMU_stabilize_GYRO\\IMU_stabilize_GYRO.cpp",
+        "line": 1570,
+        "text": "float src_y = src_y_r * inv_resize;"
+      }
+    ]
+  },
+  "proven_findings": [
+    "Installed EO segment origins are directly compared against every available package map; match counts above identify equivalence without relying on folder dates.",
+    "Baseline translation is in original-source Q16 pixels around width/2,height/2; there is no resize multiplication in the local transform.",
+    "Current C normalizes configured pitch Q16 by configured resize Q16 before applying source-pixel translation.",
+    "The listed pitch probes distinguish stable offsets from the current selected-INI C behavior and expose signed shift-path overflow."
+  ],
+  "limits_and_required_regression": [
+    "Numerical coordinate/factor evidence does not select the user's optical-geometry policy or authorize changing production assets.",
+    "Package profile provenance and byte-identical maps do not prove that maps were regenerated from the selected INI; the differing profile values are listed explicitly.",
+    "To isolate gravity math, hold identical base maps and trig coefficients and compare source-coordinate probes at zero and +/-1/5/10-degree camera pitch.",
+    "Widening shifts or adopting normalized EO translation requires new row-window occupancy, source coverage, clipping and rendered-image regressions; this audit does not run a renderer.",
+    "The minimum shift widths reported cover the specified +/-10-degree probes only; arbitrary static trims can exceed a one-pass global limit."
+  ]
+}
