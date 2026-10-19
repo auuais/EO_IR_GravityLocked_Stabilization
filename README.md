@@ -25,7 +25,8 @@ is on `codex/gravity-lock`.
 
 ## Current status
 
-This is **implementation in progress**, not a hardware-qualified build.
+The gravity-lock candidate is implemented and build-verified. **Hardware
+qualification remains pending.**
 The live gravity path is connected to the EO/IR panorama renderer and the MCU
 source is updated. Hardware has not been programmed for this work.
 
@@ -48,11 +49,15 @@ the mounting trims. Its test orientation and differing optical-map settings are
 not applied. Disabling stabilization preserves static-offset rendering exactly.
 The user approved one-time INI mounting migration on 2026-10-19. The MCU now
 replaces the mounting arrays once, preserves unrelated settings, and retains
-later UI calibration across boots using a two-page journal. Calibration
-Get/Apply works alongside ICD operation and accepts both supported feather
-encodings. See [calibration storage](docs/GRAVITY_CALIBRATION_STORAGE.md).
-Firmware has not been flashed; the earlier archived MCU candidate predates
-this migration and must not be mistaken for the new firmware.
+later UI calibration across boots using a two-page journal. The firmware permits
+calibration Get/Apply alongside ICD operation and accepts both supported feather
+encodings; host tests pass. See
+[calibration storage](docs/GRAVITY_CALIBRATION_STORAGE.md).
+The new MCU version 1.1 is built from `e18eda2` and saved locally in
+`builds/firmware_20261019_ini_once_final/`; its exact hashes and test results are
+in the [MCU validation record](docs/validation/mcu_ini_once_20261019.json).
+Firmware has not been flashed. The MCU copy in the October 16 FPGA archive
+predates this migration; use the new MCU candidate with that FPGA candidate.
 
 Implemented and simulated:
 

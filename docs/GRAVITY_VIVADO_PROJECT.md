@@ -102,7 +102,12 @@ slack is +0.075/+0.010/+0.064 ns; all 143,118 routable nets are routed, all
 pass after routing; the full CDC report retains open findings. No hardware was
 programmed. Exact artifact/report hashes and acceptance limits are committed in
 `validation/full_build_20261016_020605.json`. The local bundle includes copied
-build log/journal and `mcu_candidate/`; MCU storage policy is still pending.
+build log/journal and `mcu_candidate/`. That archived MCU predates the one-time
+INI migration approved on 2026-10-19. Use the separately validated MCU in
+`builds/firmware_20261019_ini_once_final/`; see
+[calibration storage](GRAVITY_CALIBRATION_STORAGE.md) and the
+[new MCU record](validation/mcu_ini_once_20261019.json). The original archived
+MCU files and their historical validation record remain unchanged.
 
 ## Verification outputs and limits
 

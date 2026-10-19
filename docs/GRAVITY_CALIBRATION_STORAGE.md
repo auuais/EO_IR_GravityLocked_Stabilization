@@ -113,6 +113,31 @@ the candidate. The storage tests model interrupted erase/program/commit,
 corruption, generation wrap, legacy migration and repeated UI saves/reboots.
 Adapter tests exercise address/bank selection and guarded fault handling.
 
+The 2026-10-19 candidate from commit `e18eda2` passed:
+
+- 363 journal interruption/callback-failure cases and 1,216 single-bit record
+  corruption cases, including one-time migration and later UI saves/reboots.
+- 795 STM32 adapter mock checks and 5,908,422 payload/protocol checks.
+- The existing control regression: 65,536 UI pairs and 256 modes, including
+  retry, reset and refresh behavior.
+- Strict host/ARM compilation of the new modules and the complete ARM build.
+  The full build has 10 warnings, all already present in the earlier build;
+  none are from the new modules. The old packed-member warnings are removed.
+- Compiled mounting defaults match the selected INI. The linked image excludes
+  both journal pages. All 129 original MCU source/provenance files and the
+  existing FPGA candidate's 137 inputs, 14 staged ROMs and 3 scripts match
+  their recorded hashes.
+
+MCU version 1.1 artifacts are in `builds/firmware_20261019_ini_once_final/`.
+The [validation record](validation/mcu_ini_once_20261019.json) records the exact
+ELF/HEX hashes, source input hashes, warning messages and test log hashes. Local
+logs are copied into that candidate's `test_evidence/` directory. Code size is
+76,912 bytes; BSS is 9,392 bytes including the heap/stack reservation. The linker
+reserves a 4 KB minimum stack; full runtime stack high-water is unmeasured.
+Use this MCU with the timing-passing FPGA candidate in
+`builds/gravity_20261016_020605/`. The MCU copy inside the older FPGA archive
+predates migration and is retained only as historical evidence.
+
 Before declaring hardware persistence accepted, verify the installed device,
 programmer erase policy and option bytes; save existing calibration; confirm
 first-start migration, change both banks through the UI, and read back the same

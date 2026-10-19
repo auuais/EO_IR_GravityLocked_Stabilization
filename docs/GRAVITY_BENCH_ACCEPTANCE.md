@@ -44,7 +44,8 @@ EO and IR histories use their own trigger families, but neither provides a
 per-camera exposure timestamp.
 
 **Pass:** rollback hashes match; FPGA/MCU artifacts and calibration state are
-identified; the whole candidate has passed its build and physical CDC checks.
+identified; the candidate has passed its build and scoped gravity timing/CDC
+audits, with the remaining full-design CDC findings recorded for bench review.
 Otherwise do not label subsequent video as a qualified candidate result.
 
 ## 2. Resolve the calibration state explicitly

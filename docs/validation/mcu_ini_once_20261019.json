@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "observed_at_utc": "2026-10-19T10:47:11.774720+00:00",
+  "status": "Host validation and ARM build passed; not flashed; physical acceptance pending",
+  "source_commit": "e18eda2ba66b8687e8af29294f2e23a3fd4c8023",
+  "source_tree_clean_at_build_verification": true,
+  "firmware_version": "1.1 (26/10/19)",
+  "build_directory": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/builds/firmware_20261019_ini_once_final",
+  "compiler": "arm-none-eabi-gcc.exe (GNU Tools for STM32 14.3.rel1.20251027-0700) 14.3.1 20250623",
+  "build_flags": "Cortex-M0+, soft float, Thumb, GNU11, -Os; see firmware/build_firmware.ps1",
+  "size_bytes": {
+    "text": 76912,
+    "data": 0,
+    "bss_including_heap_and_stack_reservation": 9392,
+    "minimum_stack_reservation": 4096
+  },
+  "warnings": {
+    "count": 10,
+    "previous_build_count": 22,
+    "all_messages_present_in_previous_build": true,
+    "new_module_warnings": [],
+    "messages": [
+      "variable '_4q3' set but not used [-Wunused-but-set-variable]",
+      "'ir_flush_rx' defined but not used [-Wunused-function]",
+      "'imu_spi_read_pulsed' defined but not used [-Wunused-function]",
+      "'imu_spi_write_pulsed' defined but not used [-Wunused-function]",
+      "'s_imu_spi_zeros' defined but not used [-Wunused-const-variable=]",
+      "'ui_send_imu_stats' defined but not used [-Wunused-function]",
+      "'ui_send_imu_odr' defined but not used [-Wunused-function]",
+      "'ui_send_imu_orient' defined but not used [-Wunused-function]",
+      "'fpga_push_all_runtime_config' defined but not used [-Wunused-function]",
+      "<elf> has a LOAD segment with RWX permissions"
+    ]
+  },
+  "user_policy": "Apply selected INI mounting yaw/pitch/roll once; then preserve later UI changes. Preserve unrelated loaded calibration settings and stable optical geometry.",
+  "profile": {
+    "ini": "config/parameters_unified.ini",
+    "sha256": "7106b1f1ad56d545c6b3eef5b29f9608fdb1cfb02ce364b1ca85ca096c3eea3c",
+    "compiled_mounting_arrays_match_ini": true,
+    "compiled_defaults": {
+      "profile_revision": 1896264177,
+      "mode": 21,
+      "eo": {
+        "yaw_cd": [
+          0,
+          6000,
+          12000,
+          18000,
+          24000,
+          30000
+        ],
+        "pitch_cd": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "roll_cd": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "overlap_px": 100,
+        "feather_strength_q16": 65536
+      },
+      "ir": {
+        "yaw_cd": [
+          9000,
+          15000,
+          21000,
+          27000,
+          33000,
+          39000
+        ],
+        "pitch_cd": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "roll_cd": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "overlap_px": 30,
+        "feather_strength_q16": 65536
+      }
+    }
+  },
+  "linker_and_hex": {
+    "result": "pass",
+    "hex_checksums_valid": true,
+    "image_start": "0x8000000",
+    "image_end_exclusive": "0x8012c70",
+    "journal_start": "0x807f000",
+    "journal_end_exclusive": "0x8080000",
+    "journal_excluded_from_image": true,
+    "required_runtime_symbols_present": true
+  },
+  "source_inputs": {
+    "count": 121,
+    "all_modification_times_before_build_log_creation": true,
+    "sha256": {
+      "firmware/build_firmware.ps1": "7542b07427ce6a17cc314144fd7fee9376922b48a36f5e45bd7e809a0f48d1d9",
+      "firmware/eo_osd_remote/Core/Inc/main.h": "2c3e8ad16afac8682f0c34b0e93dd66a0e0dbdc9c256db391bef380870aaab4b",
+      "firmware/eo_osd_remote/Core/Inc/stm32g0xx_hal_conf.h": "64d6fb189b2c5885f9df865131d5e60a8c35247ede8c64585a3c6a6326ee598f",
+      "firmware/eo_osd_remote/Core/Inc/stm32g0xx_it.h": "eb81672fe345e258c640ce0b5d23837ce4070237c579e353ae8300025780801f",
+      "firmware/eo_osd_remote/Core/Src/fpga_i2c.c": "4f3392bb3580751bb1a172805570b02f071954b65914db501ae4d35d06a9d946",
+      "firmware/eo_osd_remote/Core/Src/fpga_i2c.h": "d05dcf28ab2a7a8bfa1808722ddf62bff7bea0a0e4f7d7284113db27abe80225",
+      "firmware/eo_osd_remote/Core/Src/fpga_regs.h": "d61450cbdfc250f676049e829377c9974192116ccb0af394b9c38ad388d63ac4",
+      "firmware/eo_osd_remote/Core/Src/gl_control.c": "e12c9018d554fced21c4c3dd1ebb9259bc915829021709ca3d2f4be1e6f98043",
+      "firmware/eo_osd_remote/Core/Src/gl_control.h": "a0ee92f33feb2ce723b66c48d4ad263bbc2d77444987c3867817ce3db311ebc8",
+      "firmware/eo_osd_remote/Core/Src/imu_config.c": "89637e9cf4e78fd6899abbbe6ff972076fc2b5294654ca62d5384d19dcf4f0f0",
+      "firmware/eo_osd_remote/Core/Src/imu_config.h": "5a1f97b90028ef7bd73ef7b1560f25a24e43f48fd31b48dc7340d6a776000564",
+      "firmware/eo_osd_remote/Core/Src/imu_handler.c": "3f852ce7894be15a8e849703c7e7f2751b940a5bccb5079089b173f03d5f25d8",
+      "firmware/eo_osd_remote/Core/Src/imu_handler.h": "35df398e50229122937c46812416d426f83c407e8d2de1a2612d814f2494b17b",
+      "firmware/eo_osd_remote/Core/Src/imu_madgwick.c": "9f7040ff256606c7425e9c1bdfc872bb2e225d3473a7bf269424d8ad9c54dad7",
+      "firmware/eo_osd_remote/Core/Src/imu_madgwick.h": "1710659724a877d1ff2890cfa24b1aa005f989b42f7bd95f5b58fad4ee565850",
+      "firmware/eo_osd_remote/Core/Src/main.c": "1975f04812eb70509914e9c26cd56ef359877b0c3231c4722644b27a449d254a",
+      "firmware/eo_osd_remote/Core/Src/mcu_fsm.c": "b59d024de4b00ab02ccadc1bc4317ac1d255585f43f56a2c556c22350a09fbd6",
+      "firmware/eo_osd_remote/Core/Src/mcu_fsm.h": "7244c903b0346211f060a216aff1ef370813c390ff93580949ff1c7668d96834",
+      "firmware/eo_osd_remote/Core/Src/orientation_kalman.c": "e3482d68fd0b7f0f565ecd3e13d7623ce0ca1b9432cfc1bfe82447dd36722683",
+      "firmware/eo_osd_remote/Core/Src/orientation_kalman.h": "b808b4918f060477b482fad58bc3ab4ab725f3a38c7d7a1e3b0ae3d49606591d",
+      "firmware/eo_osd_remote/Core/Src/param_payload.c": "08751014876dd66f3d6a2adb3c3a42a16c5390ae3bf23ce0aba991ed8caefc8e",
+      "firmware/eo_osd_remote/Core/Src/param_payload.h": "e6276cd5daf2e0d3566fc2856f9121d4b695f790dcc798e4ba2702051f103f92",
+      "firmware/eo_osd_remote/Core/Src/param_store.c": "6d2e6f6f7779200bbea739312bcd4710187fd35648785ebabcab9c497b655d93",
+      "firmware/eo_osd_remote/Core/Src/param_store.h": "9b996bbb83723234f2663aab6f552e2527dce4ccb5fd0add915f8651d6513faa",
+      "firmware/eo_osd_remote/Core/Src/param_store_stm32.c": "72726c2648448f3e63604c97d63acea01a849fbd9617828ddbc3007d2b9b97ca",
+      "firmware/eo_osd_remote/Core/Src/param_store_stm32.h": "75c4cffb2c654907d6e7d7010f61feb8b7e36aa7ada27450f6a165be3a21f0d2",
+      "firmware/eo_osd_remote/Core/Src/proto_uart.c": "2ac137f4816729eee68362f72ff30df903a4071d301e488f6fcd8a1227129d9c",
+      "firmware/eo_osd_remote/Core/Src/proto_uart.h": "4c2753181ff230dd4ce8d76e6296976fdca2a5f6a8e98de0561ffa13ed5aa913",
+      "firmware/eo_osd_remote/Core/Src/stm32g0xx_hal_msp.c": "e8af60b4c2bcdaa75d6863abebc1dd16138f66e59492b93c44a3c6349ff41979",
+      "firmware/eo_osd_remote/Core/Src/stm32g0xx_it.c": "3483cda55a83ead104470641d3b02a95203bbae08df880a1834f228660dc532f",
+      "firmware/eo_osd_remote/Core/Src/syscalls.c": "f772e8cdb32eb5216a3be61596216fcfee47e93202e644bea879f745c4db77b1",
+      "firmware/eo_osd_remote/Core/Src/sysmem.c": "c7285db77a533cd1abd5409c04505fe25c51c995b226be81cb6d47d721be7f0f",
+      "firmware/eo_osd_remote/Core/Src/system_stm32g0xx.c": "ad0bb8c324f13407322f78d147de73081086154abde43c347c202526b1b37d46",
+      "firmware/eo_osd_remote/Core/Startup/startup_stm32g0c1retx.s": "d92d8e0b92a7c61d73205649299daa6657e0267e860e8e3b8d23fd00da9f663a",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Device/ST/STM32G0xx/Include/stm32g0c1xx.h": "0040bb3af18c8620a4a46456a39d2655fc087aa7fe12cce815887d587487cabc",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Device/ST/STM32G0xx/Include/stm32g0xx.h": "839759f4710a98c1b7616fac2d382afda04491f711e66bd96d21479fb2d84860",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Device/ST/STM32G0xx/Include/system_stm32g0xx.h": "7b7c61c56ee6d594b19fd8a2c8e1c973e8a50197633159c93f2dc238e6d252f7",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/cmsis_armcc.h": "e6ba28e21b5a3cd44d4e2d2981e37568f419e5df693c8b58e87674fbdf28deeb",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/cmsis_armclang.h": "99b25ab977f383840994cb456ae3f259a5c9b036cb6a0d8c003b7cbba4f6123a",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/cmsis_armclang_ltm.h": "31622280a8296b67bdace0539710a3cfbf828b71f88bd0d5ccc5d7d291ab3a9f",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/cmsis_compiler.h": "869640702d811c4c63abb52206715c891a93fd03be954df5ad40d378355af3d6",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/cmsis_gcc.h": "0837f98e834d6a529854c8c86336e9d99eb8e379bf1deb964858d7863950f862",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/cmsis_iccarm.h": "a40c60d322903d410fe892c2eccb92d82d8876dce605fbb4cb563d52182aeb16",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/cmsis_version.h": "dd03af200b23bdd8d091ffa7beb3d1a2c4fc5611557567bd57ec613205f6df1f",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_armv81mml.h": "fb6ff226bc14b8730b3d5c5e49a32514de811b485dc3f0543045ffffd8787f85",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_armv8mbl.h": "319fd8c698098a16f2775fe292b734c91aaeec3feee418e515cc3a1761edec76",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_armv8mml.h": "1778fd691a0768dbee4fbe537b3cc4d03fcfab4ab9f60e31ec52605364f3dd36",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm0.h": "20300b57c02d5b7b34c7b58bf7009e81713a60f44ca2a338f67cb4b473f4f3c4",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm0plus.h": "4b79d5bf9f9165ddae727c9f035f82fb0ea85ceee2587b503d5d7bcd172d2df9",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm1.h": "c243c4afb291068fe7078d2911b2f0001e78a4d5466c26728611b06147d65c2b",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm23.h": "009f762a79b693f7f82efc9298a33a14765c06dbd4cb2bf5c9b4ffbb6f7e56ff",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm3.h": "efefef85cd419652f5b7c1074ede2f5c24da943528c5156de8d2a194de1888dc",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm33.h": "3e50058f0d08b8d8897fec65e636e2f96635d1f8bcef37d2dec289e834539548",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm35p.h": "32dbde7edb75784b23411639fa8cb8ecd3a3da26f923530b9ae606e010fcae57",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm4.h": "cdc0c5ab9ba0f24c065e891d26c3e686ed04106700ce6a572cc7e83e71965b59",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_cm7.h": "ff629c5bf98a8caadf360d0bcc48e1042fefa19995f7b64855d5e81e4c2e81cb",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_sc000.h": "e306205844323c8fe4cc3e5433c91ed34d9d5055ed11eceef03401fdfb0c3600",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/core_sc300.h": "cddd97bb6172b5cdad96a48445124a6d97a449546f5617e48f03847cbc4a09a4",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/mpu_armv7.h": "e504a7d47dfdb3d61dfae3cf08d27ba9bc69aa4b2b81ca568efdafd65d6abdcc",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/mpu_armv8.h": "95a05e406c38cb770621f07ac066b8c89b90874a50559ec9b10c9587b6049503",
+      "firmware/eo_osd_remote/Drivers/CMSIS/Include/tz_context.h": "7fcc21fc190f6fd970390e9caaa6a86d72fd10f9edf4efab36f12aecf1a8baa0",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h": "883d8f5fb1dba5837c5a035a1c914e229afb8600b3748bb495ff036a83f19d82",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h": "83e6b6a8d6b8f39163f2e210195409f48fb0d81486ae862f4887327c58811259",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_cortex.h": "1e0f7404c012f41d999e92a10a8e3439fbf2d412f0a5483e1e08c54307a112da",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_def.h": "67c7397b58be9b98e88f8b0ab75d614a5c2ea77f3016f199c6ed7f1b749fdb75",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_dma.h": "9a83b18631b88e6e2f408ba1bfa8e313458c7f89ada2aa818f44df8a54481ec2",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_dma_ex.h": "063f42fac826d470adbb8ffcc1a07350ebb668de151e6f5004723a01f488b1f5",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_exti.h": "23ae1377ee01e6793f42cc9c9086c50e01e01eee841fae18eb6be5339cb727b8",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_flash.h": "88031865438703f764496217ec015c399d2bf72e8854b86deb6f116390f2de5a",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_flash_ex.h": "50f5df97a06de1cbb4bc9a7860ce26772527b73125b5e9197faded4d081b98d9",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_gpio.h": "5f3df82e217023bc50d38c9bc53d61290e29aa73bfaae4bb7616a689adaccaf6",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_gpio_ex.h": "6cbba7ec5f8eb6575d55a33f9b6e85f356f08664317c5143d8e39795cdc427b7",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_i2c.h": "0780e24db8aa4804cf35914107cfb6b128fddc51c5292c7e52408bc04a8d59b6",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_i2c_ex.h": "ac1e5b242a8ae61e352b17fc3cd28fd630b04436589afd0f87aff33144578591",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_pwr.h": "7c1ce4838f7f32e05fcf590e5904e9da0b7a02e452391491ee34d954d3a00287",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_pwr_ex.h": "236593e52bc527416ef7d78335ad317ba3d8dc1248a7873af0b246dc54b77c9e",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rcc.h": "042290bacebc0d5e9e6d679466fd570e4f2ed3fc7183a579db55b687f816112a",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rcc_ex.h": "74f9e934aa2f841cd63c1babd47f5787d413a0b19f81f37042739ce72a429bb9",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_spi.h": "a83eb23bfcd7a86d39adea09309ccf62844f499f1ce91c52e879184ae8ebd05c",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_spi_ex.h": "e9d32d54f81b0a96d74d2bcac300e0887d2998f7550383af8ee511d88cf61795",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim.h": "8029bdba0ca73903876134451c51b5cce1e457c317d816933703e1965d38d974",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim_ex.h": "73ea1810f7b82852ad768c77cf9113d9aab392e35a79b42f1b64864eb9053691",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h": "b22ab2c0bce654738876232e1cafbb9abe355aee7cbb0e2590be97646a02dc9a",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h": "f1da006e2853dd669e252983033cf2ede7f251f23c5bfa74b1895bf5331c1c89",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_bus.h": "069287885b47d76251b466240e949db431d93df5ecfdc4692e95f86f4c4e92cb",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_cortex.h": "831d41353bbc4b603a0b80e66875cfdf755e355248a6200bc038c6399d56aad1",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_crs.h": "57f280df98863737a4319ecc637a7c18214f8634fbf2be9477f44079845e4926",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dma.h": "61a5b6b5c0b72090d064ec9bda8e34faed9d43453a19a250145a3c5b7bbaaed8",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dmamux.h": "cb6733e513af3231d3f607a9024771d7ac4a3608aa16430dc706c4a507dca108",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_exti.h": "bf202adf3193bd00cdf8b461774300f7fac5ea0d1e7f3a82300a6a9d87096c7c",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_gpio.h": "cfd71cfca8d0e7d2cb068d29c76b9a5819f651b4102dc2659dc58135296cebe9",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_i2c.h": "d9d80ae19e83d178c26d79d8eedbf2e8c55ea7565720c01693e70d0cee2b5996",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_lpuart.h": "0d806bdc380a4e249fd9eb49f83adbaae5c29706b0af59c7a95356ced805d913",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_pwr.h": "20384b36837d9aa40450b284abdef8039df9799f1a72e5c37ef230782199a1fb",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_rcc.h": "992d9cdb26f59e191ae2f87e388df23d46d944a80c9e9c56620cf16fd22e4f34",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_spi.h": "faee6191b997b7caef7b9390b9646286bfe4869e3a8800209e9a40ba858e4dcf",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_system.h": "6d893ee708c9c54f1aef7ff6856825b2a8d50c390a65f76b6e838dc62b058c96",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usart.h": "70e53bc7579f8335784852d79925e1cd33dff6932792eec30df7a1289b6bbd73",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_utils.h": "b8e19f4355d8b1d70aa64e1f777ddac6b5ad588b32d9f439b956817a7fee6c17",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c": "059e85d7289a2c7ead8616102f80c4b2294e25e0e06b275590ced1c9c54c4929",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c": "4407b24482eba0dfc66685e116bd99600afb4b09dc06ad8c9338e836c730ba60",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_dma.c": "af071589c67d84f35fcfc71e4311fdc98d9c32e4a1e416b082bfaa81196d0255",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_dma_ex.c": "0731b53a219089b71ab45892d50d7d45bdde4d7becb2a577d46e7736f6da8c85",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_exti.c": "a301bbda29446874a933254ce8d94c586aac4f7bfc6477b7a585b41c0cce40d9",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_flash.c": "911482295fa2fb78b8bb0b7ba0e59cdf3b62eb77a0dd1f81b63fc652fc2720d4",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_flash_ex.c": "eadcf9113fc05dba8c4ca185fb5756ddc0d4dc7a40d6c55727243758281e7026",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_gpio.c": "2c1d43fac08775c41b85e475f7e07be3c63918a255c4c0c70244aefbaf272326",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c": "d0af1b4f31778c551c7388c43337637379f48f3c6cff6d719f7234c6391aa595",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c": "8d05350285a125924acda625ca594b5e20555ee0dfa620d265e7ed78d881d74b",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr.c": "bdf6cb2867ef2b44cb20fb804ba3c7bc28e1217042b08bb2e4731aac94ed9505",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr_ex.c": "fc25c149930e475a234df308e5fd5c8b13bdf3d58a0e468bb68eec0e814de416",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc.c": "c4c98946953ef33aaa432001afaaf66ffafef26d0e5d9d33903be57856a57017",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc_ex.c": "04ab34689155848394e5ae1ce6d3b8704fc253478b36ddcb7315ce9d1f3a6efe",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c": "8541b7278260c54dba6d37180f8f5656478d362ec938d6855e03e37e7a701615",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi_ex.c": "89ad74f652b37bbc85dd3f678d35a18aeb3842dcc0e97844badaf991d252fad9",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_tim.c": "8604639fcee865aeae09d6da04d0673071d615bf430f877179f8f0d2f93d9d58",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_tim_ex.c": "7a5837e1c5fb23d980b9bee4e427d9696e4061d5b1695b98c1a5b2be5cb7ccb0",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c": "edf7a33ca4583d91d3813ec65810051eb99042362e92ef6bd66e9e954b1183e3",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c": "6d3d6a9cc202ea8ebef57ce0f0e19132ff5ce9fc8207a29c1740209fe364b796",
+      "firmware/eo_osd_remote/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_rcc.c": "99c5901deae55c739fa32d45a66a1c62a014c62d9929220f26d8ab8eecd81d31",
+      "firmware/eo_osd_remote/STM32G0C1RETX_FLASH.ld": "45420cb0c83bdbf6dfaaf5327160bca5fe3279ec0db1d65957967d0eadbcaf9a"
+    }
+  },
+  "host_validation": {
+    "result": "pass",
+    "journal_interruption_callback_failure_cases": 363,
+    "journal_single_bit_corruption_cases": 1216,
+    "stm32_adapter_mock_checks": 795,
+    "payload_and_protocol_checks": 5908422,
+    "control_ui_pairs": 65536,
+    "control_modes": 256,
+    "new_modules_strict_host_and_arm_compiles": "passed",
+    "independent_review": "No remaining concrete defect identified; hardware limitations remain."
+  },
+  "artifacts": {
+    "gravity_mcu.elf": {
+      "bytes": 1568968,
+      "sha256": "2f309f732581d9655a935a702f0d567c713c0952466236b29d9ff60f00feb1f0"
+    },
+    "gravity_mcu.hex": {
+      "bytes": 216422,
+      "sha256": "ec3a2ff481e2cad0b68b89bab6fc001ceb0823edb5bdd4122d2e0f7b454a4041"
+    },
+    "gravity_mcu.map": {
+      "bytes": 956536,
+      "sha256": "3a11163af30d1663e040cb5d42242ea17a2e4a4e22e23fa856d23f26df6dac08"
+    },
+    "build.log": {
+      "bytes": 3281,
+      "sha256": "a92d452ec81bcceda4173130e2449d6623adf338440aa98bb0e57c827da48d1b"
+    },
+    "size.txt": {
+      "bytes": 191,
+      "sha256": "16ef33d0a660337a221f3eabd3cb58fc5530a72790063c2507de07fbe177278d"
+    },
+    "symbols.txt": {
+      "bytes": 19481,
+      "sha256": "c1697e695a6e1e1f549e5fdb0687c3b765d9f793e462c8caa0941d96a246f0a4"
+    }
+  },
+  "test_evidence": {
+    "journal.log": {
+      "source": "builds/param_store_host/test.log",
+      "bytes": 462,
+      "sha256": "66cdf642e176d4347c3e49a8815f1fbad003cc6a721d7be10b36c6f36730b9ad"
+    },
+    "compiled_profile.json": {
+      "source": "builds/param_store_host/profile.json",
+      "bytes": 334,
+      "sha256": "013270a31cf868e546e6395a1377b3c4f73f3200720c9f4810440ee3d0742f8d"
+    },
+    "journal_arm_compile.log": {
+      "source": "builds/param_store_host/arm_compile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "journal_stack_usage.su": {
+      "source": "builds/param_store_host/param_store_arm.su",
+      "bytes": 1465,
+      "sha256": "25b2774b80fc67616f47d22fe116fe91ec70139afc0864a1ad1dfdbeb2012cbc"
+    },
+    "adapter.log": {
+      "source": "builds/firmware_param_store_stm32/test.log",
+      "bytes": 166,
+      "sha256": "f3eb78226a6c01500c5e3f8ab96b52a30fb71529890d6cb2153fe690dc3b2d9a"
+    },
+    "payload.log": {
+      "source": "builds/firmware_param_payload/test.log",
+      "bytes": 241,
+      "sha256": "dfb66f41abcbd1695556d54689d15c0bde3b97e0b401c5baa81d38b888d67166"
+    },
+    "control.log": {
+      "source": "builds/firmware_host/test.log",
+      "bytes": 170,
+      "sha256": "4db49aea9745638caaa5b220bc4b44e6953cd893844d393a9acbf57f3028b2e4"
+    }
+  },
+  "unchanged_original_mcu": {
+    "source_root": "C:\\SVNProjects\\IMU_Stabilize_v40\\EO_OSD_Remote_20260812\\ST_Link-test",
+    "provenance_files_verified": 129,
+    "result": "pass"
+  },
+  "fpga_candidate": {
+    "directory": "builds/gravity_20261016_020605",
+    "source_commit": "cbb95ad6da9cd048eb3aedfa03b7244fb5970eeb",
+    "report": "docs/validation/full_build_20261016_020605.json",
+    "unchanged_input_counts": {
+      "inputs": 137,
+      "staged_roms": 14,
+      "validation_script_hashes": 3
+    },
+    "bit_and_ltx_hashes_reverified": true,
+    "mcu_in_oct16_archive": "Older pre-migration MCU; use this new MCU candidate instead"
+  },
+  "limits": [
+    "No MCU/FPGA programming, live UI test or power-cycle test performed.",
+    "Actual MCU electrical brownout, flash ECC address behavior and NMI return require device qualification; host mocks do not establish these.",
+    "4 KB minimum stack reservation exceeds estimated journal call depth; complete runtime interrupt stack high-water remains unmeasured.",
+    "Installed UI executable not verified; supported float payload compatibility is based on supplied PC UI source.",
+    "UI yaw is stored/read back but FPGA gravity projection mounting yaw remains fixed to selected INI constants; runtime pitch/roll calibration is supported.",
+    "Mass erase removes both journal and one-time marker; next startup reapplies INI. Programming must preserve reserved pages to retain user calibration.",
+    "A completed commit whose readback is unavailable is reported uncertain; a later boot may select it. See storage documentation.",
+    "Gravity axis signs, exposure-time alignment, latency and sustained DDR/output performance remain bench acceptance items.",
+    "Inherited whole-design CDC findings and EO single-view bank ownership under long stalls remain open."
+  ]
+}
