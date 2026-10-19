@@ -46,9 +46,13 @@ preservation of the stable optical maps/pixel geometry. The selected INI supplie
 the camera mounting yaw angles; the existing EO/IR static roll/pitch banks remain
 the mounting trims. Its test orientation and differing optical-map settings are
 not applied. Disabling stabilization preserves static-offset rendering exactly.
-The existing MCU saved-calibration policy is still pending confirmation: its
-older EO defaults contain alternating +/-5 degree pitch, unlike the selected
-INI's zero mounting roll/pitch. Firmware has not been flashed.
+The user approved one-time INI mounting migration on 2026-10-19. The MCU now
+replaces the mounting arrays once, preserves unrelated settings, and retains
+later UI calibration across boots using a two-page journal. Calibration
+Get/Apply works alongside ICD operation and accepts both supported feather
+encodings. See [calibration storage](docs/GRAVITY_CALIBRATION_STORAGE.md).
+Firmware has not been flashed; the earlier archived MCU candidate predates
+this migration and must not be mistaken for the new firmware.
 
 Implemented and simulated:
 

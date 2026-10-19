@@ -39,14 +39,20 @@ ENTRY(Reset_Handler)
 _estack = ORIGIN(RAM) + LENGTH(RAM); /* end of "RAM" Ram type memory */
 
 _Min_Heap_Size = 0x200; /* required amount of heap */
-_Min_Stack_Size = 0x400; /* required amount of stack */
+_Min_Stack_Size = 0x1000; /* journal migration + callers; minimum stack space guard */
 
 /* Memories definition */
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 144K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 512K
+  /* Last two 2 KB pages belong to the calibration journal, never code. */
+  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 508K
+  PARAM_STORE (r)  : ORIGIN = 0x0807F000,  LENGTH = 4K
 }
+
+__param_store_start__ = ORIGIN(PARAM_STORE);
+__param_store_end__ = ORIGIN(PARAM_STORE) + LENGTH(PARAM_STORE);
+ASSERT(ORIGIN(FLASH) + LENGTH(FLASH) == ORIGIN(PARAM_STORE), "Calibration reservation overlaps code")
 
 /* Sections */
 SECTIONS

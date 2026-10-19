@@ -3222,11 +3222,10 @@ static void ui_process_bytes(const uint8_t *data, uint16_t len)
             }
         }
 
-        /* Legacy COBS frames are still accumulated and parsed even in
-         * ICD-only mode, but mcu_on_ui_payload() drops everything except the
-         * manual OSD remote command - see the filter at the top of it. That
-         * bench tool has to reach the cameras while the customer ICD link is
-         * running, and it needs a transport that is not the customer ICD. */
+        /* Legacy COBS parsing remains available for the manual OSD remote
+         * and explicit calibration GET/APPLY commands. The MCU command gate
+         * rejects other legacy commands; calibration replies are request-scoped
+         * so normal ICD operation does not emit legacy telemetry. */
         if (b == 0x00) {
             // delimiter -> parse current frame if any
             if (ui_acc_len > 0) {

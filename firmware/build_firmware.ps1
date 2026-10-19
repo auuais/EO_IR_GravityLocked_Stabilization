@@ -1,10 +1,17 @@
 param(
-    [string]$ToolBin = 'C:\ST\STM32CubeIDE_2.1.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740\tools\bin'
+    [string]$ToolBin = 'C:\ST\STM32CubeIDE_2.1.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740\tools\bin',
+    [string]$OutputDirectory = ''
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $sourceRoot = Join-Path $PSScriptRoot 'eo_osd_remote'
-$buildRoot = Join-Path $repoRoot 'builds\firmware'
+$buildRoot = if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
+    Join-Path $repoRoot 'builds\firmware'
+} elseif ([System.IO.Path]::IsPathRooted($OutputDirectory)) {
+    [System.IO.Path]::GetFullPath($OutputDirectory)
+} else {
+    [System.IO.Path]::GetFullPath((Join-Path $repoRoot $OutputDirectory))
+}
 $gcc = Join-Path $ToolBin 'arm-none-eabi-gcc.exe'
 if (-not (Test-Path -LiteralPath $gcc)) { throw "Missing ARM compiler: $gcc" }
 New-Item -ItemType Directory -Path $buildRoot -Force | Out-Null

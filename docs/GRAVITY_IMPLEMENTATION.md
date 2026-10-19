@@ -89,13 +89,15 @@ and the current change does not widen it or regenerate optical maps.
 90/150/210/270/330/390 degrees. The INI's mounting roll/pitch values are all
 zero. Existing per-camera EO/IR UI trim banks supply those fixed mounting
 roll/pitch values at runtime; changing them never alters an active render.
-The copied MCU still has its older alternating -5/+5 degree EO pitch defaults
-and can load saved banks from flash. The user has been asked whether to apply
-the selected INI once on first startup and preserve later UI calibration, or
-keep existing saved calibration. That migration is not implemented pending
-the answer; do not treat the current firmware startup bank as the chosen INI.
-See `validation/gravity_storage_migration_review.md` for the inherited storage
-issues that must be addressed if a persistent migration is selected.
+The user approved applying the INI mounting arrays once and preserving later
+UI calibration on 2026-10-19. The new MCU journal imports a valid legacy record,
+updates only mounting arrays, and records a CRC-covered profile revision.
+Later boots retain UI edits without rewriting flash. See
+`GRAVITY_CALIBRATION_STORAGE.md` for recovery, bank mapping, UI compatibility
+and hardware acceptance. The original storage review remains historical
+evidence; the older archived MCU candidate does not include this migration.
+UI yaw values persist and read back, but current RTL mounting yaw remains
+fixed to the INI constants; only the roll/pitch trims are runtime inputs.
 
 Keep the user-selected calibration snapshot immutable; generated assets need
 their own source/profile hashes and validation results. The INI's IR image

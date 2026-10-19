@@ -22,6 +22,7 @@
 #include "stm32g0xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "param_store_stm32.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,6 +76,8 @@ extern volatile uint8_t g_vsync_flag;
 void NMI_Handler(void)
 {
   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+  /* Recover only a verified ECC event from the active journal read. */
+  if (param_store_stm32_handle_nmi()) return;
 
   /* USER CODE END NonMaskableInt_IRQn 0 */
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */

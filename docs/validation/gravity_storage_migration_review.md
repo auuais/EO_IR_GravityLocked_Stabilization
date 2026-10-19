@@ -1,4 +1,10 @@
-# Calibration storage review — no migration implemented
+# Historical calibration storage review — 2026-10-16
+
+The user selected one-time INI mounting migration on 2026-10-19. The resulting
+two-page journal, linker reservation, flash adapter and UI compatibility change
+are described in [GRAVITY_CALIBRATION_STORAGE.md](../GRAVITY_CALIBRATION_STORAGE.md).
+The review below describes the original source before those changes and is
+retained as historical evidence, not the current implementation status.
 
 Read-only review on 2026-10-16 of the copied MCU source. The requested choice
 between retaining stored calibration and applying the selected mounting profile

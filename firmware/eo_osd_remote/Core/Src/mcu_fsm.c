@@ -8,6 +8,9 @@
 #include "fpga_i2c.h"
 #include "fpga_regs.h"
 #include "gl_control.h"
+#include "param_store.h"
+#include "param_store_stm32.h"
+#include "param_payload.h"
 #include "imu_handler.h"
 #include "imu_config.h"
 
@@ -285,10 +288,10 @@ static uint8_t s_icd_eo_cam_maint[6][ICD_MAINT_LEN];
 #define LOG_CAPTURE_SAVE_DELAY_MS 45000u
 #define FPGA_DEBUG_TOP_MODE_ONLY 0u
 #define FW_VERSION_MAJOR 1u
-#define FW_VERSION_MINOR 0u
+#define FW_VERSION_MINOR 1u
 #define FW_VERSION_YEAR  26u
-#define FW_VERSION_MONTH 6u
-#define FW_VERSION_DAY   17u
+#define FW_VERSION_MONTH 10u
+#define FW_VERSION_DAY   19u
 
 // ---- IMU command packets (matching ATMEL IIM4623x reference exactly) ----
 // WHO_AM_I = ReadRegister(addr=0x00, len=1, page=0)
@@ -376,31 +379,6 @@ static inline int16_t quantize_cd(int16_t val_cd)
     }
 }
 
-typedef struct {
-    uint16_t yaw_cd[CFG_CAM_COUNT];
-    int16_t pitch_cd[CFG_CAM_COUNT];
-    int16_t roll_cd[CFG_CAM_COUNT];
-    uint16_t overlap_px;
-    int32_t feather_strength_q16;
-} ParamBankQ16;
-
-typedef struct __attribute__((packed)) {
-    uint32_t magic;
-    uint16_t version;
-    uint16_t length;
-    uint32_t crc32;
-    uint8_t mode;
-    uint8_t reserved0[3];
-    ParamBankQ16 eo;
-    ParamBankQ16 ir;
-    uint32_t write_count;
-    uint32_t reserved1;
-} ParamStoreBlob;
-
-#define PARAM_STORE_MAGIC      0x5041524Du /* "PARM" */
-#define PARAM_STORE_VERSION    0x0003u
-#define PARAM_FLASH_PAGE_COUNT 1u
-
 enum {
     CFG_APPLY_OK = 0,
     CFG_APPLY_ERR_BADARG = 1,
@@ -411,51 +389,16 @@ enum {
 };
 
 static ParamStoreBlob s_cfg_store;
-
-static inline int32_t float_to_q16_sat(float v)
-{
-    double scaled = (double)v * 65536.0;
-    if (scaled > (double)INT32_MAX) return INT32_MAX;
-    if (scaled < (double)INT32_MIN) return INT32_MIN;
-    return (int32_t)lround(scaled);
-}
-
-static uint32_t crc32_sw(const uint8_t* data, size_t len)
-{
-    uint32_t crc = 0xFFFFFFFFu;
-    for (size_t i = 0; i < len; ++i) {
-        crc ^= data[i];
-        for (int b = 0; b < 8; ++b) {
-            uint32_t mask = (uint32_t)-(int32_t)(crc & 1u);
-            crc = (crc >> 1) ^ (0xEDB88320u & mask);
-        }
-    }
-    return ~crc;
-}
-
-static uint32_t cfg_crc_payload(const ParamStoreBlob* cfg)
-{
-    const uint8_t* start = (const uint8_t*)&cfg->mode;
-    const size_t size = sizeof(ParamStoreBlob) - offsetof(ParamStoreBlob, mode);
-    return crc32_sw(start, size);
-}
-
-static uint32_t cfg_flash_address(void)
-{
-    uint32_t flash_kb = (uint32_t)(*((uint16_t*)FLASHSIZE_BASE));
-    uint32_t flash_bytes = flash_kb * 1024u;
-    return FLASH_BASE + flash_bytes - FLASH_PAGE_SIZE;
-}
+static ParamStoreState s_cfg_journal;
+static volatile ParamStoreBootResult s_cfg_boot_result;
+static ParamStoreIo s_cfg_io;
+static bool s_cfg_geometry_ok;
+/* Legacy calibration replies are scoped to an explicit GET/APPLY request. */
+static bool s_cfg_reply_active;
 
 static bool cfg_mode_valid(uint8_t mode)
 {
-    if (mode == 0x00u || mode == 0x01u || mode == 0x02u || mode == 0x03u || mode == 0x06u || mode == 0x13u || mode == 0x14u || mode == 0x15u) {
-        return true;
-    }
-    if (mode >= 0x07u && mode <= 0x12u) {
-        return true;
-    }
-    return false;
+    return param_store_mode_valid(mode);
 }
 
 static bool cfg_mode_uses_vsync(uint8_t mode)
@@ -463,122 +406,14 @@ static bool cfg_mode_uses_vsync(uint8_t mode)
     return gl_mode_uses_vsync(mode);
 }
 
-static void cfg_set_bank_defaults(ParamBankQ16* bank, uint8_t which)
-{
-    if (which == CFG_BANK_IR) {
-        static const uint16_t kIrYawCd[CFG_CAM_COUNT]   = {  9000u, 15000u, 21000u, 27000u, 33000u, 39000u };
-        static const int16_t  kIrPitchCd[CFG_CAM_COUNT] = {     0,     0,     0,     0,     0,     0 };
-        static const int16_t  kIrRollCd[CFG_CAM_COUNT]  = {     0,     0,     0,     0,     0,     0 };
-        memcpy(bank->yaw_cd, kIrYawCd, sizeof(kIrYawCd));
-        memcpy(bank->pitch_cd, kIrPitchCd, sizeof(kIrPitchCd));
-        memcpy(bank->roll_cd, kIrRollCd, sizeof(kIrRollCd));
-        bank->overlap_px = 30u;
-        bank->feather_strength_q16 = float_to_q16_sat(1.0f);
-        return;
-    }
-
-    static const uint16_t kEoYawCd[CFG_CAM_COUNT]   = {     0u,  6000u, 12000u, 18000u, 24000u, 30000u };
-    static const int16_t  kEoPitchCd[CFG_CAM_COUNT] = {  -500,   500,  -500,   500,  -500,   500 };
-    static const int16_t  kEoRollCd[CFG_CAM_COUNT]  = {     0,     0,     0,     0,     0,     0 };
-    memcpy(bank->yaw_cd, kEoYawCd, sizeof(kEoYawCd));
-    memcpy(bank->pitch_cd, kEoPitchCd, sizeof(kEoPitchCd));
-    memcpy(bank->roll_cd, kEoRollCd, sizeof(kEoRollCd));
-    bank->overlap_px = 100u;
-    bank->feather_strength_q16 = float_to_q16_sat(1.0f);
-}
-
-static void cfg_set_defaults(ParamStoreBlob* cfg)
-{
-    memset(cfg, 0, sizeof(*cfg));
-    cfg->magic = PARAM_STORE_MAGIC;
-    cfg->version = PARAM_STORE_VERSION;
-    cfg->length = (uint16_t)sizeof(*cfg);
-    cfg->mode = CFG_DEFAULT_MODE_EO_PANORAMA;
-    cfg_set_bank_defaults(&cfg->eo, CFG_BANK_EO);
-    cfg_set_bank_defaults(&cfg->ir, CFG_BANK_IR);
-    cfg->write_count = 0;
-    cfg->crc32 = cfg_crc_payload(cfg);
-}
-
 static bool cfg_bank_values_valid(const ParamBankQ16* bank)
 {
-    if (!bank) return false;
-
-    for (uint8_t i = 0; i < CFG_CAM_COUNT; ++i) {
-        if (bank->pitch_cd[i] < -500 || bank->pitch_cd[i] > 500) return false;
-        if (bank->roll_cd[i] < -500 || bank->roll_cd[i] > 500) return false;
-    }
-
-    if (bank->overlap_px > 1920u) return false;
-
-    const int32_t min_feather_q16 = float_to_q16_sat(0.1f);
-    const int32_t max_feather_q16 = float_to_q16_sat(10.0f);
-    if (bank->feather_strength_q16 < min_feather_q16 || bank->feather_strength_q16 > max_feather_q16) return false;
-
-    return true;
-}
-
-static bool cfg_is_valid(const ParamStoreBlob* cfg)
-{
-    if (cfg->magic != PARAM_STORE_MAGIC) return false;
-    if (cfg->version != PARAM_STORE_VERSION) return false;
-    if (cfg->length != (uint16_t)sizeof(*cfg)) return false;
-    if (!cfg_mode_valid(cfg->mode)) return false;
-    if (!cfg_bank_values_valid(&cfg->eo)) return false;
-    if (!cfg_bank_values_valid(&cfg->ir)) return false;
-    return (cfg->crc32 == cfg_crc_payload(cfg));
-}
-
-static bool cfg_load_from_flash(void)
-{
-    const uint32_t base = cfg_flash_address();
-    ParamStoreBlob flash_cfg;
-    memcpy(&flash_cfg, (const void*)base, sizeof(flash_cfg));
-    if (cfg_is_valid(&flash_cfg)) {
-        s_cfg_store = flash_cfg;
-        return true;
-    }
-    cfg_set_defaults(&s_cfg_store);
-    return false;
+    return param_store_bank_valid(bank);
 }
 
 static bool cfg_save_to_flash(void)
 {
-    s_cfg_store.magic = PARAM_STORE_MAGIC;
-    s_cfg_store.version = PARAM_STORE_VERSION;
-    s_cfg_store.length = (uint16_t)sizeof(s_cfg_store);
-    s_cfg_store.crc32 = cfg_crc_payload(&s_cfg_store);
-
-    const uint32_t base = cfg_flash_address();
-    const uint32_t page = (base - FLASH_BASE) / FLASH_PAGE_SIZE;
-
-    if (HAL_FLASH_Unlock() != HAL_OK) return false;
-
-    FLASH_EraseInitTypeDef erase = {0};
-    uint32_t page_error = 0;
-    erase.TypeErase = FLASH_TYPEERASE_PAGES;
-    erase.Page = page;
-    erase.NbPages = PARAM_FLASH_PAGE_COUNT;
-    if (HAL_FLASHEx_Erase(&erase, &page_error) != HAL_OK) {
-        (void)HAL_FLASH_Lock();
-        return false;
-    }
-
-    const uint8_t* src = (const uint8_t*)&s_cfg_store;
-    for (uint32_t off = 0; off < (uint32_t)sizeof(s_cfg_store); off += 8u) {
-        uint64_t word = 0xFFFFFFFFFFFFFFFFull;
-        memcpy(&word, src + off, 8u);
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, base + off, word) != HAL_OK) {
-            (void)HAL_FLASH_Lock();
-            return false;
-        }
-    }
-
-    (void)HAL_FLASH_Lock();
-
-    ParamStoreBlob verify;
-    memcpy(&verify, (const void*)base, sizeof(verify));
-    return cfg_is_valid(&verify) && (memcmp(&verify, &s_cfg_store, sizeof(verify)) == 0);
+    return s_cfg_geometry_ok && param_store_save(&s_cfg_journal, &s_cfg_io, &s_cfg_store);
 }
 
 static ParamBankQ16* cfg_bank_mut(uint8_t bank)
@@ -589,16 +424,6 @@ static ParamBankQ16* cfg_bank_mut(uint8_t bank)
 static const ParamBankQ16* cfg_bank_const(uint8_t bank)
 {
     return (bank == CFG_BANK_IR) ? &s_cfg_store.ir : &s_cfg_store.eo;
-}
-
-static uint16_t read_le_u16_local(const uint8_t* p)
-{
-    return (uint16_t)((uint16_t)p[0] | ((uint16_t)p[1] << 8));
-}
-
-static int16_t read_le_i16_local(const uint8_t* p)
-{
-    return (int16_t)read_le_u16_local(p);
 }
 
 static void put_le_u16_local(uint8_t* dst, uint16_t v)
@@ -614,27 +439,7 @@ static void put_le_i16_local(uint8_t* dst, int16_t v)
 
 static bool cfg_bank_from_payload(const uint8_t* p, uint16_t n, ParamBankQ16* out)
 {
-    if (!p || !out) return false;
-    if (n < CFG_BANK_PAYLOAD_SIZE) return false;
-
-    uint16_t off = 0u;
-    for (uint8_t i = 0; i < CFG_CAM_COUNT; ++i, off += 2u) {
-        out->yaw_cd[i] = read_le_u16_local(&p[off]);
-    }
-    for (uint8_t i = 0; i < CFG_CAM_COUNT; ++i, off += 2u) {
-        out->pitch_cd[i] = read_le_i16_local(&p[off]);
-    }
-    for (uint8_t i = 0; i < CFG_CAM_COUNT; ++i, off += 2u) {
-        out->roll_cd[i] = read_le_i16_local(&p[off]);
-    }
-    out->overlap_px = read_le_u16_local(&p[off]);
-    off += 2u;
-    out->feather_strength_q16 = (int32_t)(
-        ((uint32_t)p[off + 0u]) |
-        ((uint32_t)p[off + 1u] << 8) |
-        ((uint32_t)p[off + 2u] << 16) |
-        ((uint32_t)p[off + 3u] << 24));
-    return true;
+    return param_payload_decode(p, n, out);
 }
 
 static void cfg_bank_copy_aligned(ParamBankQ16* dst, const ParamBankQ16* src)
@@ -756,12 +561,9 @@ static uint8_t fpga_push_all_runtime_config(void)
 static void ui_send_frame(uint8_t msg_type, uint8_t seq, const uint8_t *payload, uint16_t plen)
 {
 #if ICD_ONLY_UI_PROTOCOL
-    (void)msg_type;
-    (void)seq;
-    (void)payload;
-    (void)plen;
-    return;
-#else
+    if (!s_cfg_reply_active ||
+        !param_payload_is_calibration_reply(msg_type, payload, plen)) return;
+#endif
     uint8_t buf[UI_TX_MAX];
     uint8_t tmp[UI_PAY_MAX];
 
@@ -778,7 +580,6 @@ static void ui_send_frame(uint8_t msg_type, uint8_t seq, const uint8_t *payload,
     if (frame_len) {
         (void)HAL_UART_Transmit(&huart3, buf, (uint16_t)frame_len, 50);
     }
-#endif
 }
 
 static void ui_send_resp_simple(uint8_t seq, uint8_t err)
@@ -1096,18 +897,12 @@ void mcu_fsm_init(McuContext *ctx)
     ctx->log_capture_save_sent = false;
     ctx->log_capture_start_ms = 0u;
 
-    const bool loaded = cfg_load_from_flash();
-    if (!loaded) {
-        (void)cfg_save_to_flash();
-    }
-    /* Bring-up always starts in EO panorama. Keep loaded EO/IR bank calibration,
-     * but do not let a previously saved runtime mode override startup. */
+    s_cfg_geometry_ok = param_store_stm32_init(&s_cfg_io);
+    s_cfg_boot_result = param_store_boot(&s_cfg_journal, &s_cfg_io, &s_cfg_store);
+    /* Keep the existing runtime EO startup policy. Loading a marked journal
+     * performs no write; the stored mode is preserved during migration. */
     s_cfg_store.mode = CFG_DEFAULT_MODE_EO_PANORAMA;
-    if (loaded) {
-        /* Keep the persisted config aligned with the boot-time default so
-         * any later runtime re-apply also comes up in EO panorama. */
-        (void)cfg_save_to_flash();
-    }
+    s_cfg_reply_active = false;
 
     icd_maintenance_init_defaults();
     s_icd_enabled = true;
@@ -1780,7 +1575,7 @@ static void fpga_service_orient(void)
 // ===================== UI command handler =====================
 // p/n are the *decoded* bytes from proto_uart (CRC OK, COBS OK).
 // Format: [type][seq][lenL][lenH][...payload...]
-void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
+static void mcu_on_ui_payload_impl(McuContext *ctx, const uint8_t *p, uint16_t n)
 {
     if (n < 4) return;
 
@@ -1793,13 +1588,9 @@ void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
     const uint8_t *d = &p[4];
 
 #if ICD_ONLY_UI_PROTOCOL
-    /* The customer ICD is the only PC-facing protocol in normal operation. The
-     * single exception is the manual EO OSD remote: a bench tool that has to
-     * reach the cameras while the ICD link is live, and cannot ride on the
-     * customer ICD without changing it. Accept that one command and silently
-     * drop every other legacy frame, so nothing else about the old console is
-     * brought back to life by accident. */
-    if (msg_type != MSG_CMD || plen < 1u || d[0] != CMD_EO_OSD_KEY) {
+    /* Keep ICD operation plus the existing OSD remote. Explicit calibration
+     * GET/APPLY requests are the only added legacy maintenance commands. */
+    if (plen < 1u || !param_payload_allow_legacy_command(msg_type, d[0])) {
         return;
     }
 #endif
@@ -1890,7 +1681,6 @@ void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
 
       ParamStoreBlob prev = s_cfg_store;
       s_cfg_store.mode = mode_id;
-      s_cfg_store.write_count = prev.write_count + 1u;
       if (!cfg_save_to_flash()) {
           s_cfg_store = prev;
           (void)fpga_push_mode(prev.mode);
@@ -1958,7 +1748,7 @@ void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
     }
 
     case CMD_APPLY_CONFIG: {
-        if (plen < (uint16_t)(2u + CFG_BANK_PAYLOAD_SIZE)) {
+        if (plen != (uint16_t)(2u + CFG_BANK_PAYLOAD_SIZE)) {
             ui_send_cfg_apply_result(0xFFu, 0u, CFG_APPLY_ERR_BADARG);
             ui_send_resp_simple(seq, ERR_BADARG);
             break;
@@ -1971,7 +1761,7 @@ void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
             break;
         }
 
-        ParamBankQ16 parsed;
+        ParamBankQ16 parsed = {0};
         if (!cfg_bank_from_payload(&d[2], (uint16_t)(plen - 2u), &parsed)) {
             ui_send_cfg_apply_result(bank, 0u, CFG_APPLY_ERR_BADARG);
             ui_send_resp_simple(seq, ERR_BADARG);
@@ -1989,12 +1779,13 @@ void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
         uint8_t detail = fpga_push_bank(bank, cfg_bank_const(bank));
         if (detail != CFG_APPLY_OK) {
             s_cfg_store = prev;
+            /* A failed I2C burst may have changed some registers already. */
+            (void)fpga_push_bank(bank, cfg_bank_const(bank));
             ui_send_cfg_apply_result(bank, 0u, detail);
             ui_send_resp_simple(seq, ERR_FAIL);
             break;
         }
 
-        s_cfg_store.write_count = prev.write_count + 1u;
         if (!cfg_save_to_flash()) {
             s_cfg_store = prev;
             (void)fpga_push_bank(bank, cfg_bank_const(bank));
@@ -2147,6 +1938,18 @@ void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
         ui_send_resp_simple(seq, ERR_BADARG);
         break;
     }
+}
+
+void mcu_on_ui_payload(McuContext *ctx, const uint8_t *p, uint16_t n)
+{
+    /* The request scope is always closed, including BUSY/BADARG early exits.
+     * No periodic legacy logs/telemetry become enabled by a calibration read. */
+    if (!ctx || !p || n < 5u) return;
+    const uint16_t plen = (uint16_t)p[2] | ((uint16_t)p[3] << 8);
+    if ((uint32_t)plen + 4u != n || plen == 0u) return;
+    s_cfg_reply_active = param_payload_is_calibration_command(p[0], p[4]);
+    mcu_on_ui_payload_impl(ctx, p, n);
+    s_cfg_reply_active = false;
 }
 
 static void icd_write_le16(uint8_t *p, uint16_t v)
@@ -3016,7 +2819,6 @@ static uint8_t icd_apply_mode(uint8_t mode_id)
 
     ParamStoreBlob prev = s_cfg_store;
     s_cfg_store.mode = mode_id;
-    s_cfg_store.write_count = prev.write_count + 1u;
     if (!cfg_save_to_flash()) {
         s_cfg_store = prev;
         (void)fpga_push_mode(prev.mode);

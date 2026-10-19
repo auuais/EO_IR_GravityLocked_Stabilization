@@ -49,19 +49,20 @@ Otherwise do not label subsequent video as a qualified candidate result.
 
 ## 2. Resolve the calibration state explicitly
 
-The selected INI has zero mounting roll/pitch for all cameras. The copied MCU
-still has older alternating -5/+5 degree EO pitch defaults and can restore saved
-banks from flash. Automatic migration is **pending the user's decision** between
-applying the selected mounting profile once and retaining existing calibration.
-It has not been implemented. See
-[gravity_storage_migration_review.md](validation/gravity_storage_migration_review.md).
+The user approved one-time INI mounting migration on 2026-10-19. The new MCU
+firmware sets all mounting roll/pitch entries to zero once and retains later
+UI edits. Identify the exact flashed MCU image: the earlier FPGA build bundle
+contains an MCU candidate from before this migration. See
+[GRAVITY_CALIBRATION_STORAGE.md](GRAVITY_CALIBRATION_STORAGE.md).
 
-Read and save the actual banks before testing. Label a run either with the
-documented existing trims or with an explicitly approved zero-trim/profile
-configuration. Do not erase flash, alter persistence, or assume a UI trim edit
-is temporary. If the zero-trim configuration has not been approved and verified,
-leave that test NOT RUN; static-bypass testing can use the recorded existing
-banks. Keep the stable optical maps and pitch factors unchanged.
+Read and save the actual banks before programming. Preserve journal pages when
+updating firmware; a mass erase removes both saved calibration and the one-time
+marker. Verify first-start mounting values, then change both banks through the
+UI and verify persistence across repeated power cycles. Label each image test
+with the actual current trims; after UI edits they need not remain zero. UI yaw
+persists but does not change the current FPGA's fixed mounting yaw constants.
+Keep the stable optical maps and pitch factors unchanged. Record these hardware
+checks as NOT RUN until performed; host fault tests are separate evidence.
 
 **Pass:** every angle/pixel comparison uses the actual recorded trim bank; no
 result silently treats MCU defaults or saved data as the selected INI.
