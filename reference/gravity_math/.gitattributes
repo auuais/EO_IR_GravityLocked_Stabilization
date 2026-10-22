@@ -1,0 +1,5 @@
+# Preserve the exact original excerpt bytes recorded in provenance.json.
+source_*.inc -text whitespace=cr-at-eol
+# ROM and provenance hashes are deterministic across Windows/Linux checkouts.
+*.mem text eol=lf
+rtl_assets_manifest.json text eol=lf

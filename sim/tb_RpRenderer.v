@@ -13,6 +13,7 @@ module tb_RpRenderer;
     parameter ROOT = "E:/Xylinx/EO_Panorama_V19_RollPitch";
     parameter OUTDIR = "E:/Xylinx/EO_Panorama_V19_RollPitch/sim_out";
     parameter integer BEAT_SPACING = 4;
+    parameter integer GRAVITY_POSE_INPUTS = 0;
 
     reg clk = 1'b0;
     always #5 clk = ~clk;
@@ -22,6 +23,9 @@ module tb_RpRenderer;
     reg  [5:0]   cam_present = 6'h3F;
     reg  [95:0]  roll_cd = 96'd0, pitch_cd = 96'd0;
     reg          sensor_ir = 1'b0;
+    reg          pending_sensor_ir = 1'b0, pose_ready = 1'b0;
+    reg [95:0]   pose_roll_cd = 0, pose_pitch_cd = 0;
+    reg [31:0]   pose_revision = 0;
     wire         px_valid, frame_done, frames_valid;
     reg          px_ready = 1'b1;
     wire [15:0]  px_data;
@@ -44,6 +48,7 @@ module tb_RpRenderer;
 
     RpRenderer #(
         .SETTLE_CYCLES(1),
+        .GRAVITY_POSE_INPUTS(GRAVITY_POSE_INPUTS),
         .RUN_ROM_FILE({ROOT, "/assets/rowruns/eo_v19_render_runs.mem"}),
         .IR_RUN_ROM_FILE({ROOT, "/assets/rowruns/ir_v19_render_runs.mem"}),
         .ANGLE_ROM_FILE({ROOT, "/assets/rollpitch/eo_rp_angle.mem"}),
@@ -52,11 +57,13 @@ module tb_RpRenderer;
         .ALPHA_C_FILE({ROOT, "/assets/rowruns/eo_v19_alpha_c.mem"}),
         .IR_ALPHA_Y_FILE({ROOT, "/assets/rowruns/ir_v19_alpha_y.mem"})
     ) dut (
-        .rst_n(rst_n), .clk(clk), .sensor_ir(sensor_ir), .start_copy(start_copy), .cam_present(cam_present),
+        .rst_n(rst_n), .clk(clk), .sensor_ir(GRAVITY_POSE_INPUTS ? pending_sensor_ir : sensor_ir), .start_copy(start_copy), .cam_present(cam_present),
         .source_frame_reset(frame_edge),
         .beat_valid(beat_valid), .beat_row(beat_row), .beat_idx(beat_idx), .beat_data(beat_data),
         .row_done(row_done), .row_done_row(row_done_row),
         .eo_roll_cd(roll_cd), .eo_pitch_cd(pitch_cd), .ir_roll_cd(roll_cd), .ir_pitch_cd(pitch_cd),
+        .pose_ready(pose_ready), .pose_roll_cd(pose_roll_cd), .pose_pitch_cd(pose_pitch_cd),
+        .pose_revision(pose_revision),
         .px_valid(px_valid), .px_ready(px_ready), .px_data(px_data),
         .frame_done(frame_done), .frames_valid(frames_valid),
         .source_need_valid(need_valid), .source_need_row(need_row), .source_start_row(start_row),
@@ -150,18 +157,53 @@ module tb_RpRenderer;
         input            ir;
         input [95:0] roll, pitch;
         input [5:0]  present;
-        integer t0, t;
+        integer t0, t, builds_before;
+        reg expect_rebuild, seen_valid;
         begin
             @(negedge clk);
             sensor_ir = ir; roll_cd = roll; pitch_cd = pitch; cam_present = present;
+            pending_sensor_ir = ir; pose_roll_cd = roll; pose_pitch_cd = pitch;
+            pose_ready = 1'b0; pose_revision = pose_revision + 1;
+            builds_before = build_count;
+            expect_rebuild = !dut.built_once || (dut.built_sensor_ir != ir) ||
+                             (dut.built_roll != roll) || (dut.built_pitch != pitch);
+            seen_valid = 1'b0;
             fout = $fopen({OUTDIR, "/rp_", name, ".hex"}, "w");
             npx = 0;
             repeat (20) @(negedge clk);
             start_copy = 1'b1;
+            if (GRAVITY_POSE_INPUTS) begin
+                repeat (13) begin
+                    @(negedge clk);
+                    if (need_valid || tables_busy || build_count != builds_before)
+                        $fatal(1, "FAIL %0s: work started before pose_ready", name);
+                end
+                pose_ready = 1'b1;
+            end
             t0 = $time;
             t = 0;
             while (!frame_done) begin
-                @(posedge clk); t = t + 1;
+                @(posedge clk); #1; t = t + 1;
+                if (GRAVITY_POSE_INPUTS) begin
+                    // Alter every pending input immediately after acceptance,
+                    // during the build, and throughout active rendering. The
+                    // behavioural replay keeps the accepted sensor identity.
+                    if ((t == 1) || (t % 1000 == 0)) begin
+                        pose_roll_cd = ~pose_roll_cd; pose_pitch_cd = ~pose_pitch_cd;
+                        pending_sensor_ir = ~pending_sensor_ir;
+                        pose_revision = pose_revision + 1;
+                        pose_ready = ~pose_ready;
+                    end
+                    if (dut.request_roll !== roll || dut.request_pitch !== pitch || dut.request_ir !== ir)
+                        $fatal(1, "FAIL %0s: accepted snapshot changed", name);
+                    if (tables_busy && (dut.built_roll !== roll || dut.built_pitch !== pitch || dut.built_sensor_ir !== ir))
+                        $fatal(1, "FAIL %0s: builder uses a different snapshot", name);
+                    if (tables_busy && need_valid)
+                        $fatal(1, "FAIL %0s: replay requested during table build", name);
+                    if (frames_valid) seen_valid = 1'b1;
+                    if (seen_valid && !frames_valid)
+                        $fatal(1, "FAIL %0s: frames_valid dropped during accepted pass", name);
+                end
                 if (t > 20000000) begin
                     $display("FAIL %0s: no frame_done, npx=%0d dbg=%h flags=%h", name, npx, dbg_word, status_flags);
                     $finish;
@@ -169,6 +211,9 @@ module tb_RpRenderer;
             end
             @(negedge clk) start_copy = 1'b0;
             $fclose(fout); fout = 0;
+            if (GRAVITY_POSE_INPUTS && build_count != builds_before + expect_rebuild)
+                $fatal(1, "FAIL %0s: unexpected rebuild count %0d (before %0d expected increment %0d)",
+                       name, build_count, builds_before, expect_rebuild);
             $display("%0s: %0d cycles, %0d px, flags=%h builds=%0d Y=%0d..%0d fetch=%0d..%0d wr_rows=%0d..%0d wr_beats=%0d..%0d",
                      name, t, npx, status_flags, build_count, dut.ylo, dut.yhi, fetch_lo, fetch_hi,
                      wr_row_lo, wr_row_hi, wr_beat_lo, wr_beat_hi);
@@ -188,6 +233,8 @@ module tb_RpRenderer;
         run_pass("ir_zero",    1, v6(0,0,0,0,0,0), v6(0,0,0,0,0,0), 6'h3F);
         run_pass("eo_mixed",   0, v6(150,-300,1000,-1000,0,777), v6(-1000,250,0,1000,-60,5), 6'h3F);
         run_pass("ir_mixed",   1, v6(150,-300,1000,-1000,0,777), v6(-1000,250,0,1000,-60,5), 6'h3F);
+        if (GRAVITY_POSE_INPUTS)
+            run_pass("ir_mixed", 1, v6(150,-300,1000,-1000,0,777), v6(-1000,250,0,1000,-60,5), 6'h3F);
         run_pass("ir_alt10",   1, v6(1000,-1000,1000,-1000,1000,-1000), v6(1000,-1000,1000,-1000,1000,-1000), 6'h3F);
         run_pass("ir_absent2", 1, v6(0,0,0,0,0,0), v6(0,0,0,0,0,0), 6'b111011);
         run_pass("ir_absent3", 1, v6(150,-300,1000,-1000,0,777), v6(-1000,250,0,1000,-60,5), 6'b110111);

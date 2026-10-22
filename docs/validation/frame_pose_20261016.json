@@ -1,0 +1,178 @@
+{
+  "schema": "gravity-frame-pose-validation-v1",
+  "recorded_at": "2026-10-16T01:04:53+09:00",
+  "scope": "Standalone six-camera GlFramePose; stable optical geometry unchanged; selected INI mounting yaw only.",
+  "source_sha256": {
+    "src/GlFramePose.v": "bb7dffeb156fda9a75b3372018a75e5bdcf5f7beda2b652af43023135a67e19b",
+    "src/GlCameraProjection.v": "32453f0c422d0cc89c18cf0f564899fc74c0cb920b2651bd8d1808f04298f5f2",
+    "sim/tb_GlFramePose.sv": "a3162d02691056a9d048cde2dd9136e1d1f97d599e8cd2d1d582ecb56407d9dd",
+    "scripts/test_gl_frame_pose.ps1": "27d42cba9a6dec66513c3029936e71fca2af3ab7ef9bb36d8ac9800c64935a8b",
+    "scripts/synth_gl_frame_pose.tcl": "e306fe05aad9e4dee54f4b9733a066c328d1beb781bd99afab4dbe7a5ba4a0c2",
+    "sim/gravity_math/generate_frame_pose_vectors.py": "63f737826cf0d8cb939ec210de004019618cf60e61004c41d5082092d3aa2773",
+    "sim/gravity_math/frame_pose_vectors.txt": "804e5b702587c278ded90ffef88b732223243ef58c7115319a3e399a5d34ceba",
+    "sim/gravity_math/frame_pose_manifest.json": "bdbf41dcc4d36946ae70c4f6ec146d25bed32cbb507ee9df35b63958ff0c9237",
+    "reference/gravity_math/angle_centi_q15.mem": "2f4f47949a63a34247b8639216cb4a7461af483415c5c34c679a159a226d1365",
+    "reference/gravity_math/atan_ratio_centi.mem": "2bf93fc4bf4caa827a4f02108b7783c825cc9c6198c31b90a6382dea0c6ef938",
+    "scripts/audit_gravity_logic_timing.tcl": "32936529aeecd07b02579777fba3453daed94469ec774fdbd6c9472cda20b764"
+  },
+  "original_C_sha256": "f4dea4cbfba60bfe686644081c7bcfb4744c9d8b14771c0d916dad6702839495",
+  "selected_profile_sha256": "7106b1f1ad56d545c6b3eef5b29f9608fdb1cfb02ce364b1ca85ca096c3eea3c",
+  "vector_generation": {
+    "source": "Compiled MSVC original C++ FRAME oracle for enabled cases; exact static bypass for disabled cases.",
+    "compiler": {
+      "family": "MSVC",
+      "installation": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community",
+      "flags": "/std:c++17 /EHsc /W4 /O2 /fp:precise"
+    },
+    "command": "python sim/gravity_math/generate_frame_pose_vectors.py",
+    "count": 266,
+    "coverage": {
+      "enabled": 230,
+      "disabled_exact_bypass": 36,
+      "global_limited": 190,
+      "final_out_of_range": 218,
+      "zero_live_C_differs_from_static": 6,
+      "random_cases": 192,
+      "random_seed": "0x4652414d",
+      "sensor_counts": {
+        "0": 133,
+        "1": 133
+      }
+    },
+    "request_sha256": "2adb7f5fef0e5b92436cfe346a28682b23aed7cbc3527a37bd05322b2615b40d",
+    "oracle_response_sha256_canonical_lf": "2a1072f203eef3cabbb5e9c0c14cdada96176968473f98aebcdebcf787b73059"
+  },
+  "simulation": {
+    "result": "PASS",
+    "tool": "Vivado xsim 2025.2, build 6299465",
+    "command": "powershell -File scripts/test_gl_frame_pose.ps1",
+    "cases": 266,
+    "enabled_latency_cycles": [
+      3556,
+      7319
+    ],
+    "disabled_latency_cycles": 1,
+    "assertions": [
+      "All six signed16 camera roll/pitch results match compiled C while enabled.",
+      "Disabled returns captured static trims bit-for-bit; applied pose is zero.",
+      "All control, live pose and static trim inputs frozen at accepted start.",
+      "Results, applied pose and flags publish atomically only with one-cycle done.",
+      "Extra busy starts rejected.",
+      "Synchronous reset aborts during child normalization, later camera, scaler and recomputed pass.",
+      "Runtime EO/IR selection, 390-degree IR yaw, limit and sign/extreme values covered."
+    ]
+  },
+  "synthesis": {
+    "result": "PASS",
+    "tool": "Vivado 2025.2, build 6299465",
+    "part": "xcku15p-ffve1517-2-i",
+    "top": "GlFramePose",
+    "mode": "out_of_context",
+    "executed_command": "vivado -mode batch -notrace -source synth_check.tcl -log synth.log -journal synth.jou (cwd builds/frame_pose)",
+    "reproduce_command": "vivado -mode batch -notrace -source ../../scripts/synth_gl_frame_pose.tcl -log synth.log -journal synth.jou (cwd builds/frame_pose)",
+    "reproduction_note": "Checked-in script uses the same read/synth/report/checkpoint commands and source/ROM arguments as executed temporary script. Clock period is stated as 4.292 ns, the effective rounded value in the recorded run.",
+    "LUT": 2733,
+    "FF": 2246,
+    "BRAM_tiles": 67.5,
+    "DSP": 2,
+    "URAM": 0,
+    "latches": 0,
+    "black_boxes": 0,
+    "synthesis_warnings": 0,
+    "synthesis_errors": 0,
+    "estimated_clock_period_ns": 4.292,
+    "estimated_WNS_ns": 1.27,
+    "estimated_TNS_ns": 0.0,
+    "estimated_WHS_ns": 0.063,
+    "estimated_THS_ns": 0.0,
+    "limitations": [
+      "Unplaced post-synthesis estimate only; no routed timing closure.",
+      "Input/output delays are absent for this standalone construct check.",
+      "HD.CLK_SRC is unset, so out-of-context clock skew is an estimate."
+    ]
+  },
+  "independent_review": {
+    "frame_pose_reviewer": "gravity_rtl_baseline",
+    "frame_pose_result": "No arithmetic or handshake defects found. Signed numerator, divider widths, one-pass scaling, camera sequencing and atomic commit reviewed.",
+    "lease_review": {
+      "result": "No functional defect found in inspected GlLeasePose and top integration.",
+      "files_sha256": {
+        "src/GlLeasePose.v": "97cbc68e895efad1c75655703665de38d2507c604f641d720e007bebd0a85c66",
+        "src/PanoramaBase_DdrBlackFrame.v": "22991fb7dfd7a6ca0f5b5b90979a140e87c1c3e27a8e1d03c8ec47f0a2ccd3b5",
+        "src/KintexTop_EO_IR_HD_SDI_panorama_base.v": "ce8a9372f04e5167d526d7be3dd405874826249c8ae1b32c14b712bc3047936b"
+      },
+      "checks": [
+        "History captures next epoch on the edge publishing the same Gray-coded global epoch.",
+        "Selected EO/IR lease epoch chooses its retained pose/control/revision snapshot.",
+        "Copy start waits for pose ready; renderer accepts frozen angles without frames_valid startup dependency.",
+        "Lease or mode changes cancel in-flight child work outside a pass; active render freezes results.",
+        "Missing/stale/disabled/calibration mismatch uses exact static bypass."
+      ],
+      "limits": [
+        "Baseline queued-trigger epoch association does not establish measured camera exposure timing; IR uses the shared trigger epoch.",
+        "Both EO/IR update counters form calibration revision; changing the unused sensor trims also triggers mismatch fallback.",
+        "Callers must not retain an ambiguous epoch request across the complete 16-bit wrap."
+      ]
+    },
+    "capture_envelope": {
+      "result": "Reproduced report JSON identically; no discrepancy against RpSegXform/RpTables/RpRenderer guards.",
+      "command": "python scripts/gravity_capture_envelope.py --output build/gravity_math/frame_pose_vectors/envelope_review.json",
+      "rows": [
+        0,
+        1079
+      ],
+      "beats": [
+        8,
+        111
+      ],
+      "report_sha256": "2a3d60a80ea3fba581d7253f559657c2ee7ddee374e8396a659ea094b93585a7"
+    }
+  },
+  "local_evidence_sha256": {
+    "builds/frame_pose/xvlog.log": "08de6cc1f43a87d7fb71a85ad5a3de8054969ee88a8858d058f288d73e1b302b",
+    "builds/frame_pose/xelab.log": "80d86f169b3aabea7b93635398e17e78d3e4a9c6ebea784bdf41fe474decd821",
+    "builds/frame_pose/xsim.log": "52411033cd2226d0915df12e2432c4afa851c3afe8bddcb2abbc608bbaf28d78",
+    "builds/frame_pose/synth.log": "bcd27e5ba6e5a1269d2d1a8a3cc373e5a734f9d9dcc46afd8629cf4d7f0ec3cc",
+    "builds/frame_pose/synth_check.tcl": "65f2bc490aef1e314a56ec3050c65c55369bf072f8df92386aa23276f9275c56",
+    "builds/frame_pose/utilization_synth.rpt": "85b79d89d7e56a807e6453f04d67d940215ab833832313c7e6f4c4d74afedab6",
+    "builds/frame_pose/timing_synth.rpt": "2654ed936a45684366605cd102417a2cc61a4435a6b4ec67f088babc967339aa",
+    "builds/frame_pose/audit_proc_smoke.tcl": "44b9355dd91d90981b2f7e388753bb7e097ba01f1127a861fa7241c41b90304a",
+    "builds/frame_pose/audit_proc_smoke.log": "851ac3a738939b9278fdee96429b2ecb9d8b499ec288a1fd9a1fc7846adb326b",
+    "builds/frame_pose/gravity_timing_smoke_clean.rpt": "1a7ab87f64d73fbc0de9a9d21bee9fec152d84b69d97b6c143e984e4c985f0b6",
+    "builds/frame_pose/gravity_ignored_smoke_clean.rpt": "aec1009230721c7b964e1094ebb2248f773739765eca50b52c1c3536b1e87d97",
+    "builds/frame_pose/gravity_ignored_smoke_false_path.rpt": "990e4e33afe6a3da42cd09cf6c2dfeba04c80f8817be02b143de52eb838784a0"
+  },
+  "hardware_programmed": false,
+  "production_bitstream_generated_by_this_validation": false,
+  "timing_audit_smoke": {
+    "result": "PASS",
+    "script": "scripts/audit_gravity_logic_timing.tcl",
+    "entrypoint": "gl_audit_logic_timing $output_dir stage ?hierarchy_pattern?",
+    "default_hierarchy_pattern": "*u_gravity_pose",
+    "tested_hierarchy": "u_projection inside GlFramePose_synth.dcp",
+    "sequential_cells": 1513,
+    "coverage": {
+      "no_clock": 0,
+      "constant_clock": 0,
+      "multiple_clock": 0,
+      "unconstrained_internal_endpoints": 0,
+      "loops": 0,
+      "latch_loops": 0
+    },
+    "clean_internal_user_ignored_paths": 0,
+    "injected_internal_false_path_rejected": true,
+    "missing_scope_rejected": true,
+    "constrained_internal_path_clocks": [
+      "ui_clk",
+      "ui_clk"
+    ],
+    "route_guard_observation": {
+      "synthesis_checkpoint_PLACED_FULLY": 0,
+      "synthesis_checkpoint_ROUTED_FULLY": 1,
+      "synthesis_checkpoint_ERRORS_IN_ROUTES": 0,
+      "conclusion": "Route guard must require PLACED_FULLY plus ROUTED_FULLY and absence of ERRORS_IN_ROUTES."
+    },
+    "local_command": "vivado -mode batch -notrace -source audit_proc_smoke.tcl -log audit_proc_smoke.log -journal audit_proc_smoke.jou (cwd builds/frame_pose)",
+    "scope_limit": "Internal GlLeasePose sequential paths only; existing external I/O and CDC constraints are audited separately."
+  }
+}

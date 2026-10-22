@@ -1,0 +1,138 @@
+{
+  "scope": "Stable EO optical segment geometry, renderer clamp +/-1000 cd, checked-in -9.8 pitch translation ROM",
+  "sources": {
+    "assets/rowruns/eo_v19_render_runs.mem": "d7a724124a545ed862f697bfcd3219ffbb6f6333f352514792781f03ed9489ca",
+    "assets/rollpitch/eo_rp_angle.mem": "91f7e6e2c83dcf667e16b777acf9abf14658f5fe42de428811e5a67b0f1f76a4"
+  },
+  "proof": {
+    "roll_values_exhausted": 2001,
+    "pitch_cd_domain": [
+      -1000,
+      1000
+    ],
+    "pitch_shift_limits_rows": [
+      -98,
+      98
+    ],
+    "segments": 31680,
+    "endpoints_per_segment": 2,
+    "endpoint_evaluations": 253566720,
+    "argument": "For fixed roll, transformed segment endpoints are monotone in integer pitch shift. Pixels are affine between endpoints after exact step truncation. Endpoint bounds cover all pitches/pixels; eight-beat expansion also covers qx_phase parity and replay batches.",
+    "stage1_signed27_range_verified": true,
+    "accumulator_signed32_range_verified": true,
+    "step_signed24_range_verified": true,
+    "maximum_absolute_steps_q16": [
+      160278,
+      55620
+    ]
+  },
+  "coordinate_extrema_q16": {
+    "x_min": 12031686,
+    "x_max": 111324914,
+    "y_min": -10491786,
+    "y_max": 82415297
+  },
+  "extrema_witnesses": {
+    "x_min": {
+      "roll_cd": 1000,
+      "pitch_shift_rows": 98,
+      "output_row": 477,
+      "camera": 0,
+      "segment": 0,
+      "pixel_in_segment": 0
+    },
+    "x_max": {
+      "roll_cd": -1000,
+      "pitch_shift_rows": 98,
+      "output_row": 477,
+      "camera": 1,
+      "segment": 10,
+      "pixel_in_segment": 14
+    },
+    "y_min": {
+      "roll_cd": 1000,
+      "pitch_shift_rows": -98,
+      "output_row": 0,
+      "camera": 0,
+      "segment": 0,
+      "pixel_in_segment": 0
+    },
+    "y_max": {
+      "roll_cd": -1000,
+      "pitch_shift_rows": 98,
+      "output_row": 477,
+      "camera": 0,
+      "segment": 0,
+      "pixel_in_segment": 0
+    }
+  },
+  "clamped_endpoint_columns": [
+    183,
+    1698
+  ],
+  "table_column_limits_including_upper_guard": [
+    183,
+    1699
+  ],
+  "fixed_capture": {
+    "row_lo": 0,
+    "row_hi": 1079,
+    "beat_lo": 8,
+    "beat_hi": 111,
+    "pixel_columns_inclusive": [
+      128,
+      1791
+    ],
+    "beats_per_camera_frame": 112320
+  },
+  "source_bank_layout": {
+    "frame_stride_app_addresses": 1036800,
+    "maximum_full_frame_beat_start_offset": 1036792,
+    "camera_stride_app_addresses": 4147208,
+    "banks_per_camera": 4,
+    "conclusion": "Existing allocation already reserves complete 1920x1080 frames. Fixed window changes no bank stride/address or stagger."
+  },
+  "ddr_write_traffic": {
+    "assumed_capture_and_output_frames_per_second": 30,
+    "historical_measured_aggregate_write_beats_per_second": 22300000,
+    "historical_source": "docs/HANDOFF_EO_PANORAMA_30FPS_20260903.md:804-829",
+    "historical_fixed_map_eo_panorama_write_beats_per_second_at_30fps": 19422720,
+    "modes": {
+      "eo_panorama": {
+        "eo_capture_write_beats_per_second": 20217600,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 23673600,
+        "conditional_margin_against_historical_aggregate": -1373600
+      },
+      "eo_single": {
+        "eo_capture_write_beats_per_second": 20736000,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 129600,
+        "output_write_beats_per_second": 3888000,
+        "total_write_beats_per_second": 24624000,
+        "conditional_margin_against_historical_aggregate": -2324000
+      },
+      "ir_panorama": {
+        "eo_capture_write_beats_per_second": 0,
+        "ir_capture_write_beats_per_second": 1843200,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 5299200,
+        "conditional_margin_against_historical_aggregate": 17000800
+      },
+      "ir_single": {
+        "eo_capture_write_beats_per_second": 20217600,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 23673600,
+        "conditional_margin_against_historical_aggregate": -1373600
+      }
+    },
+    "two_full_plus_four_envelopes_and_eo_single_output_beats_per_second": 25142400,
+    "six_full_frames_and_eo_single_output_beats_per_second": 27216000,
+    "limitation": "The historical 22.3 Mbeat/s is aggregate DDR writes, including output writes, not capture capacity. These totals exclude DDR reads and do not measure the current writer. EO/IR DDR capture families are mutually gated in steady state; IR single retains EO background capture and uses BRAM for its IR source. At the historical aggregate rate the EO panorama, EO single and IR single 30fps demands do not fit. Current sustainable frame rate requires current whole-path measurement; no lower rate is guaranteed by this average arithmetic."
+  }
+}

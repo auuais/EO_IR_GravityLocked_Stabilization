@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "source_path": "C:\\SVNProjects\\IMU_Stabilize_v40\\IMU_stabilize_GYRO\\IMU_stabilize_GYRO.cpp",
+  "source_sha256": "f4dea4cbfba60bfe686644081c7bcfb4744c9d8b14771c0d916dad6702839495",
+  "source_size_bytes": 190788,
+  "source_role": "Current translation unit compiled by IMU_stabilize_GYRO.vcxproj; source itself is not modified.",
+  "excerpts": [
+    {
+      "file": "source_functions.inc",
+      "sha256": "ca009916c55a0cdb0d84b717185c154c0c6a160b00ad6da710e4aa8e25605a73",
+      "ranges": [
+        {
+          "start_line": 157,
+          "end_line": 157,
+          "sha256": "e74aa6542c0af1474502b087e2ff1b228ce67752d0a91a61c25af224707d9a57"
+        },
+        {
+          "start_line": 160,
+          "end_line": 170,
+          "sha256": "b95e32d7b2937d09974609ed314518436d1cd55b4eee7e9d373af22e5aeaf6b1"
+        },
+        {
+          "start_line": 1027,
+          "end_line": 1031,
+          "sha256": "a9510e22bcbd2800c202f7cde7ccf88c63d8da096c8b2efb9482e9574f0d840b"
+        },
+        {
+          "start_line": 1062,
+          "end_line": 1102,
+          "sha256": "6add0103be0e730670594c5c6f66ffda4a47f8a7763c54d5fa900ec944a3642e"
+        },
+        {
+          "start_line": 1114,
+          "end_line": 1127,
+          "sha256": "8b18a66869a85cd9b980a51eb55c52947f49b119b5cc768c416cf6fd98b6e27d"
+        },
+        {
+          "start_line": 1386,
+          "end_line": 1526,
+          "sha256": "3c20a3bb1eb041e055e391f9214057a306af2c16c28c5c85d1369e200d086079"
+        }
+      ]
+    },
+    {
+      "file": "source_projection.inc",
+      "sha256": "e0c58ac53ef2e14c2eedeaba7c0d278988b1148f70fc55b656fe5b5c2a2db7aa",
+      "ranges": [
+        {
+          "start_line": 2290,
+          "end_line": 2327,
+          "sha256": "e0c58ac53ef2e14c2eedeaba7c0d278988b1148f70fc55b656fe5b5c2a2db7aa"
+        }
+      ]
+    },
+    {
+      "file": "source_clamp.inc",
+      "sha256": "bf2fdcf1b272e3a0e9543378fad8248291b5a8fa1b0f97710aa630f87e3286e8",
+      "ranges": [
+        {
+          "start_line": 3306,
+          "end_line": 3331,
+          "sha256": "bf2fdcf1b272e3a0e9543378fad8248291b5a8fa1b0f97710aa630f87e3286e8"
+        }
+      ]
+    },
+    {
+      "file": "source_camera_coefficients.inc",
+      "sha256": "c8d2286cdc0d72ca7e9d1a5adc4862ed7cff7dcb2c752946c8047f41e4feb562",
+      "ranges": [
+        {
+          "start_line": 4302,
+          "end_line": 4308,
+          "sha256": "c8d2286cdc0d72ca7e9d1a5adc4862ed7cff7dcb2c752946c8047f41e4feb562"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Extracts retain original bytes and numerical code. Multiple ranges are joined with an extra newline.",
+    "StageTimer and LUT dump functions are inert in oracle.hpp; source clamp printf is suppressed only while including the block.",
+    "Harness factor normalization duplicates source 1011 with generic explicit inputs; zero-resize fallback follows source 1009.",
+    "The source is a static-image program; no live IMU/frame synchronization is implied.",
+    "Original signed left shifts rely on observed MSVC behavior; negative arithmetic right shifts are retained."
+  ],
+  "additional_source_contract": [
+    {
+      "start_line": 48,
+      "end_line": 55,
+      "text": "#ifndef ACTIVE_BUFFER\r\n#define ACTIVE_BUFFER       360 // active destination-row slots (fixed for FPGA). 180 covered the 5-deg chop-off;\r\n                                // the concurrent working set grows ~with sin(tilt), so 10-deg needs ~2x (sin10/sin5 ~ 1.99).\r\n#endif\r\n\r\n#ifndef MAX_CAM_ANGLE_CENTI\r\n#define MAX_CAM_ANGLE_CENTI 1000 // adaptive chop-off limit, centi-degrees. 1000 = 10.00 deg (was 500 = 5.00 deg).\r\n#endif\r\n",
+      "sha256": "96ede87c00294c93dfbe20857a3f6b9759c76a2b7ed31479bfd81e71d06f2dc5"
+    },
+    {
+      "start_line": 922,
+      "end_line": 923,
+      "text": "    cfg.resize_factor = ini.ReadFloat(camSec, L\"resize_factor\", cfg.resize_factor);\r\n    cfg.resize_factor_q16 = float_to_q16(cfg.resize_factor);\r\n",
+      "sha256": "d0492e42f30959cf0b2ba6de16feb5b7d60a099b5e070c62ae48585e94939dab"
+    },
+    {
+      "start_line": 932,
+      "end_line": 935,
+      "text": "    cfg.pitch_to_translation_factor = ini.ReadFloat(camSec, L\"pitch_to_translation_factor\", cfg.pitch_to_translation_factor);\r\n    cfg.yaw_to_translation_factor   = ini.ReadFloat(camSec, L\"yaw_to_translation_factor\", cfg.yaw_to_translation_factor);\r\n    cfg.pitch_to_translation_factor_q16 = float_to_q16(cfg.pitch_to_translation_factor);\r\n    cfg.yaw_to_translation_factor_q16 = float_to_q16(cfg.yaw_to_translation_factor);\r\n",
+      "sha256": "1c14fbe2b93d72556a28035ab04e64630724c7210bb71375356aa01b7c94eb54"
+    },
+    {
+      "start_line": 1007,
+      "end_line": 1016,
+      "text": "    resize_factor = cfg.resize_factor;\r\n    resize_factor_q16 = cfg.resize_factor_q16;\r\n    if (resize_factor_q16 == 0) resize_factor_q16 = (1 << 16);\r\n\r\n    PITCH_TO_TRANSLATION_FACTOR_q16 = div_round_i64((int64_t)cfg.pitch_to_translation_factor_q16 << 16, resize_factor_q16);\r\n    YAW_TO_TRANSLATION_FACTOR_q16 = cfg.yaw_to_translation_factor_q16;\r\n\r\n    const float inv_resize_for_pitch = (std::fabs(resize_factor) > 1.0e-6f) ? (1.0f / resize_factor) : 1.0f;\r\n    PITCH_TO_TRANSLATION_FACTOR = cfg.pitch_to_translation_factor * inv_resize_for_pitch;\r\n    YAW_TO_TRANSLATION_FACTOR   = cfg.yaw_to_translation_factor;\r\n",
+      "sha256": "665b7d08eb45400f113b268667a5a9be1ad94db89123e52b12a3f2448868f380"
+    },
+    {
+      "start_line": 3220,
+      "end_line": 3235,
+      "text": "        // IMU / stabilization - read from sensor-specific section for test data\r\n        // (In real-time operation, there's one IMU for both sensors, but test images were captured at different orientations)\r\n        const wchar_t* orientSec = isEO ? L\"eo_orientation\" : L\"ir_orientation\";\r\n        \r\n        // Mode dictates stabilization entirely now\r\n        bool isStabMode = (mode == MODE_EO_PANO_STAB || mode == MODE_IR_PANO_STAB);\r\n        \r\n        if (isStabMode) {\r\n            roll_Sensor_centi = readAngleCentiWithFallback(paramIni, orientSec, L\"Sensor_Orientation\", L\"roll\", 0);\r\n            pitch_Sensor_centi = readAngleCentiWithFallback(paramIni, orientSec, L\"Sensor_Orientation\", L\"pitch\", 0);\r\n            yaw_Sensor_centi = readAngleCentiWithFallback(paramIni, orientSec, L\"Sensor_Orientation\", L\"yaw\", 0);\r\n        }\r\n        else {\r\n            roll_Sensor_centi = pitch_Sensor_centi = yaw_Sensor_centi = 0;\r\n            printf(\"[ORIENTATION] Stabilization disabled by mode\\n\");\r\n        }\r\n",
+      "sha256": "06a15f85d6be7fc6c4f1dcfa257f447a252849abc849d232add2c612e9439364"
+    },
+    {
+      "start_line": 4286,
+      "end_line": 4308,
+      "text": "        // IMU -> per cam (constant across frames for static test images)\r\n        for (int cam = 0; cam < NUM_CAMS; ++cam) {\r\n            int32_t roll_cam_centi = 0, pitch_cam_centi = 0, yaw_cam_centi = 0;\r\n            convert_rpy_sensor_to_cam_centi(\r\n                roll_Sensor_centi, pitch_Sensor_centi,\r\n                (cam < (int)yaw_off.size() ? yaw_off[cam] : 0),\r\n                (cam < (int)pit_off.size() ? pit_off[cam] : 0),\r\n                (cam < (int)rol_off.size() ? rol_off[cam] : 0),\r\n                &roll_cam_centi, &pitch_cam_centi, &yaw_cam_centi\r\n            );\r\n\r\n            const float roll_cam = centi_to_deg(roll_cam_centi);\r\n            const float pitch_cam = centi_to_deg(pitch_cam_centi);\r\n            const float yaw_cam_deg = centi_to_deg(yaw_cam_centi);\r\n            printf(\"[CAMERA %d] Computed Angles: roll=%.2f, pitch=%.2f, yaw=%.2f\\n\", cam, roll_cam, pitch_cam, yaw_cam_deg);\r\n\r\n            int y_shift_px = div_round_i64((int64_t)PITCH_TO_TRANSLATION_FACTOR_q16 * pitch_cam_centi, 100ll * (1ll << 16));\r\n            y_shift_q_cam[cam] = (int32_t)y_shift_px << WFIX_SHIFT;\r\n\r\n            int16_t c15 = 0, s15 = 0;\r\n            get_cos_sin_q15_centi(-roll_cam_centi, &c15, &s15);\r\n            c15_cam[cam] = c15;\r\n            s15_cam[cam] = s15;\r\n",
+      "sha256": "65e5d38ca83d17f8a9d978eed0b27947e5be102bb019165ceaa744fc28026190"
+    }
+  ]
+}

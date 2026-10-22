@@ -19,7 +19,19 @@ module Kintex_top_I2C_test #(
     output wire [95:0] eo_pitch_cd_raw,
     output wire [95:0] eo_roll_cd_raw,
     output wire [95:0] ir_pitch_cd_raw,
-    output wire [95:0] ir_roll_cd_raw
+    output wire [95:0] ir_roll_cd_raw,
+    // Both mailboxes share this reset with the UI domain. Receipt sequence is
+    // an accepted I2C transaction count, not an IMU or camera exposure ID.
+    input wire pose_dst_clk,
+    input wire pose_reset,
+    output wire pose_valid_ui,
+    output wire pose_update_ui,
+    output wire signed [15:0] pose_roll_cd_ui,
+    output wire signed [15:0] pose_pitch_cd_ui,
+    output wire [31:0] pose_sequence_ui,
+    output wire [7:0] control_byte_ui,
+    output wire control_valid_ui,
+    output wire control_enabled_ui
 );
 
     //===========================================================
@@ -44,10 +56,11 @@ module Kintex_top_I2C_test #(
         end
     endfunction
 
-    localparam integer POR_CYCLES = (SCLK_HZ * POR_MS) / 1000;
+    // Widen before multiplying: 74.25 MHz * 100 ms overflows signed 32 bits.
+    localparam integer POR_CYCLES = (64'd1 * SCLK_HZ * POR_MS) / 1000;
     localparam integer POR_W      = (POR_CYCLES <= 1) ? 1 : clog2(POR_CYCLES + 1);
 
-    reg  [POR_W-1:0] por_cnt /* synthesis preserve */;
+    reg  [POR_W-1:0] por_cnt = {POR_W{1'b0}};
     wire             nRESET_INT;
 
     assign nRESET_INT = (POR_CYCLES <= 1) ? 1'b1
@@ -171,6 +184,91 @@ module Kintex_top_I2C_test #(
     reg       addr_match;
     integer   idx;
 
+    // Preserve the data-byte address before the legacy register index advances.
+    // An accepted-byte event occurs only at the falling edge ending its ACK.
+    reg [7:0] accepted_addr, accepted_data;
+    reg ack_pending;
+    wire accepted_byte = ack_pending && scl_fall && !start_cond && !stop_cond;
+    // Raising SCL to generate STOP samples one apparent next-data bit. That
+    // STOP-setup edge is legal; two or more such bits are a partial extra byte.
+    wire partial_stop = stop_cond && (ack_pending || state == ST_WRITE_ACK ||
+                         (state == ST_WRITE_RX && bit_cnt != 3'd7 && bit_cnt != 3'd6));
+    wire receipt_start = start_cond || partial_stop;
+    wire receipt_stop = stop_cond && !partial_stop;
+    wire mailbox_reset = !nRESET_INT || pose_reset;
+    (* ASYNC_REG = "TRUE", SHREG_EXTRACT = "NO" *) reg [1:0] receipt_reset_sync;
+    always @(posedge SCLK or posedge mailbox_reset) begin
+        if (mailbox_reset) receipt_reset_sync <= 2'b11;
+        else receipt_reset_sync <= {receipt_reset_sync[0], 1'b0};
+    end
+    wire receipt_reset = receipt_reset_sync[1];
+    wire signed [15:0] received_roll, received_pitch;
+    wire received_update;
+    wire [31:0] received_sequence;
+    GlPoseReceiver u_pose_receiver (
+        .clk(SCLK), .rst(receipt_reset), .transaction_start(receipt_start),
+        .transaction_stop(receipt_stop), .byte_write(accepted_byte),
+        .byte_addr(accepted_addr), .byte_data(accepted_data),
+        .roll_cd(received_roll), .pitch_cd(received_pitch), .pose_valid(),
+        .pose_update(received_update), .sample_sequence(received_sequence),
+        .rejected_count()
+    );
+    GlPoseCdc u_pose_cdc (
+        .rst(mailbox_reset), .src_clk(SCLK), .src_update(received_update),
+        .src_roll_cd(received_roll), .src_pitch_cd(received_pitch),
+        .src_receipt_sequence(received_sequence), .dst_clk(pose_dst_clk),
+        .dst_valid(pose_valid_ui), .dst_update(pose_update_ui),
+        .dst_roll_cd(pose_roll_cd_ui), .dst_pitch_cd(pose_pitch_cd_ui),
+        .dst_receipt_sequence(pose_sequence_ui)
+    );
+
+    // Register 0x04 commits only one ACK-completed data byte followed by STOP.
+    // START/restart, partial or excess data discard the candidate. Other
+    // transactions leave the committed control untouched. Legacy firmware
+    // never writes this register and therefore cannot enable this feature.
+    reg control_active, control_seen, control_bad, control_update;
+    reg [7:0] control_candidate, control_committed;
+    always @(posedge SCLK) begin
+        if (receipt_reset) begin
+            control_active <= 1'b0;
+            control_seen <= 1'b0;
+            control_bad <= 1'b0;
+            control_update <= 1'b0;
+            control_candidate <= 8'd0;
+            control_committed <= 8'd0;
+        end else begin
+            control_update <= 1'b0;
+            if (receipt_start) begin
+                control_active <= 1'b1;
+                control_seen <= 1'b0;
+                control_bad <= accepted_byte || receipt_stop;
+            end else if (receipt_stop) begin
+                if (control_active && control_seen && !control_bad && !accepted_byte) begin
+                    control_committed <= control_candidate;
+                    control_update <= 1'b1;
+                end
+                control_active <= 1'b0;
+            end else if (accepted_byte && control_active) begin
+                if (!control_seen && accepted_addr == 8'h04 && !control_bad) begin
+                    control_candidate <= accepted_data;
+                    control_seen <= 1'b1;
+                end else control_bad <= 1'b1;
+            end
+        end
+    end
+    wire control_received_ui;
+    wire signed [15:0] control_word_ui;
+    GlPoseCdc u_control_cdc (
+        .rst(mailbox_reset), .src_clk(SCLK), .src_update(control_update),
+        .src_roll_cd({8'd0, control_committed}), .src_pitch_cd(16'sd0),
+        .src_receipt_sequence(32'd0), .dst_clk(pose_dst_clk),
+        .dst_valid(control_received_ui), .dst_update(),
+        .dst_roll_cd(control_word_ui), .dst_pitch_cd(), .dst_receipt_sequence()
+    );
+    assign control_byte_ui = control_word_ui[7:0];
+    assign control_valid_ui = control_received_ui && control_byte_ui[7:1] == 7'h50;
+    assign control_enabled_ui = control_valid_ui && control_byte_ui[0];
+
     //===========================================================
     // Debug signals (ILA)
     //===========================================================
@@ -243,6 +341,9 @@ module Kintex_top_I2C_test #(
             rw_flag    <= 1'b0;
             addr_match <= 1'b0;
             reg_index  <= 8'd0;
+            accepted_addr <= 8'd0;
+            accepted_data <= 8'd0;
+            ack_pending <= 1'b0;
 
             for (idx = 0; idx < REG_COUNT; idx = idx + 1)
                 regfile[idx] <= 8'h00;
@@ -262,18 +363,21 @@ module Kintex_top_I2C_test #(
             //dbg_last_wr_pulse <= 1'b0;
 
         end else begin
+            if (accepted_byte) ack_pending <= 1'b0;
             // default pulse low (one-shot)
             //dbg_last_wr_pulse <= 1'b0;
 
             // STOP: release bus, go idle
             if (stop_cond) begin
+                ack_pending <= 1'b0;
                 state      <= ST_IDLE;
                 sda_oe     <= 1'b0;
                 addr_match <= 1'b0;
             end
 
             // START or Re-START: go receive address
-            if (start_cond) begin
+            else if (start_cond) begin
+                ack_pending <= 1'b0;
                 state      <= ST_ADDR_RX;
                 bit_cnt    <= 3'd7;
                 shift_reg  <= 8'd0;
@@ -281,6 +385,7 @@ module Kintex_top_I2C_test #(
                 addr_match <= 1'b0;
             end
 
+            else begin
             // DRIVE SDA only while SCL LOW (ACK / READ data)
             if (!scl_sync) begin
                 case (state)
@@ -355,6 +460,8 @@ module Kintex_top_I2C_test #(
                         if (bit_cnt == 0) begin
                             // WRITE the received data byte
                             regfile[reg_index] <= {shift_reg[7:1], sda_sync};
+                            accepted_addr <= reg_index;
+                            accepted_data <= {shift_reg[7:1], sda_sync};
 
                             // Debug mirrors (confirm actual write happened)
                             //dbg_last_wr_idx   <= reg_index;
@@ -371,6 +478,7 @@ module Kintex_top_I2C_test #(
                     end
 
                     ST_WRITE_ACK: begin
+                        ack_pending <= addr_match;
                         state     <= ST_WRITE_RX;
                         bit_cnt   <= 3'd7;
                         shift_reg <= 8'd0;
@@ -400,6 +508,7 @@ module Kintex_top_I2C_test #(
                         state <= ST_IDLE;
                     end
                 endcase
+            end
             end
         end
     end

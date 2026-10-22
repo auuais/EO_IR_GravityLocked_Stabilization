@@ -1,0 +1,2 @@
+# Preserve the exact user-selected calibration snapshot and its SHA-256.
+parameters_unified.ini -text

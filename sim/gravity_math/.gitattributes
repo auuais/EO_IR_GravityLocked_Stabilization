@@ -1,0 +1,3 @@
+# Golden vectors have byte-level SHA-256 records in rtl_assets_manifest.json.
+engine_vectors.txt text eol=lf
+engine_vectors.json text eol=lf

@@ -1,0 +1,31 @@
+# STM32CubeIDE / build outputs
+Debug/
+Release/
+**/Debug/**
+**/Release/**
+
+# GCC/LD artifacts
+*.o
+*.d
+*.su
+*.lst
+*.map
+*.elf
+*.bin
+*.hex
+
+# Temporary/log files
+*.log
+log.txt
+
+# IDE local files
+.settings/language.settings.xml
+.settings/stm32cubeide.project.prefs
+
+# Preserve the two imported project metadata files covered by source_provenance.
+!.settings/language.settings.xml
+!.settings/stm32cubeide.project.prefs
+
+# OS/editor
+.DS_Store
+Thumbs.db

@@ -1,0 +1,207 @@
+{
+  "date": "2026-10-16",
+  "scope": "MCU control, wire I2C receipt, pose/control mailbox functional and OOC constraint validation",
+  "source_provenance": {
+    "manifest": "firmware/source_provenance.json",
+    "original_files": 129,
+    "originals_unchanged": true,
+    "local_imported_edits": [
+      ".cproject",
+      ".gitignore",
+      "Core/Src/fpga_i2c.c",
+      "Core/Src/fpga_i2c.h",
+      "Core/Src/fpga_regs.h",
+      "Core/Src/mcu_fsm.c"
+    ]
+  },
+  "arm_build": {
+    "status": "PASS",
+    "compiler": "ARM GCC14.3.1 (STM32CubeIDE2.1.0 bundle)",
+    "text_bytes": 70848,
+    "data_bytes": 0,
+    "bss_bytes": 6072,
+    "warning_count": 22,
+    "warnings_source": "builds/firmware/build.log",
+    "warnings": "Inherited unused functions/variables, packed-member addresses and linker RWX load segment; no warning in the new control module",
+    "programmed": false
+  },
+  "host_control": {
+    "status": "PASS",
+    "ui_pairs": 65536,
+    "modes": 256,
+    "cases": [
+      "startup disabled",
+      "write/read failure",
+      "readback mismatch",
+      "100ms retry",
+      "1s refresh",
+      "uint32 tick wrap",
+      "Off supersedes pending On"
+    ]
+  },
+  "i2c_wire": {
+    "status": "PASS",
+    "checks": 109,
+    "tool": "Vivado2025.2 xvlog/xelab/xsim",
+    "cases": [
+      "baseline mode/readback/static LE register bank",
+      "ACK-end and STOP required",
+      "partial/excess/repeated START rejection",
+      "A0/A1 and invalid control",
+      "common reset while in flight",
+      "pose alone cannot enable"
+    ]
+  },
+  "pose_cdc": {
+    "status": "PASS",
+    "clock_half_ns": [
+      [
+        5,
+        7
+      ],
+      [
+        11,
+        3
+      ],
+      [
+        7,
+        13
+      ]
+    ],
+    "cases": [
+      "atomic pattern invariants",
+      "busy coalescing",
+      "latest eventually delivered",
+      "no duplicate",
+      "sequence wrap",
+      "reset in flight",
+      "destination clock stopped",
+      "common reset with both clocks stopped"
+    ]
+  },
+  "ooc_constraints": {
+    "status": "PASS",
+    "design": "GlI2cCdcHarness",
+    "part": "xcku15p-ffve1517-2-i",
+    "pose_endpoints": 64,
+    "control_endpoints": 8,
+    "effective_max_delay_ns": 4.0,
+    "bus_skew_requirement_ns": 4.0,
+    "recognized_toggle_chains": 4,
+    "cdc_report_counts": {
+      "CDC-3_Info": 4,
+      "CDC-9_Info": 5,
+      "CDC-10_Critical": 2,
+      "CDC-15_Warning": 72
+    },
+    "remaining_findings": "CDC-10 is the common POR comparator before two local asynchronous-assert reset synchronizers. CDC-15 is the intentional 72-bit stable bundled-data handshake. These require implementation review, not blanket CDC waivers.",
+    "limitations": [
+      "OOC harness has no non-mailbox UI registers: compatibility false-path set is empty there",
+      "OOC clock ports lack physical HD.CLK_SRC",
+      "No place/route or hardware validation",
+      "Full top must rerun scripts/audit_gravity_cdc.tcl and check timing/slack"
+    ]
+  },
+  "constraint_rationale": {
+    "change": "Replace only broad HD/UI clock group with endpoint exclusions outside the two mailboxes; preserve HD/camera and UI/camera clock groups. Toggle first stage D pins and reset-sync asynchronous pins excepted; local reset recovery/removal remains timed.",
+    "sources": [
+      "https://docs.amd.com/r/en-US/ug903-vivado-using-constraints/Exceptions-Priority",
+      "https://docs.amd.com/r/2022.2-English/ug903-vivado-using-constraints/Constraining-Asynchronous-Signals",
+      "https://docs.amd.com/r/2024.2-English/ug903-vivado-using-constraints/About-Bus-Skew-Constraints?contentId=kXqymQdxWW597oxcQ4ClQw"
+    ]
+  },
+  "hashes": [
+    {
+      "path": "src/GlPoseCdc.v",
+      "sha256": "0be146accc1eb76056e2e60eaf2e7f19804e2373108874678fedc4b308b4e63a"
+    },
+    {
+      "path": "src/Kintex_top_I2C_test.v",
+      "sha256": "1c358d665edd1f67b86fece9159843efbae6fbc30f9cfc4bff8ffbdabd1e3110"
+    },
+    {
+      "path": "sim/tb_GlPoseCdc.sv",
+      "sha256": "60696429af8979bb54a768354625053306dd1962c65efd0225cd04905d2ae90b"
+    },
+    {
+      "path": "sim/tb_GlI2cInput.sv",
+      "sha256": "38001a73631101ad6100a2824bf92fb46a4e7bdfed51bb3011ea85fd15da64f5"
+    },
+    {
+      "path": "constraints/camera_base.xdc",
+      "sha256": "ff99b942a49936a5c2b1a137fff9719bf08a841dd96a76aa6f289344fb04474e"
+    },
+    {
+      "path": "constraints/gravity_cdc.xdc",
+      "sha256": "d1d411a91829a51268c99e5551ae57797c6d7eccaf6fc41c9a00282883c46a84"
+    },
+    {
+      "path": "scripts/audit_gravity_cdc.tcl",
+      "sha256": "b56e38e929296b726f4189383ba43225229087e0d0c3f7798fcaf9bd313af935"
+    },
+    {
+      "path": "firmware/source_provenance.json",
+      "sha256": "26b330cb4998e8f29c04b4922d06833de3fa64526fd0d81e56aa55abf58f2381"
+    },
+    {
+      "path": "firmware/eo_osd_remote/Core/Src/gl_control.c",
+      "sha256": "e12c9018d554fced21c4c3dd1ebb9259bc915829021709ca3d2f4be1e6f98043"
+    },
+    {
+      "path": "firmware/eo_osd_remote/Core/Src/gl_control.h",
+      "sha256": "a0ee92f33feb2ce723b66c48d4ad263bbc2d77444987c3867817ce3db311ebc8"
+    },
+    {
+      "path": "firmware/eo_osd_remote/Core/Src/mcu_fsm.c",
+      "sha256": "93da24aa37224c1699eea1708cad1e2ddb5a93f73c3b52ed91a77a2ea8ab59fd"
+    },
+    {
+      "path": "firmware/eo_osd_remote/Core/Src/fpga_i2c.c",
+      "sha256": "4f3392bb3580751bb1a172805570b02f071954b65914db501ae4d35d06a9d946"
+    },
+    {
+      "path": "firmware/eo_osd_remote/Core/Src/fpga_i2c.h",
+      "sha256": "d05dcf28ab2a7a8bfa1808722ddf62bff7bea0a0e4f7d7284113db27abe80225"
+    },
+    {
+      "path": "firmware/eo_osd_remote/Core/Src/fpga_regs.h",
+      "sha256": "d61450cbdfc250f676049e829377c9974192116ccb0af394b9c38ad388d63ac4"
+    },
+    {
+      "path": "builds/firmware/gravity_mcu.elf",
+      "sha256": "b727fe64301751ce17f4a5533225981de3d567ab1ddd51eb767153b604202bdf"
+    },
+    {
+      "path": "builds/firmware/build.log",
+      "sha256": "8a5717d4af198e442bed042a0adaebd46175c6f3fe5c2ec95327d7c5efa6827d"
+    },
+    {
+      "path": "builds/firmware_host/test.log",
+      "sha256": "4db49aea9745638caaa5b220bc4b44e6953cd893844d393a9acbf57f3028b2e4"
+    },
+    {
+      "path": "builds/i2c_input/run.console.log",
+      "sha256": "0a1e7da5c42ed37c0a9591e72462dee49d5fd785b0099bc25144f4236468ccb9"
+    },
+    {
+      "path": "builds/cdc_syntax/console.log",
+      "sha256": "9a062dd4485a1d3d5299d2dc9b469cf1be41229b2480f0355b9f68737b61561d"
+    },
+    {
+      "path": "builds/cdc_syntax/audit/cdc.rpt",
+      "sha256": "6054bb2a13744492c40ee54c174eea42aedf5782291eafe7a8e958464d7f5d83"
+    },
+    {
+      "path": "builds/cdc_syntax/audit/pose_max_delay.rpt",
+      "sha256": "1d18aefa14cd25681b236b8605f0d597dcc55c89d32f5767748e9de1c335af2b"
+    },
+    {
+      "path": "builds/cdc_syntax/audit/control_max_delay.rpt",
+      "sha256": "1d0a740c9f42abf67f8e8c60c960025869453a7d0adb02fbf9a5e57b54dd2cbe"
+    },
+    {
+      "path": "builds/cdc_syntax/audit/bus_skew.rpt",
+      "sha256": "6e44eb95bf37e1a12b052d635d50c83bd2c9a8970ea00e40743db824dfa2a3c4"
+    }
+  ]
+}

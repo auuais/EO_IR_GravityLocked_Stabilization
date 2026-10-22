@@ -23,6 +23,9 @@
 module RpRenderer #(
     parameter integer SETTLE_CYCLES     = 1,
     parameter integer DRAIN_CYCLES      = 16,
+    // 1: accept one immutable per-pass pose when start_copy && pose_ready.
+    // Pending pose/control updates cannot change a build or active pass.
+    parameter integer GRAVITY_POSE_INPUTS = 0,
     parameter         RUN_ROM_FILE      = "../../assets/rowruns/eo_v19_render_runs.mem",
     parameter         IR_RUN_ROM_FILE   = "../../assets/rowruns/ir_v19_render_runs.mem",
     parameter         ANGLE_ROM_FILE    = "../../assets/rollpitch/eo_rp_angle.mem",
@@ -51,6 +54,16 @@ module RpRenderer #(
     input  wire [95:0]   eo_pitch_cd,
     input  wire [95:0]   ir_roll_cd,
     input  wire [95:0]   ir_pitch_cd,
+
+    // Used only with GRAVITY_POSE_INPUTS=1. Inputs are synchronous to clk.
+    // start_copy may assert before pose_ready; no work begins until both are
+    // high. After acceptance, keep start_copy high through the complete pass.
+    // frames_valid reports the accepted pose's tables, so it must NOT gate
+    // the initial start_copy request. Later input changes are ignored.
+    input  wire          pose_ready,
+    input  wire [95:0]   pose_roll_cd,
+    input  wire [95:0]   pose_pitch_cd,
+    input  wire [31:0]   pose_revision,
 
     output wire          px_valid,
     input  wire          px_ready,
@@ -83,6 +96,10 @@ module RpRenderer #(
     //------------------------------------------------------------------------
     reg         build_req;
     reg  [95:0] built_roll, built_pitch;
+    reg         built_sensor_ir;
+    reg  [95:0] request_roll, request_pitch;
+    reg         request_ir, request_valid;
+    reg  [31:0] request_revision;
     reg         built_once;
     wire        tbl_busy, tbl_valid, tbl_sat, tbl_ir;
     wire [10:0] ylo, yhi, col_lo, col_hi;
@@ -96,8 +113,11 @@ module RpRenderer #(
     wire [8:0]  rr_raddr;
     wire [10:0] rr_rdata;
 
-    wire [95:0] sel_roll  = sensor_ir ? ir_roll_cd  : eo_roll_cd;
-    wire [95:0] sel_pitch = sensor_ir ? ir_pitch_cd : eo_pitch_cd;
+    wire [95:0] sel_roll = (GRAVITY_POSE_INPUTS != 0) ? request_roll :
+                          (sensor_ir ? ir_roll_cd : eo_roll_cd);
+    wire [95:0] sel_pitch = (GRAVITY_POSE_INPUTS != 0) ? request_pitch :
+                           (sensor_ir ? ir_pitch_cd : eo_pitch_cd);
+    wire sel_ir = (GRAVITY_POSE_INPUTS != 0) ? request_ir : sensor_ir;
 
     EoV19RunRom #(.DEPTH(`EO_V19_RUN_COUNT), .ADDR_W(15), .ROM_FILE(RUN_ROM_FILE)) u_rom (
         .clk(clk), .addr_a(rom_addr), .addr_b(15'd0), .data_a(rom_data), .data_b(rom_data_unused));
@@ -105,8 +125,11 @@ module RpRenderer #(
         .clk(clk), .en(1'b1), .addr_a(rom_addr), .addr_b(15'd0), .data_a(rom_data_ir), .data_b(rom_data_ir_unused));
 
     RpTables #(.ANGLE_ROM_FILE(ANGLE_ROM_FILE), .IR_ANGLE_ROM_FILE(IR_ANGLE_ROM_FILE)) u_tables (
-        .clk(clk), .rst(rst), .sensor_ir(sensor_ir),
-        .build_req(build_req), .roll_cd(sel_roll), .pitch_cd(sel_pitch),
+        // build_req reaches the builder one cycle after the request is made.
+        // Use the same frozen snapshot as the renderer's bookkeeping, never
+        // live inputs that can change in that intervening cycle.
+        .clk(clk), .rst(rst), .sensor_ir(built_sensor_ir),
+        .build_req(build_req), .roll_cd(built_roll), .pitch_cd(built_pitch),
         .busy(tbl_busy), .tables_valid(tbl_valid), .sat_seen(tbl_sat), .build_count(build_count),
         .ylo(ylo), .yhi(yhi), .col_lo(col_lo), .col_hi(col_hi),
         .rom_addr(rom_addr), .rom_data(rom_data), .rom_data_ir(rom_data_ir), .built_ir(tbl_ir),
@@ -115,16 +138,14 @@ module RpRenderer #(
         .rready_raddr(rr_raddr), .rready_rdata(rr_rdata));
     assign tables_valid = tbl_valid;
     assign tables_busy  = tbl_busy;
-    wire   tables_match = tbl_valid && (tbl_ir == sensor_ir) &&
-                          (sel_roll == built_roll) && (sel_pitch == built_pitch);
-    assign frames_valid = tables_match;
 
     //------------------------------------------------------------------------
     // Pass control
     //------------------------------------------------------------------------
     localparam [3:0] C_IDLE = 4'd0, C_BUILD = 4'd1, C_SETTLE = 4'd2, C_EDGE = 4'd3,
                      C_ROWS = 4'd4, C_BEND = 4'd5, C_GO = 4'd6, C_WALK = 4'd7,
-                     C_DRAIN = 4'd8, C_FLUSH = 4'd9, C_END = 4'd10;
+                     C_DRAIN = 4'd8, C_FLUSH = 4'd9, C_END = 4'd10,
+                     C_PREPARE = 4'd11;
     reg [3:0]  cs;
     reg [26:0] settle;
     reg [10:0] y0;
@@ -150,7 +171,15 @@ module RpRenderer #(
     wire        emit_can_progress;
     wire        sampler_busy;
 
-    wire rebuild_needed = !built_once || !tbl_valid || (tbl_ir != sensor_ir) ||
+    wire pass_control_active = (cs >= C_EDGE) && (cs <= C_END);
+    wire snapshot_tables_valid = built_once && tbl_valid && !tbl_busy && !build_req &&
+                                 (tbl_ir == built_sensor_ir);
+    wire tables_match = snapshot_tables_valid && (tbl_ir == sel_ir) &&
+                        (sel_roll == built_roll) && (sel_pitch == built_pitch);
+    assign frames_valid = (GRAVITY_POSE_INPUTS != 0)
+        ? (request_valid && tables_match)
+        : (snapshot_tables_valid && (pass_control_active || tables_match));
+    wire rebuild_needed = !built_once || !tbl_valid || (tbl_ir != sel_ir) ||
                           (sel_roll != built_roll) || (sel_pitch != built_pitch);
     wire [11:0] row_cap = tbl_ir ? 12'd511 : 12'd1079;
 
@@ -168,6 +197,9 @@ module RpRenderer #(
         if (rst) begin
             cs <= C_IDLE; build_req <= 1'b0; built_once <= 1'b0;
             built_roll <= 96'd0; built_pitch <= 96'd0;
+            built_sensor_ir <= 1'b0;
+            request_roll <= 96'd0; request_pitch <= 96'd0;
+            request_ir <= 1'b0; request_valid <= 1'b0; request_revision <= 32'd0;
             need_valid <= 1'b0; need_row <= 11'd0;
             y0_done_valid <= 1'b0; all_done <= 1'b0;
             pass_start <= 1'b0; pass_rst <= 1'b1; edge_seen_late <= 1'b0;
@@ -176,6 +208,11 @@ module RpRenderer #(
             build_req  <= 1'b0;
             pass_start <= 1'b0;
             pass_rst   <= 1'b0;
+            // A build already in flight may finish after an abort, but its
+            // cancelled request can never launch a pass, even if a new start
+            // arrives before the table builder finishes.
+            if ((GRAVITY_POSE_INPUTS != 0) && !start_copy)
+                request_valid <= 1'b0;
 
             if (!start_copy && (cs != C_IDLE) && (cs != C_BUILD) && (cs != C_SETTLE)) begin
                 // abort / end of pass
@@ -184,14 +221,41 @@ module RpRenderer #(
             end else begin
                 case (cs)
                 C_IDLE: begin
+                    if (GRAVITY_POSE_INPUTS != 0) begin
+                        if (start_copy && pose_ready) begin
+                            request_roll <= pose_roll_cd; request_pitch <= pose_pitch_cd;
+                            request_ir <= sensor_ir; request_revision <= pose_revision;
+                            request_valid <= 1'b1;
+                            cs <= C_PREPARE;
+                        end
+                    end else begin
                     // Rebuild between passes whenever the tables do not
                     // describe the selected sensor and its current offsets.
                     // A pending copy simply waits the ~4 ms.
                     if (rebuild_needed) begin
                         build_req <= 1'b1;
                         built_roll <= sel_roll; built_pitch <= sel_pitch;
+                        built_sensor_ir <= sel_ir;
                         cs <= C_BUILD;
                     end else if (start_copy) begin
+                        pass_start <= 1'b1;
+                        y0 <= ylo; y0_last <= (ylo == yhi);
+                        slot_a <= ylo % 3; slot_b <= (ylo + 11'd1) % 3;
+                        y0_done_valid <= 1'b0; all_done <= 1'b0;
+                        need_valid <= 1'b1;
+                        need_row <= cap_row({1'b0, ylo} + 12'd2, row_cap);
+                        cs <= C_EDGE;
+                    end
+                    end
+                end
+                C_PREPARE: begin
+                    if (!request_valid) cs <= C_IDLE;
+                    else if (rebuild_needed) begin
+                        build_req <= 1'b1;
+                        built_roll <= request_roll; built_pitch <= request_pitch;
+                        built_sensor_ir <= request_ir;
+                        cs <= C_BUILD;
+                    end else begin
                         pass_start <= 1'b1;
                         y0 <= ylo; y0_last <= (ylo == yhi);
                         slot_a <= ylo % 3; slot_b <= (ylo + 11'd1) % 3;
@@ -206,7 +270,8 @@ module RpRenderer #(
                 end
                 C_SETTLE: begin
                     settle <= settle + 27'd1;
-                    if (settle >= SETTLE_CYCLES - 1) cs <= C_IDLE;
+                    if (settle >= SETTLE_CYCLES - 1)
+                        cs <= (GRAVITY_POSE_INPUTS != 0) ? C_PREPARE : C_IDLE;
                 end
                 C_EDGE: if (source_frame_reset) cs <= C_ROWS;
                 C_ROWS: if (rows_done >= {1'b0, y0} + 12'd2) begin

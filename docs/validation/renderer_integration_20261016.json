@@ -1,0 +1,751 @@
+{
+  "date": "2026-10-16",
+  "status": "PASS",
+  "tool": "Vivado 2025.2 xvlog/xelab/xsim",
+  "scope": "Stable optical renderer unit/integration simulation and focused capture-window/single-view selection checks. No full-top timing, physical CDC or hardware result is asserted here.",
+  "baseline_commit": "3479cacf2e512a5bde9aa3e0243755826e071ef4",
+  "pixel_oracle": "Unchanged model/rpcore.py stable EO/IR optical mapping; this is separate from exact-C camera-angle projection.",
+  "commands": [
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test_rp_renderer.ps1 -Suite All",
+    "python scripts/gravity_capture_envelope.py",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/test_eo_capture_coverage.ps1"
+  ],
+  "sources_and_fixtures": [
+    {
+      "path": "src/RpEmitter.v",
+      "sha256": "a4162839135d1b42ff78691c4238e4177ba328bf1cf7df9720f0af8f01f62cc0"
+    },
+    {
+      "path": "src/RpLineRing.v",
+      "sha256": "f97ec69cf6f00ec1d44b854f61d3a605f16794b760ce0a7c95255550cceac63c"
+    },
+    {
+      "path": "src/RpOffsetSync.v",
+      "sha256": "2418f8c3c8d7bfeb58edf1a8322a5ac4b9e4bcb29107b3d4ef4eb967f70eea8f"
+    },
+    {
+      "path": "src/RpRenderer.v",
+      "sha256": "909dbab138193b811ed8a9edfacb4e999599c5b7348d37ca4ef91b8a29de03e2"
+    },
+    {
+      "path": "src/RpRowWindow.v",
+      "sha256": "9133bfed4191b54c7e20fce01e8b82c33732aca8f1a688bf061ba2027be0612c"
+    },
+    {
+      "path": "src/RpSampler.v",
+      "sha256": "2a2cc8bc263a8d6accec99948fb062ce29529607a2170ed46a3d63fa610f51ba"
+    },
+    {
+      "path": "src/RpSegXform.v",
+      "sha256": "4175ae47121611f4568cfcdcf6cb1baf58831d46ba3b9b4aaab36da5149843a0"
+    },
+    {
+      "path": "src/RpTables.v",
+      "sha256": "3e000ffb367135f96f4108dbbda0e88c540e014b391cf73a4a3cd97b2504e58a"
+    },
+    {
+      "path": "src/RpWalker.v",
+      "sha256": "44e7a99a76ee1e7184f69a2c9819eb8a4edb59d5c993d04c08d7a76851a0cb74"
+    },
+    {
+      "path": "src/EoV19RunRom.v",
+      "sha256": "910dfbccb3b60d3a55ba9190592a8a7ca04b7ff29287a890504eb4e478ce284a"
+    },
+    {
+      "path": "src/IrV19RunRom.v",
+      "sha256": "6446cd9441f3e7f023ae7fa7bf21ee2591fc783e35af8f43b5c6902002725a32"
+    },
+    {
+      "path": "src/EoV19PanoramaParams.vh",
+      "sha256": "116e314fc69d72d687ab9f159cf689c1e449c6246ca00fddaa8987a9ea7ac71f"
+    },
+    {
+      "path": "sim/tb_RpTables.v",
+      "sha256": "86fd2cfbecf0753c9e806a0dba9925f37329693838dd857fc8ea8c5735ec110f"
+    },
+    {
+      "path": "sim/tb_RpRenderer.v",
+      "sha256": "633ba16cdbbdc3c07b569f58ca3bf7be5cc41a0ad075c8a129052e5dba587027"
+    },
+    {
+      "path": "model/rpcore.py",
+      "sha256": "2b6f074b790195751cd814da1c32aa3c8a83016155c0340a2f03b30b53f51545"
+    },
+    {
+      "path": "model/compare_rp_tb.py",
+      "sha256": "75d23a2de5933d158f06e2a8ee2495bd8448bcf48057a2dd62a7ec0d48c55f25"
+    },
+    {
+      "path": "scripts/test_rp_renderer.ps1",
+      "sha256": "4a5e1ea9f9667515ed465a9fa58a45084439509fb5c0657f6138bef3ae1f6d0c"
+    },
+    {
+      "path": "scripts/compare_rp_renderer.py",
+      "sha256": "e1b6a08c1ca7bd3181a8a1437f9f16d09b16d991d17601bccfa97d804ecc8189"
+    },
+    {
+      "path": "scripts/gravity_capture_envelope.py",
+      "sha256": "97a9cf240c5a3529533066cc28aa05c3d1bf8fbf78c2877533df3c04cb932604"
+    },
+    {
+      "path": "docs/validation/gravity_capture_envelope.json",
+      "sha256": "2a3d60a80ea3fba581d7253f559657c2ee7ddee374e8396a659ea094b93585a7"
+    },
+    {
+      "path": "assets/rowruns/eo_v19_render_runs.mem",
+      "sha256": "d7a724124a545ed862f697bfcd3219ffbb6f6333f352514792781f03ed9489ca"
+    },
+    {
+      "path": "assets/rowruns/ir_v19_render_runs.mem",
+      "sha256": "24c7c4a7047be2de917b49e073016c35b8405a3c3548a2ca39ab37a442d05a81"
+    },
+    {
+      "path": "assets/rowruns/eo_v19_alpha_y.mem",
+      "sha256": "223e06fb6b0bbef42a3bc5ede037d6d24b8737ec2b1666e758d80252758841f7"
+    },
+    {
+      "path": "assets/rowruns/eo_v19_alpha_c.mem",
+      "sha256": "79886005b79248c0d4e5996218efc5a73704bafcaa23cedf84b5239943a86dac"
+    },
+    {
+      "path": "assets/rowruns/ir_v19_alpha_y.mem",
+      "sha256": "d1bf0d2f394e308db68a6c4f947ffde7b477a2bf5acbc6f97fd3208bc8413a69"
+    },
+    {
+      "path": "assets/rollpitch/eo_rp_angle.mem",
+      "sha256": "91f7e6e2c83dcf667e16b777acf9abf14658f5fe42de428811e5a67b0f1f76a4"
+    },
+    {
+      "path": "assets/rollpitch/ir_rp_angle.mem",
+      "sha256": "d02ae9fd486b537ae5f18630bc5bc5698f0a1659bf3bfb589291211dacbea7fa"
+    },
+    {
+      "path": "sim/vectors/rp_tables_alt10/bucket_end.mem",
+      "sha256": "668ce14f69bccffdce7ce998080e1a161ebc7d1d82ea3aec8b1fd70a37f18b39"
+    },
+    {
+      "path": "sim/vectors/rp_tables_alt10/meta.mem",
+      "sha256": "ab4d57b70ba3227390e25d8c31bbc5fa0d9d2a338688b9b25dd369ed23eb7208"
+    },
+    {
+      "path": "sim/vectors/rp_tables_alt10/offsets.mem",
+      "sha256": "d5006e591705a838809104c9d14cacb0f419fdb3d9c7e8b011a6a1d530151612"
+    },
+    {
+      "path": "sim/vectors/rp_tables_alt10/params.mem",
+      "sha256": "4ccf8c8cf298e05725556b3de803ccbe0cdf4e3113b6585bda67594b5041d412"
+    },
+    {
+      "path": "sim/vectors/rp_tables_alt10/row_ready.mem",
+      "sha256": "a824403f313515dc714e2933edc25b23d235cd23fceb0883ace1f888a089ce5e"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_alt10/bucket_end.mem",
+      "sha256": "012bdb889df6dfb8dd16be324082cd1f439ef3856ad9e45f5ed9f4e0a4656791"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_alt10/meta.mem",
+      "sha256": "1935b6e46bc5c1b78298e7a9d3fc3f7e22f1bce88636bb6d1b2a0d090242692e"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_alt10/offsets.mem",
+      "sha256": "d5006e591705a838809104c9d14cacb0f419fdb3d9c7e8b011a6a1d530151612"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_alt10/params.mem",
+      "sha256": "45c97850a48616c69ce037c028f9981d0dafc61c2d09a529563541a8abdb8855"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_alt10/row_ready.mem",
+      "sha256": "a8d49a2aa79df7e2943a623a34aaea33f637afcd9fa4b48ec2d9e3bb02e9dd45"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_mixed/bucket_end.mem",
+      "sha256": "4059e6c792e7f09705be93ffab3c9bde4b247ce8ad5812fc5239634ddb283bb7"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_mixed/meta.mem",
+      "sha256": "5d79208c25ef41fc2657094da3405899ba7875352b9628451ad8031dd5662cb1"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_mixed/offsets.mem",
+      "sha256": "f9cccdf7aff170871b05c07de53c9619ade90650307ae9e700de2e66c3cff436"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_mixed/params.mem",
+      "sha256": "a4866bdb53964ba40a94480293575675b79d058ae9e7bd01d8edd6dbaf445fde"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_mixed/row_ready.mem",
+      "sha256": "a2271c094f8673854cb77ad32ab59ef7a2874eadae79636fce2aed03a00f2e0d"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_roll10/bucket_end.mem",
+      "sha256": "dec014702aa2fe04714491d09f0ae96ffa7d334e399ce288e2c5efdb02d87f26"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_roll10/meta.mem",
+      "sha256": "5d79208c25ef41fc2657094da3405899ba7875352b9628451ad8031dd5662cb1"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_roll10/offsets.mem",
+      "sha256": "7f88587a4e55a6c37c3427749b8cd36bcd1deab64bdf8c9682cdbb7632ecdedc"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_roll10/params.mem",
+      "sha256": "c4e6536b63d06734adf01f55394d60e074873ea3ec885cbc2e59907db5d37c92"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_roll10/row_ready.mem",
+      "sha256": "2d7c42c01d4f71cd2562dfcc674e4c3ddc1bc3c0a5d25161c7787f0d7cdea238"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_zero/bucket_end.mem",
+      "sha256": "68f82bee8b1aee219bc235288b3cfc227bc89b2f892de01a6cba1752ec85b500"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_zero/meta.mem",
+      "sha256": "e8e32e9671f37ddb35f04f733df62d4b03a58da89ed9ba69853ad4de81686731"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_zero/offsets.mem",
+      "sha256": "73eaa55a49d4b2f63cbb85b93bf3934b2d2a25013d0c21a2ea44fac96f2b0f17"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_zero/params.mem",
+      "sha256": "1d31fce51b63338cb47aa2d128149f527a173ddec1b4f761024f63506c731ea5"
+    },
+    {
+      "path": "sim/vectors/rp_tables_ir_zero/row_ready.mem",
+      "sha256": "0e5d9a389d4d7bf12850f5e33de8cc6c23de07a1d4062cc6b7dc70cb87490c16"
+    },
+    {
+      "path": "sim/vectors/rp_tables_mixed/bucket_end.mem",
+      "sha256": "8a1f79d30b24863d17efe923fb50f53358b39e41ad2b21b2e1badde76c45158e"
+    },
+    {
+      "path": "sim/vectors/rp_tables_mixed/meta.mem",
+      "sha256": "1b827225b24e71594f8d0e8ea246bdf4607608617e3c43356b5258abae539670"
+    },
+    {
+      "path": "sim/vectors/rp_tables_mixed/offsets.mem",
+      "sha256": "f9cccdf7aff170871b05c07de53c9619ade90650307ae9e700de2e66c3cff436"
+    },
+    {
+      "path": "sim/vectors/rp_tables_mixed/params.mem",
+      "sha256": "86704b721f032d3ba7f749dbfa78fe05ef627f31850090ef2e13fdf32205898a"
+    },
+    {
+      "path": "sim/vectors/rp_tables_mixed/row_ready.mem",
+      "sha256": "58d4e035f02293a26df49412122ff9330619844ae250beb47b3ee5a22e87f0a8"
+    },
+    {
+      "path": "sim/vectors/rp_tables_roll10/bucket_end.mem",
+      "sha256": "475d53a247ca1402f86b07db7d3450ff57deb6a181ba7a20a08a74dfbc0d26d7"
+    },
+    {
+      "path": "sim/vectors/rp_tables_roll10/meta.mem",
+      "sha256": "f45e96127a4ca94a288e93e59453137bbf6985314eaee3fbf9a3a8f6a2d09451"
+    },
+    {
+      "path": "sim/vectors/rp_tables_roll10/offsets.mem",
+      "sha256": "7f88587a4e55a6c37c3427749b8cd36bcd1deab64bdf8c9682cdbb7632ecdedc"
+    },
+    {
+      "path": "sim/vectors/rp_tables_roll10/params.mem",
+      "sha256": "df821162c15fa924369b711da0dbf9b026e0ee418e69b2f8682d6426edbac948"
+    },
+    {
+      "path": "sim/vectors/rp_tables_roll10/row_ready.mem",
+      "sha256": "357ab203723754c6ebb7e0a38f67c25421c8376790b907f5728a986b4910353b"
+    },
+    {
+      "path": "sim/vectors/rp_tables_zero/bucket_end.mem",
+      "sha256": "fc534791c197a77d30acf0be8e585a5fcfb0af10d401c15474e9ada0a03c9dd7"
+    },
+    {
+      "path": "sim/vectors/rp_tables_zero/meta.mem",
+      "sha256": "53fd25aee3d3d654cb88bbfbcf3ab91670047094ccff751d48e141eab71d2374"
+    },
+    {
+      "path": "sim/vectors/rp_tables_zero/offsets.mem",
+      "sha256": "73eaa55a49d4b2f63cbb85b93bf3934b2d2a25013d0c21a2ea44fac96f2b0f17"
+    },
+    {
+      "path": "sim/vectors/rp_tables_zero/params.mem",
+      "sha256": "471437977be5c9f1986d268d886c22d13f64b23907ef142adb056c03f2aa8bb7"
+    },
+    {
+      "path": "sim/vectors/rp_tables_zero/row_ready.mem",
+      "sha256": "b6ebfb39cc562dd9c3300d5a54247e8b3cf10a2ae369e20eddd24717516af749"
+    }
+  ],
+  "tables": {
+    "status": "PASS",
+    "cases": [
+      {
+        "name": "eo_zero",
+        "build_cycles": 954753,
+        "ylo": 46,
+        "yhi": 1051,
+        "col_lo": 271,
+        "col_hi": 1610,
+        "mismatches": 0
+      },
+      {
+        "name": "eo_mixed",
+        "build_cycles": 954753,
+        "ylo": 0,
+        "yhi": 1078,
+        "col_lo": 187,
+        "col_hi": 1678,
+        "mismatches": 0
+      },
+      {
+        "name": "ir_zero",
+        "build_cycles": 866081,
+        "ylo": 23,
+        "yhi": 486,
+        "col_lo": 25,
+        "col_hi": 630,
+        "mismatches": 0
+      },
+      {
+        "name": "ir_mixed",
+        "build_cycles": 866081,
+        "ylo": 0,
+        "yhi": 510,
+        "col_lo": 0,
+        "col_hi": 639,
+        "mismatches": 0
+      },
+      {
+        "name": "eo_roll10",
+        "build_cycles": 954753,
+        "ylo": 0,
+        "yhi": 1078,
+        "col_lo": 200,
+        "col_hi": 1678,
+        "mismatches": 0
+      },
+      {
+        "name": "ir_roll10",
+        "build_cycles": 866081,
+        "ylo": 0,
+        "yhi": 510,
+        "col_lo": 0,
+        "col_hi": 639,
+        "mismatches": 0
+      },
+      {
+        "name": "eo_alt10",
+        "build_cycles": 954753,
+        "ylo": 0,
+        "yhi": 1078,
+        "col_lo": 217,
+        "col_hi": 1699,
+        "mismatches": 0
+      },
+      {
+        "name": "ir_alt10",
+        "build_cycles": 866081,
+        "ylo": 0,
+        "yhi": 510,
+        "col_lo": 15,
+        "col_hi": 639,
+        "mismatches": 0
+      }
+    ],
+    "log": {
+      "path": "builds/rp_renderer_tables/xsim.log",
+      "sha256": "efbb723b95764df65a4e04456ad2c27a3e7e11da23429cc11780ae13d7772ddf"
+    }
+  },
+  "renderer": {
+    "legacy": {
+      "status": "PASS",
+      "simulated_passes": 8,
+      "simulated_pixels": 14112000,
+      "compared_retained_rasters": 8,
+      "compared_pixels": 14112000,
+      "mismatches": 0,
+      "passes": [
+        {
+          "name": "eo_zero",
+          "cycles": 3152415,
+          "pixels": 1843200,
+          "status_flags_hex": "0003",
+          "build_count": 1
+        },
+        {
+          "name": "ir_zero",
+          "cycles": 2924275,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 2
+        },
+        {
+          "name": "eo_mixed",
+          "cycles": 3557470,
+          "pixels": 1843200,
+          "status_flags_hex": "0003",
+          "build_count": 3
+        },
+        {
+          "name": "ir_mixed",
+          "cycles": 3350754,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 4
+        },
+        {
+          "name": "ir_alt10",
+          "cycles": 3553254,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 5
+        },
+        {
+          "name": "ir_absent2",
+          "cycles": 2923816,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 6
+        },
+        {
+          "name": "ir_absent3",
+          "cycles": 3350802,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 7
+        },
+        {
+          "name": "eo_absent",
+          "cycles": 3557990,
+          "pixels": 1843200,
+          "status_flags_hex": "0003",
+          "build_count": 8
+        }
+      ],
+      "outputs": [
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_eo_absent.hex",
+          "sha256": "40361572d31e6e0d4aba566f6408344611af1cd03a661fdaddbaafb5f3a07094",
+          "pixels": 1843200,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_eo_mixed.hex",
+          "sha256": "58582d9755077eb9c17264124fff2e091ca4aa09678a87cb7557e8fdb2589076",
+          "pixels": 1843200,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_eo_zero.hex",
+          "sha256": "1b73de160a6bf3cc8f56cf111ac552f04af5333231b3919e9c225cdb300201f2",
+          "pixels": 1843200,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_ir_absent2.hex",
+          "sha256": "0fc6fc96057dc525947d776d66274a90be13d395caddeb4fbff66a4bc6ba1178",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_ir_absent3.hex",
+          "sha256": "53876504e5fffcd0c71f7e3d1a585c4367824850c2ba55b201ad83f4e7318d73",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_ir_alt10.hex",
+          "sha256": "57f2c6c1ab5dff2143ed3b3db15779e1c9af69a26e25fccc81a1007fe8439424",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_ir_mixed.hex",
+          "sha256": "98ec60112a3abd3514af463e250469669ff666df090199820a995ba59f0d6f61",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_legacy/sim_out/rp_ir_zero.hex",
+          "sha256": "33f52543c64b4b7ac9032a3b4c47937b91a3874fea9b1802484a45986a08fb8f",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        }
+      ],
+      "log": {
+        "path": "builds/rp_renderer_legacy/xsim.log",
+        "sha256": "2f3c59597c15966dfd7803aaca2be7d3dac6cf0e873f1f2537af65b25dece4a9"
+      }
+    },
+    "gravity": {
+      "status": "PASS",
+      "simulated_passes": 9,
+      "simulated_pixels": 15828480,
+      "compared_retained_rasters": 8,
+      "compared_pixels": 14112000,
+      "mismatches": 0,
+      "passes": [
+        {
+          "name": "eo_zero",
+          "cycles": 3152412,
+          "pixels": 1843200,
+          "status_flags_hex": "0003",
+          "build_count": 1
+        },
+        {
+          "name": "ir_zero",
+          "cycles": 2924252,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 2
+        },
+        {
+          "name": "eo_mixed",
+          "cycles": 3557633,
+          "pixels": 1843200,
+          "status_flags_hex": "0003",
+          "build_count": 3
+        },
+        {
+          "name": "ir_mixed",
+          "cycles": 3350701,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 4
+        },
+        {
+          "name": "ir_mixed",
+          "cycles": 2484498,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 4
+        },
+        {
+          "name": "ir_alt10",
+          "cycles": 3552766,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 5
+        },
+        {
+          "name": "ir_absent2",
+          "cycles": 2924849,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 6
+        },
+        {
+          "name": "ir_absent3",
+          "cycles": 3350371,
+          "pixels": 1716480,
+          "status_flags_hex": "0103",
+          "build_count": 7
+        },
+        {
+          "name": "eo_absent",
+          "cycles": 3557904,
+          "pixels": 1843200,
+          "status_flags_hex": "0003",
+          "build_count": 8
+        }
+      ],
+      "outputs": [
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_eo_absent.hex",
+          "sha256": "40361572d31e6e0d4aba566f6408344611af1cd03a661fdaddbaafb5f3a07094",
+          "pixels": 1843200,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_eo_mixed.hex",
+          "sha256": "58582d9755077eb9c17264124fff2e091ca4aa09678a87cb7557e8fdb2589076",
+          "pixels": 1843200,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_eo_zero.hex",
+          "sha256": "1b73de160a6bf3cc8f56cf111ac552f04af5333231b3919e9c225cdb300201f2",
+          "pixels": 1843200,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_ir_absent2.hex",
+          "sha256": "0fc6fc96057dc525947d776d66274a90be13d395caddeb4fbff66a4bc6ba1178",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_ir_absent3.hex",
+          "sha256": "53876504e5fffcd0c71f7e3d1a585c4367824850c2ba55b201ad83f4e7318d73",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_ir_alt10.hex",
+          "sha256": "57f2c6c1ab5dff2143ed3b3db15779e1c9af69a26e25fccc81a1007fe8439424",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_ir_mixed.hex",
+          "sha256": "98ec60112a3abd3514af463e250469669ff666df090199820a995ba59f0d6f61",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        },
+        {
+          "path": "builds/rp_renderer_gravity/sim_out/rp_ir_zero.hex",
+          "sha256": "33f52543c64b4b7ac9032a3b4c47937b91a3874fea9b1802484a45986a08fb8f",
+          "pixels": 1716480,
+          "comparison": "bit-exact PASS reported by scripts/compare_rp_renderer.py"
+        }
+      ],
+      "log": {
+        "path": "builds/rp_renderer_gravity/xsim.log",
+        "sha256": "5838dfc234b333f7fcfca3c4fa96d6b0caa9ae456329ab11dcaf152dc6bef763"
+      },
+      "assertions": [
+        "No work before pose_ready",
+        "Snapshot roll/pitch/sensor stay fixed after acceptance",
+        "RpTables receives the same frozen snapshot",
+        "Replay is not requested during table build",
+        "frames_valid remains asserted once accepted tables are ready",
+        "Pending pose/sensor/revision/ready changes during build/render do not alter output",
+        "Repeated identical pose reuses tables despite changed receipt revision"
+      ],
+      "retained_output_note": "The same-name repeated ir_mixed pass overwrites the first file. Nine passes were simulated; eight retained rasters were compared to the stable model."
+    }
+  },
+  "capture_and_single_selection": {
+    "status": "PASS",
+    "writer_checks": 116,
+    "ordered_descriptors": 4,
+    "selector_checks": 19,
+    "original_marker_regression": "PASS",
+    "model": "Actual Vivado XPM asynchronous FIFOs; selector bench instantiates the existing EO single reader and checks its first DDR request address.",
+    "sources": [
+      {
+        "path": "src/EoV19DdrDesync.v",
+        "sha256": "acd06b3a36961f7a80952a8abd157d4723cbfe405b15b615abc4c9e7c84b2182"
+      },
+      {
+        "path": "src/EoV19SingleCamReader.v",
+        "sha256": "6836c0fe64ab8989ff05202f8ef60188b4d96b20e99f58be8058de73313ba2d5"
+      },
+      {
+        "path": "sim/tb_EoV19CaptureCoverage.sv",
+        "sha256": "40ae29ac9581693df75796884035ff75fe9455e54d12db68c001bb76216996d4"
+      },
+      {
+        "path": "sim/tb_EoV19SingleFrameSelect.sv",
+        "sha256": "c2c325efe47f7891278a43394d3d4cf734ab6d038681429a95f6770a6ed92512"
+      },
+      {
+        "path": "sim/tb_EoV19DdrCamWriterMarker.v",
+        "sha256": "a4e678d9712273bcdecc58f9380630c08c9cfd307eb09a5b191f5b91f4dbcf93"
+      },
+      {
+        "path": "scripts/test_eo_capture_coverage.ps1",
+        "sha256": "5b6d2c9c19de539ec48c2aeab595fe8d876929c649d0c3053ccfe2f6cc66f8ea"
+      }
+    ],
+    "logs": [
+      {
+        "path": "builds/eo_capture_coverage/tb_EoV19CaptureCoverage.xsim.log",
+        "sha256": "e812cf301247372b5c39195187dbb1dca5a766c9839f16b7e25cfb5b68b2a506",
+        "result": "PASS EoV19CaptureCoverage: 116 checks, 4 ordered descriptors"
+      },
+      {
+        "path": "builds/eo_capture_coverage/tb_EoV19SingleFrameSelect.xsim.log",
+        "sha256": "ffe84981554fa818bcd21bb6422a08f24d08a60b658f2dacd9fc92bb2fb60233",
+        "result": "PASS EoV19SingleFrameSelect: 19 checks"
+      },
+      {
+        "path": "builds/eo_capture_coverage/tb_EoV19DdrCamWriterMarker.xsim.log",
+        "sha256": "c7df621d9b8aedc21caec52e769edaf5b855eca0ec80779057abcde52c491e28",
+        "result": "PASS: camera bank publishes only after in-band marker retirement"
+      }
+    ],
+    "checks": [
+      "Narrow frame already in flight remains non-full after UI requests widening",
+      "Full marker preserves previous-frame coverage when the next frame adopts a narrower window",
+      "CDC-window adoption uses the actual effective window if the new request arrives too late",
+      "Full width with partial height is not full-frame coverage",
+      "Descriptor bank/epoch/coverage publishes only after preceding payload and marker retirement",
+      "Selected-camera changes clear cached/pending readiness",
+      "A newer narrow descriptor invalidates an older cached full bank",
+      "An accepted copy freezes camera/bank/full-frame readiness through later changes",
+      "A full descriptor arriving during a black copy does not restart the source reader mid-copy",
+      "Same-edge full descriptor and copy-start is consumed exactly once",
+      "Same-edge narrow descriptor blocks reuse of a cached full bank",
+      "Stale expiry, mode re-entry and reset discard cached readiness"
+    ],
+    "marker_layout": "Existing 256-bit marker payload bit0 carries coverage; FIFO width and panorama bank/epoch handling are unchanged."
+  },
+  "integration_source_at_recording": {
+    "path": "src/PanoramaBase_DdrBlackFrame.v",
+    "sha256": "8cdfe959b09b7b0e51eb1e0e7386f7aa76770bb97a304798bc159fa9a6a14731",
+    "scope": "Top wiring recorded for provenance; full-top synthesis/implementation is validated separately."
+  },
+  "remaining_bench_acceptance": [
+    "Exercise panorama-to-single and single camera changes before/after frame-start and with delayed marker retirement; no edge columns may contain stale bank contents.",
+    "Stress asynchronous raster phases, long DDR stalls, rapid camera selection and camera stop/rejoin while observing FIFO levels, drop/overflow status and frame progress.",
+    "Verify source-bank ownership/reuse cannot overwrite an active single-reader frame under worst-case stalls; the selector unit test does not model the complete DDR bank manager.",
+    "Measure actual camera/output frame rates and sustained whole-system bandwidth; confirm routed timing and physical CDC separately."
+  ],
+  "ddr_write_traffic": {
+    "assumed_capture_and_output_frames_per_second": 30,
+    "historical_measured_aggregate_write_beats_per_second": 22300000,
+    "historical_source": "docs/HANDOFF_EO_PANORAMA_30FPS_20260903.md:804-829",
+    "historical_fixed_map_eo_panorama_write_beats_per_second_at_30fps": 19422720,
+    "modes": {
+      "eo_panorama": {
+        "eo_capture_write_beats_per_second": 20217600,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 23673600,
+        "conditional_margin_against_historical_aggregate": -1373600
+      },
+      "eo_single": {
+        "eo_capture_write_beats_per_second": 20736000,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 129600,
+        "output_write_beats_per_second": 3888000,
+        "total_write_beats_per_second": 24624000,
+        "conditional_margin_against_historical_aggregate": -2324000
+      },
+      "ir_panorama": {
+        "eo_capture_write_beats_per_second": 0,
+        "ir_capture_write_beats_per_second": 1843200,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 5299200,
+        "conditional_margin_against_historical_aggregate": 17000800
+      },
+      "ir_single": {
+        "eo_capture_write_beats_per_second": 20217600,
+        "ir_capture_write_beats_per_second": 0,
+        "output_write_beats_per_frame": 115200,
+        "output_write_beats_per_second": 3456000,
+        "total_write_beats_per_second": 23673600,
+        "conditional_margin_against_historical_aggregate": -1373600
+      }
+    },
+    "two_full_plus_four_envelopes_and_eo_single_output_beats_per_second": 25142400,
+    "six_full_frames_and_eo_single_output_beats_per_second": 27216000,
+    "limitation": "The historical 22.3 Mbeat/s is aggregate DDR writes, including output writes, not capture capacity. These totals exclude DDR reads and do not measure the current writer. EO/IR DDR capture families are mutually gated in steady state; IR single retains EO background capture and uses BRAM for its IR source. At the historical aggregate rate the EO panorama, EO single and IR single 30fps demands do not fit. Current sustainable frame rate requires current whole-path measurement; no lower rate is guaranteed by this average arithmetic."
+  },
+  "bandwidth_accounting_correction": {
+    "date": "2026-10-16",
+    "scope": "Metadata correction only. Existing renderer simulations and exhaustive geometry proof retained; neither rerun.",
+    "report": "docs/validation/gravity_bandwidth_review_20261016.md",
+    "generator_sha256": "b8c8a190279dde313d6fd25526a9cb7f07a2b12bf6da967124e23c084d5bab62",
+    "corrected_envelope_json_sha256": "6c8b456583737bd737371323cf0f61182a2dbace9ea2bee743ddcf890a1e1abf",
+    "conclusion": "Historical22.3 Mbeat/s is aggregate writes. At30fps EO panorama/IR single need23.6736M and EO single24.624M; current writer throughput is unmeasured. IR trigger/pose association requires independent-family epoch histories before dual-family correctness can be claimed."
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "overall_state": "superseded",
+  "stages": {
+    "synthesis": "complete_by_progress",
+    "optimization": "complete_by_progress",
+    "placement": "started_not_completed",
+    "physical_optimization": "not_observed",
+    "routing": "not_observed",
+    "bitstream": "not_observed"
+  },
+  "artifacts": {
+    "KintexTop_EO_IR_HD_SDI_panorama_base.bit": {
+      "exists": false
+    },
+    "KintexTop_EO_IR_HD_SDI_panorama_base.ltx": {
+      "exists": false
+    },
+    "optimized.dcp": {
+      "exists": true,
+      "bytes": 19087428,
+      "sha256": "0a6093a28b941dab6f14ed4ad88cf584d041d9310b11117c260500dc157ff462",
+      "stable_during_read": true
+    },
+    "physopt.dcp": {
+      "exists": false
+    },
+    "placed.dcp": {
+      "exists": false
+    },
+    "routed.dcp": {
+      "exists": false
+    },
+    "synthesized.dcp": {
+      "exists": true,
+      "bytes": 28559197,
+      "sha256": "c27cb5aef4ba5be23e8aaa6923ff9caf085ed35cd6ec9abdc4a63b6abfa8748a",
+      "stable_during_read": true
+    }
+  },
+  "build_metadata": {
+    "Vivado": "2025.2",
+    "Top": "KintexTop_EO_IR_HD_SDI_panorama_base",
+    "Part": "xcku15p-ffve1517-2-i",
+    "Place": "Default"
+  },
+  "explicit_errors": [],
+  "source_commit": "bb4f47048739e4e6373e1746723129f251a005ef",
+  "reason": "Stopped during detail placement after directed tests confirmed the independent IR trigger/history correction. No routed checkpoint or bitstream was produced.",
+  "synthesis_utilization": {
+    "path": "utilization_synth.rpt",
+    "exists": true,
+    "bytes": 12982,
+    "sha256": "a18137ab5e37730319ca6a2a9f88dfabbfc4674753d926081a0e6be80de57ea9",
+    "stable_during_read": true,
+    "state": "reported",
+    "used": {
+      "CLB LUTs": 55799.0,
+      "CLB Registers": 59680.0,
+      "Register as Latch": 0.0,
+      "Block RAM Tile": 496.0,
+      "URAM": 92.0,
+      "DSPs": 30.0
+    }
+  },
+  "gravity_synthesis_audits": {
+    "logic": "pass",
+    "cdc_constraints": "pass"
+  },
+  "full_cdc_report": {
+    "path": "cdc_synth.rpt",
+    "exists": true,
+    "bytes": 343418,
+    "sha256": "6e78f1cbeb5c4a1a544c84c70fd67223d2184b246cfbf8a950d9417120937425",
+    "stable_during_read": true,
+    "state": "reported_review_required",
+    "rules": [
+      {
+        "id": "CDC-1",
+        "severity": "Critical",
+        "count": 41,
+        "description": "1-bit unknown CDC circuitry"
+      },
+      {
+        "id": "CDC-2",
+        "severity": "Warning",
+        "count": 19,
+        "description": "1-bit synchronized with missing ASYNC_REG property"
+      },
+      {
+        "id": "CDC-3",
+        "severity": "Info",
+        "count": 663,
+        "description": "1-bit synchronized with ASYNC_REG property"
+      },
+      {
+        "id": "CDC-6",
+        "severity": "Warning",
+        "count": 14,
+        "description": "Multi-bit synchronized with ASYNC_REG property"
+      },
+      {
+        "id": "CDC-9",
+        "severity": "Info",
+        "count": 1,
+        "description": "Asynchronous reset synchronized with ASYNC_REG property"
+      },
+      {
+        "id": "CDC-10",
+        "severity": "Critical",
+        "count": 69,
+        "description": "Combinational logic detected before a synchronizer"
+      },
+      {
+        "id": "CDC-11",
+        "severity": "Critical",
+        "count": 24,
+        "description": "Fan-out from launch flop to destination clock"
+      },
+      {
+        "id": "CDC-15",
+        "severity": "Warning",
+        "count": 156,
+        "description": "Clock enable controlled CDC structure detected"
+      }
+    ],
+    "counts_by_severity": {
+      "Critical": 134,
+      "Warning": 189,
+      "Info": 664
+    }
+  },
+  "notes": [
+    "This is a superseded experimental revision, not a hardware candidate.",
+    "Preserved synth/optimized checkpoints and logs remain in the ignored unique build directory."
+  ]
+}

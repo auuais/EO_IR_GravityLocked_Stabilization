@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-15",
+  "tool": "Vivado 2025.2",
+  "part": "xcku15p-ffve1517-2-i",
+  "simulation": {
+    "status": "PASS",
+    "vectors": 1342,
+    "reference": "Compiled exact C++/MSVC source excerpts",
+    "latency_cycles_min": 531,
+    "latency_cycles_max": 601,
+    "additional_checks": [
+      "Frozen inputs while busy",
+      "Atomic outputs on done",
+      "Busy start ignored",
+      "Reset aborts normalization and matrix operations",
+      "Exact fixture vector count"
+    ]
+  },
+  "standalone_synthesis": {
+    "status": "PASS",
+    "LUTs": 1414,
+    "FFs": 1513,
+    "BRAM_tiles": 67.5,
+    "RAMB36": 67,
+    "RAMB18": 1,
+    "DSP48E2": 2,
+    "URAM": 0,
+    "latches": 0,
+    "blackboxes": 0,
+    "clock_period_ns": 4.292,
+    "estimated_WNS_ns": 1.348,
+    "warning_notes": [
+      "Large flat primitive hierarchy",
+      "Additional ROM output register suggested",
+      "OOC HD.CLK_SRC not set; clock placement/skew unknown",
+      "Clock period rounding"
+    ],
+    "scope": "Out-of-context synthesis only, no place/route or full-top integration. Estimated slack is not timing signoff."
+  },
+  "files": [
+    {
+      "path": "src/GlCameraProjection.v",
+      "sha256": "32453f0c422d0cc89c18cf0f564899fc74c0cb920b2651bd8d1808f04298f5f2"
+    },
+    {
+      "path": "sim/tb_GlCameraProjection.sv",
+      "sha256": "92dc15559688214d185a5b0cf9ecb32a5ff6558f42c2e97ae28ebd6a3b15aa9b"
+    },
+    {
+      "path": "scripts/test_gl_camera_projection.ps1",
+      "sha256": "122ee07b8db7ac83161db9719ad16685203c029ef5136e24496b4dfd70318d7a"
+    },
+    {
+      "path": "scripts/synth_gl_camera_projection.tcl",
+      "sha256": "106cf67b870cab91c3e6f9e55f58f6f48925be74edaf434956841a61ce7bb603"
+    },
+    {
+      "path": "reference/gravity_math/angle_centi_q15.mem",
+      "sha256": "2f4f47949a63a34247b8639216cb4a7461af483415c5c34c679a159a226d1365"
+    },
+    {
+      "path": "reference/gravity_math/atan_ratio_centi.mem",
+      "sha256": "2bf93fc4bf4caa827a4f02108b7783c825cc9c6198c31b90a6382dea0c6ef938"
+    },
+    {
+      "path": "sim/gravity_math/engine_vectors.txt",
+      "sha256": "a568deef8c4871881d3581a15ca2400ee1ef4d13d0283e11f46ad7234edeb067"
+    }
+  ],
+  "log_directory": "builds/camera_projection"
+}

@@ -807,8 +807,10 @@ set_clock_groups -asynchronous -group [get_clocks CAM0_PCLK] -group [get_clocks 
 set_property CLOCK_DEDICATED_ROUTE ANY_CMT_COLUMN [get_nets -quiet osc27_ibuf]
 set_property CLOCK_DEDICATED_ROUTE ANY_CMT_COLUMN [get_nets -quiet osc27_bufg]
 
-# hd_clk is asynchronous to the MIG ui clock and to every camera clock; all
-# crossings go through the DDR FIFOs or 2-FF synchronizers.  Resolved through
+# hd_clk is asynchronous to the MIG ui clock and to every camera clock. The
+# HD/UI pair is now constrained by endpoint in gravity_cdc.xdc: the two gravity
+# mailboxes require bounded bundled-data delay, which a broad clock group
+# would override. Preserve the HD/camera clock exclusions here. Resolved through
 # the MMCM pin rather than an auto-generated clock name so this survives
 # renaming, and it reports whether it applied instead of failing silently.
 # Anchor on osc27, created ~20 lines above, so the lookup cannot come back
@@ -832,7 +834,6 @@ set_property CLOCK_DEDICATED_ROUTE ANY_CMT_COLUMN [get_nets -quiet osc27_bufg]
 # an empty result here is a real breakage and should be loud.
 set_clock_groups -asynchronous \
     -group [get_clocks -include_generated_clocks osc27] \
-    -group [get_clocks -quiet mmcm_clkout0] \
     -group [get_clocks -quiet {CAM0_PCLK CAM1_PCLK CAM2_PCLK CAM3_PCLK CAM4_PCLK CAM5_PCLK IRCAM0_PCLK IRCAM1_PCLK IRCAM2_PCLK IRCAM3_PCLK IRCAM4_PCLK IRCAM5_PCLK}]
 
 # The processed DDR path uses the MIG ui clock domain internally and crosses
