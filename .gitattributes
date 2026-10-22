@@ -6,6 +6,7 @@ firmware/eo_osd_remote/** -text whitespace=blank-at-eol,blank-at-eof,space-befor
 docs/validation/paper_regression_20261023/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/validation/paper_regression_20261023.json -text
 docs/validation/full_build_20261022_235934/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/validation/full_build_20261022_235934.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/validation/paper_regression_20261023/**/*.log -whitespace
 docs/validation/paper_regression_20261023/*.log -whitespace
 docs/validation/full_build_20261022_235934/**/*.rpt -whitespace

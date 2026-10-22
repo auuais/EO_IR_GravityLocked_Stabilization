@@ -111,6 +111,28 @@ MCU files and their historical validation record remain unchanged.
 
 ## Verification outputs and limits
 
+### Fresh manuscript rebuild, October 23
+
+`builds/gravity_20261022_235934/` was rebuilt from source `5126c37` using
+Vivado 2025.2 and completed at 00:50:09 KST on 2026-10-23. Vivado exited zero;
+the independent report parser returns `complete_verified`. The bitstream
+SHA-256 is `62880311da55d837d01231f0978d25d902a3c69a7f7ee35750a1ca204edeb8c4`.
+Setup/hold/pulse-width worst slacks are +0.022/+0.010/+0.009 ns. All 143,180
+routable nets are routed; all 80 bus-skew checks pass (minimum +2.525 ns),
+with no DRC Error entries. The scoped 3,524-register gravity/IR-epoch and
+64/8-bit mailbox audits pass. Full-design CDC retains 131 Critical and 265
+Warning entries, and external-I/O timing gaps remain. This is not blanket
+physical signoff or a measurement of live throughput or motion accuracy.
+
+The final source check matched 137 registered input hashes, 14 staged ROMs
+and three build/audit scripts. Exact artifact/report hashes and acceptance
+results are in `validation/full_build_20261022_235934.json`; selected raw
+reports and a labeled timing-summary excerpt are in the sibling directory.
+The ten-suite fresh regression record is
+`validation/paper_regression_20261023.json`. These tests include both renderer
+interfaces, each with 14,112,000 exact pixel comparisons. This run did not
+program the FPGA or MCU. Source and production firmware were not changed.
+
 The generated directory contains `project_manifest.txt`, `compile_order.txt`,
 `ip_status.txt`, and the batch log. The manifest records the selected baseline,
 part, top, run strategies, source counts, and every registered input. The script
