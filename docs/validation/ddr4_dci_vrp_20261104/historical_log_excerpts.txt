@@ -1,0 +1,5226 @@
+Historical raw log excerpts. Original line numbers are preserved.
+These are saved 2026-07 sessions, not live measurements on the audit date.
+
+
+SOURCE E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_ddr_margins2.log
+1: #-----------------------------------------------------------
+2: # Vivado v2025.2 (64-bit)
+3: # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+4: # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+5: # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+6: # Start of session at: Tue Jul  7 14:12:27 2026
+7: # Process ID         : 26100
+8: # Current directory  : E:/Xylinx/EO_IR_HD_SDI_panorama_base
+9: # Command line       : vivado.exe -mode batch -source scripts/codex_ddr_margins2.tcl -log codex_ddr_margins2.log -nojournal
+10: # Log file           : E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_ddr_margins2.log
+155: BUS_DATA_BURST_3_BIT_6                                        string  true       000
+156: BUS_DATA_BURST_3_BIT_7                                        string  true       000
+157: BYTES                                                         hex     true       008
+158: CALIBRATION_FAIL.RANK                                         string  true       NONE
+159: CALIBRATION_FAIL.STAGE                                        string  true       NONE
+160: CALIBRATION_FAIL.STATUS                                       string  true       FALSE
+161: CAL_ERROR_MSG                                                 string  true       No errors detected during calibration.
+162: CAL_MAP_VERSION                                               hex     true       001
+163: CAL_STATUS.RANK0.01_DQS_GATE                                  string  true       PASS
+164: CAL_STATUS.RANK0.02_DQS_GATE_SANITY_CHECK                     string  true       PASS
+165: CAL_STATUS.RANK0.03_WRITE_LEVELING                            string  true       PASS
+166: CAL_STATUS.RANK0.04_READ_PER_BIT_DESKEW                       string  true       PASS
+167: CAL_STATUS.RANK0.05_READ_PER_BIT_DESKEW_DBI                   string  true       SKIP
+168: CAL_STATUS.RANK0.06_READ_DQS_CENTERING                        string  true       PASS
+169: CAL_STATUS.RANK0.07_READ_SANITY_CHECK                         string  true       PASS
+170: CAL_STATUS.RANK0.08_WRITE_DQS_TO_DQ_DESKEW                    string  true       PASS
+171: CAL_STATUS.RANK0.09_WRITE_DQS_TO_DM_DBI_DESKEW                string  true       PASS
+172: CAL_STATUS.RANK0.10_WRITE_DQS_TO_DQ(SIMPLE)                   string  true       PASS
+173: CAL_STATUS.RANK0.11_WRITE_DQS_TO_DM_DBI(SIMPLE)               string  true       PASS
+174: CAL_STATUS.RANK0.12_READ_DQS_CENTERING_DBI                    string  true       SKIP
+175: CAL_STATUS.RANK0.13_WRITE_LATENCY_CALIBRATION                 string  true       PASS
+176: CAL_STATUS.RANK0.14_WRITE_READ_SANITY_CHECK                   string  true       PASS
+177: CAL_STATUS.RANK0.15_READ_LEVELING(COMPLEX)                    string  true       PASS
+178: CAL_STATUS.RANK0.16_WRITE_READ_SANITY_CHECK                   string  true       PASS
+179: CAL_STATUS.RANK0.17_READ_VREF_TRAINING                        string  true       SKIP
+180: CAL_STATUS.RANK0.18_WRITE_READ_SANITY_CHECK                   string  true       SKIP
+181: CAL_STATUS.RANK0.19_WRITE_DQS_TO_DQ(COMPLEX)                  string  true       PASS
+182: CAL_STATUS.RANK0.20_WRITE_DQS_TO_DM_DBI(COMPLEX)              string  true       PASS
+183: CAL_STATUS.RANK0.21_WRITE_READ_SANITY_CHECK                   string  true       PASS
+184: CAL_STATUS.RANK0.22_WRITE_VREF_TRAINING                       string  true       SKIP
+185: CAL_STATUS.RANK0.23_WRITE_READ_SANITY_CHECK                   string  true       SKIP
+186: CAL_STATUS.RANK0.24_READ_DQS_CENTERING_MULTI_RANK_ADJUSTMENT  string  true       SKIP
+187: CAL_STATUS.RANK0.25_WRITE_READ_SANITY_CHECK                   string  true       SKIP
+188: CAL_STATUS.RANK0.26_MULTI_RANK_ADJUST_CHECK                   string  true       SKIP
+189: CAL_STATUS.RANK0.27_WRITE_READ_SANITY_CHECK                   string  true       SKIP
+
+SOURCE E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_retime_1866_synth2.log
+1: #-----------------------------------------------------------
+2: # Vivado v2025.2 (64-bit)
+3: # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+4: # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+5: # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+6: # Start of session at: Wed Jul  8 07:30:01 2026
+7: # Process ID         : 47384
+8: # Current directory  : E:/Xylinx/EO_IR_HD_SDI_panorama_base
+9: # Command line       : vivado.exe -mode batch -source scripts/codex_retime_ddr_1600.tcl -log codex_retime_1866_synth2.log -journal codex_retime_1866_synth2.jou
+10: # Log file           : E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_retime_1866_synth2.log
+230: ### }
+231: ### set_property -dict [list \
+232: ###     CONFIG.Reference_Clock {Differential} \
+233: ###     CONFIG.System_Clock {Differential} \
+234: ###     CONFIG.C0_CLOCK_BOARD_INTERFACE {Custom} \
+235: ###     CONFIG.C0.DDR4_DataWidth {64} \
+236: ###     CONFIG.C0.DDR4_MemoryPart {MT40A512M16TB-062E} \
+237: ###     CONFIG.C0.DDR4_MemoryType {Components} \
+238: ###     CONFIG.C0.DDR4_DataMask {DM_NO_DBI} \
+239: ###     CONFIG.C0.DDR4_InputClockPeriod {4999} \
+240: ###     CONFIG.C0.DDR4_TimePeriod {1071} \
+241: ###     CONFIG.C0.DDR4_AxiSelection {false} \
+242: ###     CONFIG.Phy_Only {Complete_Memory_Controller} \
+
+SOURCE E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_set_ddr4_x48.log
+1: #-----------------------------------------------------------
+2: # Vivado v2025.2 (64-bit)
+3: # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+4: # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+5: # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+6: # Start of session at: Thu Jul  9 03:11:27 2026
+7: # Process ID         : 58800
+8: # Current directory  : E:/Xylinx/EO_IR_HD_SDI_panorama_base
+9: # Command line       : vivado.exe -mode batch -source scripts\codex_set_ddr4_x48.tcl -log codex_set_ddr4_x48.log -journal codex_set_ddr4_x48.jou
+10: # Log file           : E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_set_ddr4_x48.log
+126: INFO: [IP_Flow 19-234] Refreshing IP repositories
+127: INFO: [IP_Flow 19-1704] No user IP repositories specified
+128: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/AMDDesignTools/2025.2/Vivado/data/ip'.
+129: WARNING: [filemgmt 56-443] The ECC Algorithm string is empty. Setting the Memory Map to default ECC value to ECC_NONE.
+130: WARNING: [filemgmt 56-443] The ECC Algorithm string is empty. Setting the Memory Map to default ECC value to ECC_NONE.
+131: open_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:17 . Memory (MB): peak = 595.344 ; gain = 288.727
+132: # set ip [get_ips ddr4_sub64]
+133: # set_property -dict [list CONFIG.C0.DDR4_DataWidth {48}] $ip
+134: INFO: [Device 21-403] Loading part xcku15p-ffve1517-2-i
+135: create_bd_cell: Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 1932.195 ; gain = 0.000
+136: INFO: [xilinx.com:ip:microblaze:11.0-9] /microblaze_I: Setting C_BASE_VECTORS to 0x00000000.
+137: WARNING: [filemgmt 56-443] The ECC Algorithm string is empty. Setting the Memory Map to default ECC value to ECC_NONE.
+138: WARNING: [filemgmt 56-443] The ECC Algorithm string is empty. Setting the Memory Map to default ECC value to ECC_NONE.
+139: # generate_target all [get_files E:/Xylinx/EO_IR_HD_SDI_panorama_base/ip/ddr4_sub64/ddr4_sub64.xci]
+140: INFO: [IP_Flow 19-1686] Generating 'Instantiation Template' target for IP 'ddr4_sub64'...
+141: INFO: [IP_Flow 19-1686] Generating 'Synthesis' target for IP 'ddr4_sub64'...
+
+SOURCE E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_x48_program.log
+1: #-----------------------------------------------------------
+2: # Vivado v2025.2 (64-bit)
+3: # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+4: # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+5: # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+6: # Start of session at: Thu Jul  9 04:07:02 2026
+7: # Process ID         : 33212
+8: # Current directory  : E:/Xylinx/EO_IR_HD_SDI_panorama_base
+9: # Command line       : vivado.exe -mode batch -source scripts\codex_program_once.tcl -log codex_x48_program.log -journal codex_x48_program.jou
+10: # Log file           : E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_x48_program.log
+30: INFO: [Labtools 27-3417] Launching cs_server...
+31: INFO: [Labtools 27-2221] Launch Output:
+32: 
+33: 
+34: ******** Xilinx cs_server v2025.2.0
+35:   ****** Build date   : Nov 14 2025-08:16:52
+36:     **** Build number : 2025.2.1763075812
+37:       ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.
+38:       ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+39: 
+40: 
+41: 
+42: connect_hw_server: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 531.574 ; gain = 3.980
+43: # open_hw_target
+44: INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/00001bd45a2c01
+45: # current_hw_device [lindex [get_hw_devices] 0]
+46: # set_property PROGRAM.FILE {E:/Xylinx/EO_IR_HD_SDI_panorama_base/EO_IR_HD_SDI_panorama_base.runs/impl_1/KintexTop_EO_IR_HD_SDI_panorama_base.bit} [current_hw_device]
+47: # program_hw_devices [current_hw_device]
+48: INFO: [Labtools 27-3164] End of startup status: HIGH
+49: program_hw_devices: Time (s): cpu = 00:00:53 ; elapsed = 00:00:53 . Memory (MB): peak = 533.816 ; gain = 0.000
+50: # close_hw_manager
+
+SOURCE E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_program_component_guard_20260709_0636.log
+1: #-----------------------------------------------------------
+2: # Vivado v2025.2 (64-bit)
+3: # SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+4: # IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+5: # SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+6: # Start of session at: Thu Jul  9 06:37:05 2026
+7: # Process ID         : 33616
+8: # Current directory  : E:/Xylinx/EO_IR_HD_SDI_panorama_base
+9: # Command line       : vivado.exe -mode batch -source scripts\codex_program_once.tcl -notrace -log codex_program_component_guard_20260709_0636.log -journal codex_program_component_guard_20260709_0636.jou
+10: # Log file           : E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_program_component_guard_20260709_0636.log
+30: 
+31: 
+32: ******** Xilinx cs_server v2025.2.0
+33:   ****** Build date   : Nov 14 2025-08:16:52
+34:     **** Build number : 2025.2.1763075812
+35:       ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.
+36:       ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+37: 
+38: 
+39: 
+40: INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/00001bd45a2c01
+41: INFO: [Labtools 27-3164] End of startup status: HIGH
+42: program_hw_devices: Time (s): cpu = 00:00:53 ; elapsed = 00:00:53 . Memory (MB): peak = 535.691 ; gain = 0.000
+43: INFO: [Common 17-206] Exiting Vivado at Thu Jul  9 06:38:19 2026...
+
+SOURCE E:/Xylinx/EO_IR_HD_SDI_panorama_base/captures/usb3_component_guard_20260709_0638/capture_summary.json
+1: {
+2:   "capture_dir": "E:\\Xylinx\\EO_IR_HD_SDI_panorama_base\\captures\\usb3_component_guard_20260709_0638",
+3:   "video_index": 0,
+4:   "elapsed_s": 16.326081037521362,
+5:   "frames": 120,
+6:   "uniform_diag_count": 0,
+7:   "real_count": 120,
+8:   "frame_summary": [
+9:     {
+10:       "shape": [
+11:         1080,
+12:         1920,
+13:         3
+14:       ],
+15:       "mean_bgr": [
+16:         53.99808015046296,
+17:         53.99808015046296,
+18:         53.99808015046296
+19:       ],
+20:       "std_bgr": [
+21:         51.39568210216635,
+22:         51.39568210216635,
+23:         51.39568210216635
+24:       ],
+25:       "y_mean": 53.99808015046296,
+26:       "y_std": 51.39568210240763,
+27:       "is_uniform_diag": false,
+28:       "frame": 0
+29:     },
+30:     {
+31:       "shape": [
+32:         1080,
+33:         1920,
+34:         3
+35:       ],
+36:       "mean_bgr": [
+37:         53.99748360339506,
+38:         53.99748360339506,
+39:         53.99748360339506
+40:       ],
+41:       "std_bgr": [
+42:         51.395605157980064,
+43:         51.395605157980064,
+44:         51.395605157980064
+45:       ],
+46:       "y_mean": 53.99748360339506,
+47:       "y_std": 51.395605158281384,
+48:       "is_uniform_diag": false,
+49:       "frame": 1
+50:     },
+51:     {
+52:       "shape": [
+53:         1080,
+54:         1920,
+55:         3
+56:       ],
+57:       "mean_bgr": [
+58:         53.99882764274691,
+59:         53.99882764274691,
+60:         53.99882764274691
+61:       ],
+62:       "std_bgr": [
+63:         51.40327704006957,
+64:         51.40327704006957,
+65:         51.40327704006957
+66:       ],
+67:       "y_mean": 53.99882764274691,
+68:       "y_std": 51.40327704051987,
+69:       "is_uniform_diag": false,
+70:       "frame": 2
+71:     },
+72:     {
+73:       "shape": [
+74:         1080,
+75:         1920,
+76:         3
+77:       ],
+78:       "mean_bgr": [
+79:         53.996574074074076,
+80:         53.996574074074076,
+81:         53.996574074074076
+82:       ],
+83:       "std_bgr": [
+84:         51.39415971269368,
+85:         51.39415971269368,
+86:         51.39415971269368
+87:       ],
+88:       "y_mean": 53.996574074074076,
+89:       "y_std": 51.39415971309269,
+90:       "is_uniform_diag": false,
+91:       "frame": 3
+92:     },
+93:     {
+94:       "shape": [
+95:         1080,
+96:         1920,
+97:         3
+98:       ],
+99:       "mean_bgr": [
+100:         53.99239101080247,
+101:         53.99239101080247,
+102:         53.99239101080247
+103:       ],
+104:       "std_bgr": [
+105:         51.39444691254085,
+106:         51.39444691254085,
+107:         51.39444691254085
+108:       ],
+109:       "y_mean": 53.99239101080247,
+110:       "y_std": 51.394446912014374,
+111:       "is_uniform_diag": false,
+112:       "frame": 4
+113:     },
+114:     {
+115:       "shape": [
+116:         1080,
+117:         1920,
+118:         3
+119:       ],
+120:       "mean_bgr": [
+121:         53.994302662037036,
+122:         53.994302662037036,
+123:         53.994302662037036
+124:       ],
+125:       "std_bgr": [
+126:         51.40067720767257,
+127:         51.40067720767257,
+128:         51.40067720767257
+129:       ],
+130:       "y_mean": 53.994302662037036,
+131:       "y_std": 51.40067720784035,
+132:       "is_uniform_diag": false,
+133:       "frame": 5
+134:     },
+135:     {
+136:       "shape": [
+137:         1080,
+138:         1920,
+139:         3
+140:       ],
+141:       "mean_bgr": [
+142:         53.9913777970679,
+143:         53.9913777970679,
+144:         53.9913777970679
+145:       ],
+146:       "std_bgr": [
+147:         51.39241938322441,
+148:         51.39241938322441,
+149:         51.39241938322441
+150:       ],
+151:       "y_mean": 53.9913777970679,
+152:       "y_std": 51.392419383434124,
+153:       "is_uniform_diag": false,
+154:       "frame": 6
+155:     },
+156:     {
+157:       "shape": [
+158:         1080,
+159:         1920,
+160:         3
+161:       ],
+162:       "mean_bgr": [
+163:         53.989596354166665,
+164:         53.989596354166665,
+165:         53.989596354166665
+166:       ],
+167:       "std_bgr": [
+168:         51.39251368850737,
+169:         51.39251368850737,
+170:         51.39251368850737
+171:       ],
+172:       "y_mean": 53.989596354166665,
+173:       "y_std": 51.39251368861092,
+174:       "is_uniform_diag": false,
+175:       "frame": 7
+176:     },
+177:     {
+178:       "shape": [
+179:         1080,
+180:         1920,
+181:         3
+182:       ],
+183:       "mean_bgr": [
+184:         53.990095968364194,
+185:         53.990095968364194,
+186:         53.990095968364194
+187:       ],
+188:       "std_bgr": [
+189:         51.393872251120435,
+190:         51.393872251120435,
+191:         51.393872251120435
+192:       ],
+193:       "y_mean": 53.990095968364194,
+194:       "y_std": 51.39387225086964,
+195:       "is_uniform_diag": false,
+196:       "frame": 8
+197:     },
+198:     {
+199:       "shape": [
+200:         1080,
+201:         1920,
+202:         3
+203:       ],
+204:       "mean_bgr": [
+205:         53.99481433256173,
+206:         53.99481433256173,
+207:         53.99481433256173
+208:       ],
+209:       "std_bgr": [
+210:         51.38871004679415,
+211:         51.38871004679415,
+212:         51.38871004679415
+213:       ],
+214:       "y_mean": 53.99481433256173,
+215:       "y_std": 51.38871004679142,
+216:       "is_uniform_diag": false,
+217:       "frame": 9
+218:     },
+219:     {
+220:       "shape": [
+221:         1080,
+222:         1920,
+223:         3
+224:       ],
+225:       "mean_bgr": [
+226:         53.99935136959876,
+227:         53.99935136959876,
+228:         53.99935136959876
+229:       ],
+230:       "std_bgr": [
+231:         51.39594259137657,
+232:         51.39594259137657,
+233:         51.39594259137657
+234:       ],
+235:       "y_mean": 53.99935136959876,
+236:       "y_std": 51.395942590823125,
+237:       "is_uniform_diag": false,
+238:       "frame": 10
+239:     },
+240:     {
+241:       "shape": [
+242:         1080,
+243:         1920,
+244:         3
+245:       ],
+246:       "mean_bgr": [
+247:         53.996151138117284,
+248:         53.996151138117284,
+249:         53.996151138117284
+250:       ],
+251:       "std_bgr": [
+252:         51.39387108167299,
+253:         51.39387108167299,
+254:         51.39387108167299
+255:       ],
+256:       "y_mean": 53.996151138117284,
+257:       "y_std": 51.39387108113189,
+258:       "is_uniform_diag": false,
+259:       "frame": 11
+260:     },
+261:     {
+262:       "shape": [
+263:         1080,
+264:         1920,
+265:         3
+266:       ],
+267:       "mean_bgr": [
+268:         53.9932421875,
+269:         53.9932421875,
+270:         53.9932421875
+271:       ],
+272:       "std_bgr": [
+273:         51.387674001374386,
+274:         51.387674001374386,
+275:         51.387674001374386
+276:       ],
+277:       "y_mean": 53.9932421875,
+278:       "y_std": 51.38767400169967,
+279:       "is_uniform_diag": false,
+280:       "frame": 12
+281:     },
+282:     {
+283:       "shape": [
+284:         1080,
+285:         1920,
+286:         3
+287:       ],
+288:       "mean_bgr": [
+289:         53.996435185185184,
+290:         53.996435185185184,
+291:         53.996435185185184
+292:       ],
+293:       "std_bgr": [
+294:         51.39730173137321,
+295:         51.39730173137321,
+296:         51.39730173137321
+297:       ],
+298:       "y_mean": 53.996435185185184,
+299:       "y_std": 51.39730173089319,
+300:       "is_uniform_diag": false,
+301:       "frame": 13
+302:     },
+303:     {
+304:       "shape": [
+305:         1080,
+306:         1920,
+307:         3
+308:       ],
+309:       "mean_bgr": [
+310:         53.99393952546296,
+311:         53.99393952546296,
+312:         53.99393952546296
+313:       ],
+314:       "std_bgr": [
+315:         51.39303611694114,
+316:         51.39303611694114,
+317:         51.39303611694114
+318:       ],
+319:       "y_mean": 53.99393952546296,
+320:       "y_std": 51.39303611661566,
+321:       "is_uniform_diag": false,
+322:       "frame": 14
+323:     },
+324:     {
+325:       "shape": [
+326:         1080,
+327:         1920,
+328:         3
+329:       ],
+330:       "mean_bgr": [
+331:         53.994772858796296,
+332:         53.994772858796296,
+333:         53.994772858796296
+334:       ],
+335:       "std_bgr": [
+336:         51.39271948183954,
+337:         51.39271948183954,
+338:         51.39271948183954
+339:       ],
+340:       "y_mean": 53.994772858796296,
+341:       "y_std": 51.392719481588635,
+342:       "is_uniform_diag": false,
+343:       "frame": 15
+344:     },
+345:     {
+346:       "shape": [
+347:         1080,
+348:         1920,
+349:         3
+350:       ],
+351:       "mean_bgr": [
+352:         53.98101803626543,
+353:         53.98101803626543,
+354:         53.98101803626543
+355:       ],
+356:       "std_bgr": [
+357:         51.390343803359734,
+358:         51.390343803359734,
+359:         51.390343803359734
+360:       ],
+361:       "y_mean": 53.98101803626543,
+362:       "y_std": 51.39034380377991,
+363:       "is_uniform_diag": false,
+364:       "frame": 16
+365:     },
+366:     {
+367:       "shape": [
+368:         1080,
+369:         1920,
+370:         3
+371:       ],
+372:       "mean_bgr": [
+373:         53.97922646604938,
+374:         53.97922646604938,
+375:         53.97922646604938
+376:       ],
+377:       "std_bgr": [
+378:         51.385169372021316,
+379:         51.385169372021316,
+380:         51.385169372021316
+381:       ],
+382:       "y_mean": 53.97922646604938,
+383:       "y_std": 51.38516937158125,
+384:       "is_uniform_diag": false,
+385:       "frame": 17
+386:     },
+387:     {
+388:       "shape": [
+389:         1080,
+390:         1920,
+391:         3
+392:       ],
+393:       "mean_bgr": [
+394:         53.97788773148148,
+395:         53.97788773148148,
+396:         53.97788773148148
+397:       ],
+398:       "std_bgr": [
+399:         51.38212366352211,
+400:         51.38212366352211,
+401:         51.38212366352211
+402:       ],
+403:       "y_mean": 53.97788773148148,
+404:       "y_std": 51.38212366367858,
+405:       "is_uniform_diag": false,
+406:       "frame": 18
+407:     },
+408:     {
+409:       "shape": [
+410:         1080,
+411:         1920,
+412:         3
+413:       ],
+414:       "mean_bgr": [
+415:         53.98392554012346,
+416:         53.98392554012346,
+417:         53.98392554012346
+418:       ],
+419:       "std_bgr": [
+420:         51.38609685617603,
+421:         51.38609685617603,
+422:         51.38609685617603
+423:       ],
+424:       "y_mean": 53.98392554012346,
+425:       "y_std": 51.38609685642584,
+426:       "is_uniform_diag": false,
+427:       "frame": 19
+428:     },
+429:     {
+430:       "shape": [
+431:         1080,
+432:         1920,
+433:         3
+434:       ],
+435:       "mean_bgr": [
+436:         53.985916280864195,
+437:         53.985916280864195,
+438:         53.985916280864195
+439:       ],
+440:       "std_bgr": [
+441:         51.393203406767846,
+442:         51.393203406767846,
+443:         51.393203406767846
+444:       ],
+445:       "y_mean": 53.985916280864195,
+446:       "y_std": 51.39320340699545,
+447:       "is_uniform_diag": false,
+448:       "frame": 20
+449:     },
+450:     {
+451:       "shape": [
+452:         1080,
+453:         1920,
+454:         3
+455:       ],
+456:       "mean_bgr": [
+457:         53.9797868441358,
+458:         53.9797868441358,
+459:         53.9797868441358
+460:       ],
+461:       "std_bgr": [
+462:         51.38529196653019,
+463:         51.38529196653019,
+464:         51.38529196653019
+465:       ],
+466:       "y_mean": 53.9797868441358,
+467:       "y_std": 51.385291966769216,
+468:       "is_uniform_diag": false,
+469:       "frame": 21
+470:     },
+471:     {
+472:       "shape": [
+473:         1080,
+474:         1920,
+475:         3
+476:       ],
+477:       "mean_bgr": [
+478:         53.97632764274692,
+479:         53.97632764274692,
+480:         53.97632764274692
+481:       ],
+482:       "std_bgr": [
+483:         51.38374695104104,
+484:         51.38374695104104,
+485:         51.38374695104104
+486:       ],
+487:       "y_mean": 53.97632764274692,
+488:       "y_std": 51.38374695087273,
+489:       "is_uniform_diag": false,
+490:       "frame": 22
+491:     },
+492:     {
+493:       "shape": [
+494:         1080,
+495:         1920,
+496:         3
+497:       ],
+498:       "mean_bgr": [
+499:         53.9757740162037,
+500:         53.9757740162037,
+501:         53.9757740162037
+502:       ],
+503:       "std_bgr": [
+504:         51.387553417829714,
+505:         51.387553417829714,
+506:         51.387553417829714
+507:       ],
+508:       "y_mean": 53.9757740162037,
+509:       "y_std": 51.38755341736801,
+510:       "is_uniform_diag": false,
+511:       "frame": 23
+512:     },
+513:     {
+514:       "shape": [
+515:         1080,
+516:         1920,
+517:         3
+518:       ],
+519:       "mean_bgr": [
+520:         53.97569685570988,
+521:         53.97569685570988,
+522:         53.97569685570988
+523:       ],
+524:       "std_bgr": [
+525:         51.384920652679774,
+526:         51.384920652679774,
+527:         51.384920652679774
+528:       ],
+529:       "y_mean": 53.97569685570988,
+530:       "y_std": 51.38492065310758,
+531:       "is_uniform_diag": false,
+532:       "frame": 24
+533:     },
+534:     {
+535:       "shape": [
+536:         1080,
+537:         1920,
+538:         3
+539:       ],
+540:       "mean_bgr": [
+541:         53.97323832947531,
+542:         53.97323832947531,
+543:         53.97323832947531
+544:       ],
+545:       "std_bgr": [
+546:         51.38019959317283,
+547:         51.38019959317283,
+548:         51.38019959317283
+549:       ],
+550:       "y_mean": 53.97323832947531,
+551:       "y_std": 51.38019959342073,
+552:       "is_uniform_diag": false,
+553:       "frame": 25
+554:     },
+555:     {
+556:       "shape": [
+557:         1080,
+558:         1920,
+559:         3
+560:       ],
+561:       "mean_bgr": [
+562:         53.98070698302469,
+563:         53.98070698302469,
+564:         53.98070698302469
+565:       ],
+566:       "std_bgr": [
+567:         51.386317456763436,
+568:         51.386317456763436,
+569:         51.386317456763436
+570:       ],
+571:       "y_mean": 53.98070698302469,
+572:       "y_std": 51.38631745707762,
+573:       "is_uniform_diag": false,
+574:       "frame": 26
+575:     },
+576:     {
+577:       "shape": [
+578:         1080,
+579:         1920,
+580:         3
+581:       ],
+582:       "mean_bgr": [
+583:         53.97603202160494,
+584:         53.97603202160494,
+585:         53.97603202160494
+586:       ],
+587:       "std_bgr": [
+588:         51.37903747942604,
+589:         51.37903747942604,
+590:         51.37903747942604
+591:       ],
+592:       "y_mean": 53.97603202160494,
+593:       "y_std": 51.37903747911053,
+594:       "is_uniform_diag": false,
+595:       "frame": 27
+596:     },
+597:     {
+598:       "shape": [
+599:         1080,
+600:         1920,
+601:         3
+602:       ],
+603:       "mean_bgr": [
+604:         53.97366319444444,
+605:         53.97366319444444,
+606:         53.97366319444444
+607:       ],
+608:       "std_bgr": [
+609:         51.37748919030589,
+610:         51.37748919030589,
+611:         51.37748919030589
+612:       ],
+613:       "y_mean": 53.97366319444444,
+614:       "y_std": 51.37748919023821,
+615:       "is_uniform_diag": false,
+616:       "frame": 28
+617:     },
+618:     {
+619:       "shape": [
+620:         1080,
+621:         1920,
+622:         3
+623:       ],
+624:       "mean_bgr": [
+625:         53.98058352623457,
+626:         53.98058352623457,
+627:         53.98058352623457
+628:       ],
+629:       "std_bgr": [
+630:         51.38514816614201,
+631:         51.38514816614201,
+632:         51.38514816614201
+633:       ],
+634:       "y_mean": 53.98058352623457,
+635:       "y_std": 51.385148166469754,
+636:       "is_uniform_diag": false,
+637:       "frame": 29
+638:     },
+639:     {
+640:       "shape": [
+641:         1080,
+642:         1920,
+643:         3
+644:       ],
+645:       "mean_bgr": [
+646:         53.977539544753085,
+647:         53.977539544753085,
+648:         53.977539544753085
+649:       ],
+650:       "std_bgr": [
+651:         51.38135529443731,
+652:         51.38135529443731,
+653:         51.38135529443731
+654:       ],
+655:       "y_mean": 53.977539544753085,
+656:       "y_std": 51.381355293916464,
+657:       "is_uniform_diag": false,
+658:       "frame": 30
+659:     },
+660:     {
+661:       "shape": [
+662:         1080,
+663:         1920,
+664:         3
+665:       ],
+666:       "mean_bgr": [
+667:         53.97785542052469,
+668:         53.97785542052469,
+669:         53.97785542052469
+670:       ],
+671:       "std_bgr": [
+672:         51.383039082620904,
+673:         51.383039082620904,
+674:         51.383039082620904
+675:       ],
+676:       "y_mean": 53.97785542052469,
+677:       "y_std": 51.38303908213199,
+678:       "is_uniform_diag": false,
+679:       "frame": 31
+680:     },
+681:     {
+682:       "shape": [
+683:         1080,
+684:         1920,
+685:         3
+686:       ],
+687:       "mean_bgr": [
+688:         53.98111641589506,
+689:         53.98111641589506,
+690:         53.98111641589506
+691:       ],
+692:       "std_bgr": [
+693:         51.390013415184264,
+694:         51.390013415184264,
+695:         51.390013415184264
+696:       ],
+697:       "y_mean": 53.98111641589506,
+698:       "y_std": 51.390013414758435,
+699:       "is_uniform_diag": false,
+700:       "frame": 32
+701:     },
+702:     {
+703:       "shape": [
+704:         1080,
+705:         1920,
+706:         3
+707:       ],
+708:       "mean_bgr": [
+709:         53.972537133487656,
+710:         53.972537133487656,
+711:         53.972537133487656
+712:       ],
+713:       "std_bgr": [
+714:         51.37772762139616,
+715:         51.37772762139616,
+716:         51.37772762139616
+717:       ],
+718:       "y_mean": 53.972537133487656,
+719:       "y_std": 51.37772762178929,
+720:       "is_uniform_diag": false,
+721:       "frame": 33
+722:     },
+723:     {
+724:       "shape": [
+725:         1080,
+726:         1920,
+727:         3
+728:       ],
+729:       "mean_bgr": [
+730:         53.97788676697531,
+731:         53.97788676697531,
+732:         53.97788676697531
+733:       ],
+734:       "std_bgr": [
+735:         51.380802507707806,
+736:         51.380802507707806,
+737:         51.380802507707806
+738:       ],
+739:       "y_mean": 53.97788676697531,
+740:       "y_std": 51.38080250763899,
+741:       "is_uniform_diag": false,
+742:       "frame": 34
+743:     },
+744:     {
+745:       "shape": [
+746:         1080,
+747:         1920,
+748:         3
+749:       ],
+750:       "mean_bgr": [
+751:         53.97593171296296,
+752:         53.97593171296296,
+753:         53.97593171296296
+754:       ],
+755:       "std_bgr": [
+756:         51.38437751761387,
+757:         51.38437751761387,
+758:         51.38437751761387
+759:       ],
+760:       "y_mean": 53.97593171296296,
+761:       "y_std": 51.384377517816496,
+762:       "is_uniform_diag": false,
+763:       "frame": 35
+764:     },
+765:     {
+766:       "shape": [
+767:         1080,
+768:         1920,
+769:         3
+770:       ],
+771:       "mean_bgr": [
+772:         53.971515721450615,
+773:         53.971515721450615,
+774:         53.971515721450615
+775:       ],
+776:       "std_bgr": [
+777:         51.37612349195174,
+778:         51.37612349195174,
+779:         51.37612349195174
+780:       ],
+781:       "y_mean": 53.971515721450615,
+782:       "y_std": 51.37612349226663,
+783:       "is_uniform_diag": false,
+784:       "frame": 36
+785:     },
+786:     {
+787:       "shape": [
+788:         1080,
+789:         1920,
+790:         3
+791:       ],
+792:       "mean_bgr": [
+793:         53.96720341435185,
+794:         53.96720341435185,
+795:         53.96720341435185
+796:       ],
+797:       "std_bgr": [
+798:         51.37769577154457,
+799:         51.37769577154457,
+800:         51.37769577154457
+801:       ],
+802:       "y_mean": 53.96720341435185,
+803:       "y_std": 51.377695771442404,
+804:       "is_uniform_diag": false,
+805:       "frame": 37
+806:     },
+807:     {
+808:       "shape": [
+809:         1080,
+810:         1920,
+811:         3
+812:       ],
+813:       "mean_bgr": [
+814:         53.96573591820987,
+815:         53.96573591820987,
+816:         53.96573591820987
+817:       ],
+818:       "std_bgr": [
+819:         51.380626304662805,
+820:         51.380626304662805,
+821:         51.380626304662805
+822:       ],
+823:       "y_mean": 53.96573591820987,
+824:       "y_std": 51.38062630429661,
+825:       "is_uniform_diag": false,
+826:       "frame": 38
+827:     },
+828:     {
+829:       "shape": [
+830:         1080,
+831:         1920,
+832:         3
+833:       ],
+834:       "mean_bgr": [
+835:         53.96041618441358,
+836:         53.96041618441358,
+837:         53.96041618441358
+838:       ],
+839:       "std_bgr": [
+840:         51.37286304133772,
+841:         51.37286304133772,
+842:         51.37286304133772
+843:       ],
+844:       "y_mean": 53.96041618441358,
+845:       "y_std": 51.372863041304115,
+846:       "is_uniform_diag": false,
+847:       "frame": 39
+848:     },
+849:     {
+850:       "shape": [
+851:         1080,
+852:         1920,
+853:         3
+854:       ],
+855:       "mean_bgr": [
+856:         53.95893711419753,
+857:         53.95893711419753,
+858:         53.95893711419753
+859:       ],
+860:       "std_bgr": [
+861:         51.37410141777126,
+862:         51.37410141777126,
+863:         51.37410141777126
+864:       ],
+865:       "y_mean": 53.95893711419753,
+866:       "y_std": 51.37410141772114,
+867:       "is_uniform_diag": false,
+868:       "frame": 40
+869:     },
+870:     {
+871:       "shape": [
+872:         1080,
+873:         1920,
+874:         3
+875:       ],
+876:       "mean_bgr": [
+877:         53.961188753858025,
+878:         53.961188753858025,
+879:         53.961188753858025
+880:       ],
+881:       "std_bgr": [
+882:         51.3762984553414,
+883:         51.3762984553414,
+884:         51.3762984553414
+885:       ],
+886:       "y_mean": 53.961188753858025,
+887:       "y_std": 51.37629845535233,
+888:       "is_uniform_diag": false,
+889:       "frame": 41
+890:     },
+891:     {
+892:       "shape": [
+893:         1080,
+894:         1920,
+895:         3
+896:       ],
+897:       "mean_bgr": [
+898:         53.95537037037037,
+899:         53.95537037037037,
+900:         53.95537037037037
+901:       ],
+902:       "std_bgr": [
+903:         51.370051857860545,
+904:         51.370051857860545,
+905:         51.370051857860545
+906:       ],
+907:       "y_mean": 53.95537037037037,
+908:       "y_std": 51.37005185816602,
+909:       "is_uniform_diag": false,
+910:       "frame": 42
+911:     },
+912:     {
+913:       "shape": [
+914:         1080,
+915:         1920,
+916:         3
+917:       ],
+918:       "mean_bgr": [
+919:         53.9589168595679,
+920:         53.9589168595679,
+921:         53.9589168595679
+922:       ],
+923:       "std_bgr": [
+924:         51.374256879720996,
+925:         51.374256879720996,
+926:         51.374256879720996
+927:       ],
+928:       "y_mean": 53.9589168595679,
+929:       "y_std": 51.37425687959099,
+930:       "is_uniform_diag": false,
+931:       "frame": 43
+932:     },
+933:     {
+934:       "shape": [
+935:         1080,
+936:         1920,
+937:         3
+938:       ],
+939:       "mean_bgr": [
+940:         53.956354166666664,
+941:         53.956354166666664,
+942:         53.956354166666664
+943:       ],
+944:       "std_bgr": [
+945:         51.37172980129221,
+946:         51.37172980129221,
+947:         51.37172980129221
+948:       ],
+949:       "y_mean": 53.956354166666664,
+950:       "y_std": 51.371729801701385,
+951:       "is_uniform_diag": false,
+952:       "frame": 44
+953:     },
+954:     {
+955:       "shape": [
+956:         1080,
+957:         1920,
+958:         3
+959:       ],
+960:       "mean_bgr": [
+961:         53.95072193287037,
+962:         53.95072193287037,
+963:         53.95072193287037
+964:       ],
+965:       "std_bgr": [
+966:         51.36525971206521,
+967:         51.36525971206521,
+968:         51.36525971206521
+969:       ],
+970:       "y_mean": 53.95072193287037,
+971:       "y_std": 51.36525971213213,
+972:       "is_uniform_diag": false,
+973:       "frame": 45
+974:     },
+975:     {
+976:       "shape": [
+977:         1080,
+978:         1920,
+979:         3
+980:       ],
+981:       "mean_bgr": [
+982:         53.952624903549385,
+983:         53.952624903549385,
+984:         53.952624903549385
+985:       ],
+986:       "std_bgr": [
+987:         51.36846039581425,
+988:         51.36846039581425,
+989:         51.36846039581425
+990:       ],
+991:       "y_mean": 53.952624903549385,
+992:       "y_std": 51.36846039626043,
+993:       "is_uniform_diag": false,
+994:       "frame": 46
+995:     },
+996:     {
+997:       "shape": [
+998:         1080,
+999:         1920,
+1000:         3
+1001:       ],
+1002:       "mean_bgr": [
+1003:         53.966796875,
+1004:         53.966796875,
+1005:         53.966796875
+1006:       ],
+1007:       "std_bgr": [
+1008:         51.37804097198382,
+1009:         51.37804097198382,
+1010:         51.37804097198382
+1011:       ],
+1012:       "y_mean": 53.966796875,
+1013:       "y_std": 51.37804097198382,
+1014:       "is_uniform_diag": false,
+1015:       "frame": 47
+1016:     },
+1017:     {
+1018:       "shape": [
+1019:         1080,
+1020:         1920,
+1021:         3
+1022:       ],
+1023:       "mean_bgr": [
+1024:         53.9634765625,
+1025:         53.9634765625,
+1026:         53.9634765625
+1027:       ],
+1028:       "std_bgr": [
+1029:         51.37100836135335,
+1030:         51.37100836135335,
+1031:         51.37100836135335
+1032:       ],
+1033:       "y_mean": 53.9634765625,
+1034:       "y_std": 51.37100836120505,
+1035:       "is_uniform_diag": false,
+1036:       "frame": 48
+1037:     },
+1038:     {
+1039:       "shape": [
+1040:         1080,
+1041:         1920,
+1042:         3
+1043:       ],
+1044:       "mean_bgr": [
+1045:         53.96496479552469,
+1046:         53.96496479552469,
+1047:         53.96496479552469
+1048:       ],
+1049:       "std_bgr": [
+1050:         51.37836160806344,
+1051:         51.37836160806344,
+1052:         51.37836160806344
+1053:       ],
+1054:       "y_mean": 53.96496479552469,
+1055:       "y_std": 51.37836160812462,
+1056:       "is_uniform_diag": false,
+1057:       "frame": 49
+1058:     },
+1059:     {
+1060:       "shape": [
+1061:         1080,
+1062:         1920,
+1063:         3
+1064:       ],
+1065:       "mean_bgr": [
+1066:         53.964014756944444,
+1067:         53.964014756944444,
+1068:         53.964014756944444
+1069:       ],
+1070:       "std_bgr": [
+1071:         51.37714828316433,
+1072:         51.37714828316433,
+1073:         51.37714828316433
+1074:       ],
+1075:       "y_mean": 53.964014756944444,
+1076:       "y_std": 51.377148282602825,
+1077:       "is_uniform_diag": false,
+1078:       "frame": 50
+1079:     },
+1080:     {
+1081:       "shape": [
+1082:         1080,
+1083:         1920,
+1084:         3
+1085:       ],
+1086:       "mean_bgr": [
+1087:         53.959197530864195,
+1088:         53.959197530864195,
+1089:         53.959197530864195
+1090:       ],
+1091:       "std_bgr": [
+1092:         51.3703022404203,
+1093:         51.3703022404203,
+1094:         51.3703022404203
+1095:       ],
+1096:       "y_mean": 53.959197530864195,
+1097:       "y_std": 51.37030224020066,
+1098:       "is_uniform_diag": false,
+1099:       "frame": 51
+1100:     },
+1101:     {
+1102:       "shape": [
+1103:         1080,
+1104:         1920,
+1105:         3
+1106:       ],
+1107:       "mean_bgr": [
+1108:         53.96320987654321,
+1109:         53.96320987654321,
+1110:         53.96320987654321
+1111:       ],
+1112:       "std_bgr": [
+1113:         51.37791317329855,
+1114:         51.37791317329855,
+1115:         51.37791317329855
+1116:       ],
+1117:       "y_mean": 53.96320987654321,
+1118:       "y_std": 51.37791317359277,
+1119:       "is_uniform_diag": false,
+1120:       "frame": 52
+1121:     },
+1122:     {
+1123:       "shape": [
+1124:         1080,
+1125:         1920,
+1126:         3
+1127:       ],
+1128:       "mean_bgr": [
+1129:         53.961704764660496,
+1130:         53.961704764660496,
+1131:         53.961704764660496
+1132:       ],
+1133:       "std_bgr": [
+1134:         51.372986025269086,
+1135:         51.372986025269086,
+1136:         51.372986025269086
+1137:       ],
+1138:       "y_mean": 53.961704764660496,
+1139:       "y_std": 51.372986024765176,
+1140:       "is_uniform_diag": false,
+1141:       "frame": 53
+1142:     },
+1143:     {
+1144:       "shape": [
+1145:         1080,
+1146:         1920,
+1147:         3
+1148:       ],
+1149:       "mean_bgr": [
+1150:         53.9525496720679,
+1151:         53.9525496720679,
+1152:         53.9525496720679
+1153:       ],
+1154:       "std_bgr": [
+1155:         51.366574087933834,
+1156:         51.366574087933834,
+1157:         51.366574087933834
+1158:       ],
+1159:       "y_mean": 53.9525496720679,
+1160:       "y_std": 51.366574088166686,
+1161:       "is_uniform_diag": false,
+1162:       "frame": 54
+1163:     },
+1164:     {
+1165:       "shape": [
+1166:         1080,
+1167:         1920,
+1168:         3
+1169:       ],
+1170:       "mean_bgr": [
+1171:         53.9570490933642,
+1172:         53.9570490933642,
+1173:         53.9570490933642
+1174:       ],
+1175:       "std_bgr": [
+1176:         51.37406478960545,
+1177:         51.37406478960545,
+1178:         51.37406478960545
+1179:       ],
+1180:       "y_mean": 53.9570490933642,
+1181:       "y_std": 51.37406478970386,
+1182:       "is_uniform_diag": false,
+1183:       "frame": 55
+1184:     },
+1185:     {
+1186:       "shape": [
+1187:         1080,
+1188:         1920,
+1189:         3
+1190:       ],
+1191:       "mean_bgr": [
+1192:         53.95546633873457,
+1193:         53.95546633873457,
+1194:         53.95546633873457
+1195:       ],
+1196:       "std_bgr": [
+1197:         51.37410335563419,
+1198:         51.37410335563419,
+1199:         51.37410335563419
+1200:       ],
+1201:       "y_mean": 53.95546633873457,
+1202:       "y_std": 51.37410335597429,
+1203:       "is_uniform_diag": false,
+1204:       "frame": 56
+1205:     },
+1206:     {
+1207:       "shape": [
+1208:         1080,
+1209:         1920,
+1210:         3
+1211:       ],
+1212:       "mean_bgr": [
+1213:         53.9530111882716,
+1214:         53.9530111882716,
+1215:         53.9530111882716
+1216:       ],
+1217:       "std_bgr": [
+1218:         51.372343937118735,
+1219:         51.372343937118735,
+1220:         51.372343937118735
+1221:       ],
+1222:       "y_mean": 53.9530111882716,
+1223:       "y_std": 51.372343937595645,
+1224:       "is_uniform_diag": false,
+1225:       "frame": 57
+1226:     },
+1227:     {
+1228:       "shape": [
+1229:         1080,
+1230:         1920,
+1231:         3
+1232:       ],
+1233:       "mean_bgr": [
+1234:         53.951323302469135,
+1235:         53.951323302469135,
+1236:         53.951323302469135
+1237:       ],
+1238:       "std_bgr": [
+1239:         51.367717395297866,
+1240:         51.367717395297866,
+1241:         51.367717395297866
+1242:       ],
+1243:       "y_mean": 53.951323302469135,
+1244:       "y_std": 51.36771739543311,
+1245:       "is_uniform_diag": false,
+1246:       "frame": 58
+1247:     },
+1248:     {
+1249:       "shape": [
+1250:         1080,
+1251:         1920,
+1252:         3
+1253:       ],
+1254:       "mean_bgr": [
+1255:         53.95365885416667,
+1256:         53.95365885416667,
+1257:         53.95365885416667
+1258:       ],
+1259:       "std_bgr": [
+1260:         51.37681457244786,
+1261:         51.37681457244786,
+1262:         51.37681457244786
+1263:       ],
+1264:       "y_mean": 53.95365885416667,
+1265:       "y_std": 51.37681457222203,
+1266:       "is_uniform_diag": false,
+1267:       "frame": 59
+1268:     },
+1269:     {
+1270:       "shape": [
+1271:         1080,
+1272:         1920,
+1273:         3
+1274:       ],
+1275:       "mean_bgr": [
+1276:         53.950355420524694,
+1277:         53.950355420524694,
+1278:         53.950355420524694
+1279:       ],
+1280:       "std_bgr": [
+1281:         51.368489722124494,
+1282:         51.368489722124494,
+1283:         51.368489722124494
+1284:       ],
+1285:       "y_mean": 53.950355420524694,
+1286:       "y_std": 51.368489722030624,
+1287:       "is_uniform_diag": false,
+1288:       "frame": 60
+1289:     },
+1290:     {
+1291:       "shape": [
+1292:         1080,
+1293:         1920,
+1294:         3
+1295:       ],
+1296:       "mean_bgr": [
+1297:         53.95004147376543,
+1298:         53.95004147376543,
+1299:         53.95004147376543
+1300:       ],
+1301:       "std_bgr": [
+1302:         51.36767185175023,
+1303:         51.36767185175023,
+1304:         51.36767185175023
+1305:       ],
+1306:       "y_mean": 53.95004147376543,
+1307:       "y_std": 51.36767185219201,
+1308:       "is_uniform_diag": false,
+1309:       "frame": 61
+1310:     },
+1311:     {
+1312:       "shape": [
+1313:         1080,
+1314:         1920,
+1315:         3
+1316:       ],
+1317:       "mean_bgr": [
+1318:         53.958430266203706,
+1319:         53.958430266203706,
+1320:         53.958430266203706
+1321:       ],
+1322:       "std_bgr": [
+1323:         51.37565219763091,
+1324:         51.37565219763091,
+1325:         51.37565219763091
+1326:       ],
+1327:       "y_mean": 53.958430266203706,
+1328:       "y_std": 51.37565219789358,
+1329:       "is_uniform_diag": false,
+1330:       "frame": 62
+1331:     },
+1332:     {
+1333:       "shape": [
+1334:         1080,
+1335:         1920,
+1336:         3
+1337:       ],
+1338:       "mean_bgr": [
+1339:         53.95390576774691,
+1340:         53.95390576774691,
+1341:         53.95390576774691
+1342:       ],
+1343:       "std_bgr": [
+1344:         51.368524809438966,
+1345:         51.368524809438966,
+1346:         51.368524809438966
+1347:       ],
+1348:       "y_mean": 53.95390576774691,
+1349:       "y_std": 51.36852480928167,
+1350:       "is_uniform_diag": false,
+1351:       "frame": 63
+1352:     },
+1353:     {
+1354:       "shape": [
+1355:         1080,
+1356:         1920,
+1357:         3
+1358:       ],
+1359:       "mean_bgr": [
+1360:         53.96354504243827,
+1361:         53.96354504243827,
+1362:         53.96354504243827
+1363:       ],
+1364:       "std_bgr": [
+1365:         51.376238970968956,
+1366:         51.376238970968956,
+1367:         51.376238970968956
+1368:       ],
+1369:       "y_mean": 53.96354504243827,
+1370:       "y_std": 51.376238970730235,
+1371:       "is_uniform_diag": false,
+1372:       "frame": 64
+1373:     },
+1374:     {
+1375:       "shape": [
+1376:         1080,
+1377:         1920,
+1378:         3
+1379:       ],
+1380:       "mean_bgr": [
+1381:         53.961850887345676,
+1382:         53.961850887345676,
+1383:         53.961850887345676
+1384:       ],
+1385:       "std_bgr": [
+1386:         51.38115259073534,
+1387:         51.38115259073534,
+1388:         51.38115259073534
+1389:       ],
+1390:       "y_mean": 53.961850887345676,
+1391:       "y_std": 51.381152590421735,
+1392:       "is_uniform_diag": false,
+1393:       "frame": 65
+1394:     },
+1395:     {
+1396:       "shape": [
+1397:         1080,
+1398:         1920,
+1399:         3
+1400:       ],
+1401:       "mean_bgr": [
+1402:         53.95979214891975,
+1403:         53.95979214891975,
+1404:         53.95979214891975
+1405:       ],
+1406:       "std_bgr": [
+1407:         51.37352058478221,
+1408:         51.37352058478221,
+1409:         51.37352058478221
+1410:       ],
+1411:       "y_mean": 53.95979214891975,
+1412:       "y_std": 51.373520584260746,
+1413:       "is_uniform_diag": false,
+1414:       "frame": 66
+1415:     },
+1416:     {
+1417:       "shape": [
+1418:         1080,
+1419:         1920,
+1420:         3
+1421:       ],
+1422:       "mean_bgr": [
+1423:         53.95708478009259,
+1424:         53.95708478009259,
+1425:         53.95708478009259
+1426:       ],
+1427:       "std_bgr": [
+1428:         51.3733675694516,
+1429:         51.3733675694516,
+1430:         51.3733675694516
+1431:       ],
+1432:       "y_mean": 53.95708478009259,
+1433:       "y_std": 51.37336756974345,
+1434:       "is_uniform_diag": false,
+1435:       "frame": 67
+1436:     },
+1437:     {
+1438:       "shape": [
+1439:         1080,
+1440:         1920,
+1441:         3
+1442:       ],
+1443:       "mean_bgr": [
+1444:         53.95787181712963,
+1445:         53.95787181712963,
+1446:         53.95787181712963
+1447:       ],
+1448:       "std_bgr": [
+1449:         51.380039200449346,
+1450:         51.380039200449346,
+1451:         51.380039200449346
+1452:       ],
+1453:       "y_mean": 53.95787181712963,
+1454:       "y_std": 51.38003920049844,
+1455:       "is_uniform_diag": false,
+1456:       "frame": 68
+1457:     },
+1458:     {
+1459:       "shape": [
+1460:         1080,
+1461:         1920,
+1462:         3
+1463:       ],
+1464:       "mean_bgr": [
+1465:         53.961027199074074,
+1466:         53.961027199074074,
+1467:         53.961027199074074
+1468:       ],
+1469:       "std_bgr": [
+1470:         51.374035843856625,
+1471:         51.374035843856625,
+1472:         51.374035843856625
+1473:       ],
+1474:       "y_mean": 53.961027199074074,
+1475:       "y_std": 51.374035843604766,
+1476:       "is_uniform_diag": false,
+1477:       "frame": 69
+1478:     },
+1479:     {
+1480:       "shape": [
+1481:         1080,
+1482:         1920,
+1483:         3
+1484:       ],
+1485:       "mean_bgr": [
+1486:         53.959180652006175,
+1487:         53.959180652006175,
+1488:         53.959180652006175
+1489:       ],
+1490:       "std_bgr": [
+1491:         51.374997934826425,
+1492:         51.374997934826425,
+1493:         51.374997934826425
+1494:       ],
+1495:       "y_mean": 53.959180652006175,
+1496:       "y_std": 51.37499793453899,
+1497:       "is_uniform_diag": false,
+1498:       "frame": 70
+1499:     },
+1500:     {
+1501:       "shape": [
+1502:         1080,
+1503:         1920,
+1504:         3
+1505:       ],
+1506:       "mean_bgr": [
+1507:         53.95915991512346,
+1508:         53.95915991512346,
+1509:         53.95915991512346
+1510:       ],
+1511:       "std_bgr": [
+1512:         51.38109337158946,
+1513:         51.38109337158946,
+1514:         51.38109337158946
+1515:       ],
+1516:       "y_mean": 53.95915991512346,
+1517:       "y_std": 51.3810933718268,
+1518:       "is_uniform_diag": false,
+1519:       "frame": 71
+1520:     },
+1521:     {
+1522:       "shape": [
+1523:         1080,
+1524:         1920,
+1525:         3
+1526:       ],
+1527:       "mean_bgr": [
+1528:         53.95494791666667,
+1529:         53.95494791666667,
+1530:         53.95494791666667
+1531:       ],
+1532:       "std_bgr": [
+1533:         51.373366205258755,
+1534:         51.373366205258755,
+1535:         51.373366205258755
+1536:       ],
+1537:       "y_mean": 53.95494791666667,
+1538:       "y_std": 51.37336620492097,
+1539:       "is_uniform_diag": false,
+1540:       "frame": 72
+1541:     },
+1542:     {
+1543:       "shape": [
+1544:         1080,
+1545:         1920,
+1546:         3
+1547:       ],
+1548:       "mean_bgr": [
+1549:         53.955958236882715,
+1550:         53.955958236882715,
+1551:         53.955958236882715
+1552:       ],
+1553:       "std_bgr": [
+1554:         51.374914911427815,
+1555:         51.374914911427815,
+1556:         51.374914911427815
+1557:       ],
+1558:       "y_mean": 53.955958236882715,
+1559:       "y_std": 51.37491491164548,
+1560:       "is_uniform_diag": false,
+1561:       "frame": 73
+1562:     },
+1563:     {
+1564:       "shape": [
+1565:         1080,
+1566:         1920,
+1567:         3
+1568:       ],
+1569:       "mean_bgr": [
+1570:         53.9559018132716,
+1571:         53.9559018132716,
+1572:         53.9559018132716
+1573:       ],
+1574:       "std_bgr": [
+1575:         51.38055446514774,
+1576:         51.38055446514774,
+1577:         51.38055446514774
+1578:       ],
+1579:       "y_mean": 53.9559018132716,
+1580:       "y_std": 51.380554464789384,
+1581:       "is_uniform_diag": false,
+1582:       "frame": 74
+1583:     },
+1584:     {
+1585:       "shape": [
+1586:         1080,
+1587:         1920,
+1588:         3
+1589:       ],
+1590:       "mean_bgr": [
+1591:         53.94946952160494,
+1592:         53.94946952160494,
+1593:         53.94946952160494
+1594:       ],
+1595:       "std_bgr": [
+1596:         51.374057729087646,
+1597:         51.374057729087646,
+1598:         51.374057729087646
+1599:       ],
+1600:       "y_mean": 53.94946952160494,
+1601:       "y_std": 51.37405772945096,
+1602:       "is_uniform_diag": false,
+1603:       "frame": 75
+1604:     },
+1605:     {
+1606:       "shape": [
+1607:         1080,
+1608:         1920,
+1609:         3
+1610:       ],
+1611:       "mean_bgr": [
+1612:         53.95143711419753,
+1613:         53.95143711419753,
+1614:         53.95143711419753
+1615:       ],
+1616:       "std_bgr": [
+1617:         51.375945440473785,
+1618:         51.375945440473785,
+1619:         51.375945440473785
+1620:       ],
+1621:       "y_mean": 53.95143711419753,
+1622:       "y_std": 51.37594544069668,
+1623:       "is_uniform_diag": false,
+1624:       "frame": 76
+1625:     },
+1626:     {
+1627:       "shape": [
+1628:         1080,
+1629:         1920,
+1630:         3
+1631:       ],
+1632:       "mean_bgr": [
+1633:         53.95187692901234,
+1634:         53.95187692901234,
+1635:         53.95187692901234
+1636:       ],
+1637:       "std_bgr": [
+1638:         51.378479134669526,
+1639:         51.378479134669526,
+1640:         51.378479134669526
+1641:       ],
+1642:       "y_mean": 53.95187692901234,
+1643:       "y_std": 51.378479134729325,
+1644:       "is_uniform_diag": false,
+1645:       "frame": 77
+1646:     },
+1647:     {
+1648:       "shape": [
+1649:         1080,
+1650:         1920,
+1651:         3
+1652:       ],
+1653:       "mean_bgr": [
+1654:         53.95109230324074,
+1655:         53.95109230324074,
+1656:         53.95109230324074
+1657:       ],
+1658:       "std_bgr": [
+1659:         51.37231242151559,
+1660:         51.37231242151559,
+1661:         51.37231242151559
+1662:       ],
+1663:       "y_mean": 53.95109230324074,
+1664:       "y_std": 51.372312421375916,
+1665:       "is_uniform_diag": false,
+1666:       "frame": 78
+1667:     },
+1668:     {
+1669:       "shape": [
+1670:         1080,
+1671:         1920,
+1672:         3
+1673:       ],
+1674:       "mean_bgr": [
+1675:         53.95068962191358,
+1676:         53.95068962191358,
+1677:         53.95068962191358
+1678:       ],
+1679:       "std_bgr": [
+1680:         51.373384672947054,
+1681:         51.373384672947054,
+1682:         51.373384672947054
+1683:       ],
+1684:       "y_mean": 53.95068962191358,
+1685:       "y_std": 51.37338467323771,
+1686:       "is_uniform_diag": false,
+1687:       "frame": 79
+1688:     },
+1689:     {
+1690:       "shape": [
+1691:         1080,
+1692:         1920,
+1693:         3
+1694:       ],
+1695:       "mean_bgr": [
+1696:         53.95221788194444,
+1697:         53.95221788194444,
+1698:         53.95221788194444
+1699:       ],
+1700:       "std_bgr": [
+1701:         51.377775875281124,
+1702:         51.377775875281124,
+1703:         51.377775875281124
+1704:       ],
+1705:       "y_mean": 53.95221788194444,
+1706:       "y_std": 51.37777587562078,
+1707:       "is_uniform_diag": false,
+1708:       "frame": 80
+1709:     },
+1710:     {
+1711:       "shape": [
+1712:         1080,
+1713:         1920,
+1714:         3
+1715:       ],
+1716:       "mean_bgr": [
+1717:         53.95202112268519,
+1718:         53.95202112268519,
+1719:         53.95202112268519
+1720:       ],
+1721:       "std_bgr": [
+1722:         51.37274071419813,
+1723:         51.37274071419813,
+1724:         51.37274071419813
+1725:       ],
+1726:       "y_mean": 53.95202112268519,
+1727:       "y_std": 51.37274071373007,
+1728:       "is_uniform_diag": false,
+1729:       "frame": 81
+1730:     },
+1731:     {
+1732:       "shape": [
+1733:         1080,
+1734:         1920,
+1735:         3
+1736:       ],
+1737:       "mean_bgr": [
+1738:         53.96366464120371,
+1739:         53.96366464120371,
+1740:         53.96366464120371
+1741:       ],
+1742:       "std_bgr": [
+1743:         51.37988588261566,
+1744:         51.37988588261566,
+1745:         51.37988588261566
+1746:       ],
+1747:       "y_mean": 53.96366464120371,
+1748:       "y_std": 51.379885882313054,
+1749:       "is_uniform_diag": false,
+1750:       "frame": 82
+1751:     },
+1752:     {
+1753:       "shape": [
+1754:         1080,
+1755:         1920,
+1756:         3
+1757:       ],
+1758:       "mean_bgr": [
+1759:         53.963889371141974,
+1760:         53.963889371141974,
+1761:         53.963889371141974
+1762:       ],
+1763:       "std_bgr": [
+1764:         51.37958031865618,
+1765:         51.37958031865618,
+1766:         51.37958031865618
+1767:       ],
+1768:       "y_mean": 53.963889371141974,
+1769:       "y_std": 51.37958031811115,
+1770:       "is_uniform_diag": false,
+1771:       "frame": 83
+1772:     },
+1773:     {
+1774:       "shape": [
+1775:         1080,
+1776:         1920,
+1777:         3
+1778:       ],
+1779:       "mean_bgr": [
+1780:         53.963865740740744,
+1781:         53.963865740740744,
+1782:         53.963865740740744
+1783:       ],
+1784:       "std_bgr": [
+1785:         51.38263732844476,
+1786:         51.38263732844476,
+1787:         51.38263732844476
+1788:       ],
+1789:       "y_mean": 53.963865740740744,
+1790:       "y_std": 51.38263732869644,
+1791:       "is_uniform_diag": false,
+1792:       "frame": 84
+1793:     },
+1794:     {
+1795:       "shape": [
+1796:         1080,
+1797:         1920,
+1798:         3
+1799:       ],
+1800:       "mean_bgr": [
+1801:         53.959269868827164,
+1802:         53.959269868827164,
+1803:         53.959269868827164
+1804:       ],
+1805:       "std_bgr": [
+1806:         51.37251403009774,
+1807:         51.37251403009774,
+1808:         51.37251403009774
+1809:       ],
+1810:       "y_mean": 53.959269868827164,
+1811:       "y_std": 51.37251402969099,
+1812:       "is_uniform_diag": false,
+1813:       "frame": 85
+1814:     },
+1815:     {
+1816:       "shape": [
+1817:         1080,
+1818:         1920,
+1819:         3
+1820:       ],
+1821:       "mean_bgr": [
+1822:         53.962722800925924,
+1823:         53.962722800925924,
+1824:         53.962722800925924
+1825:       ],
+1826:       "std_bgr": [
+1827:         51.37903901769976,
+1828:         51.37903901769976,
+1829:         51.37903901769976
+1830:       ],
+1831:       "y_mean": 53.962722800925924,
+1832:       "y_std": 51.379039017297586,
+1833:       "is_uniform_diag": false,
+1834:       "frame": 86
+1835:     },
+1836:     {
+1837:       "shape": [
+1838:         1080,
+1839:         1920,
+1840:         3
+1841:       ],
+1842:       "mean_bgr": [
+1843:         53.9641796875,
+1844:         53.9641796875,
+1845:         53.9641796875
+1846:       ],
+1847:       "std_bgr": [
+1848:         51.380652654626076,
+1849:         51.380652654626076,
+1850:         51.380652654626076
+1851:       ],
+1852:       "y_mean": 53.9641796875,
+1853:       "y_std": 51.38065265442396,
+1854:       "is_uniform_diag": false,
+1855:       "frame": 87
+1856:     },
+1857:     {
+1858:       "shape": [
+1859:         1080,
+1860:         1920,
+1861:         3
+1862:       ],
+1863:       "mean_bgr": [
+1864:         53.96039158950617,
+1865:         53.96039158950617,
+1866:         53.96039158950617
+1867:       ],
+1868:       "std_bgr": [
+1869:         51.374416613247725,
+1870:         51.374416613247725,
+1871:         51.374416613247725
+1872:       ],
+1873:       "y_mean": 53.96039158950617,
+1874:       "y_std": 51.37441661304996,
+1875:       "is_uniform_diag": false,
+1876:       "frame": 88
+1877:     },
+1878:     {
+1879:       "shape": [
+1880:         1080,
+1881:         1920,
+1882:         3
+1883:       ],
+1884:       "mean_bgr": [
+1885:         53.965076195987656,
+1886:         53.965076195987656,
+1887:         53.965076195987656
+1888:       ],
+1889:       "std_bgr": [
+1890:         51.382087307901614,
+1891:         51.382087307901614,
+1892:         51.382087307901614
+1893:       ],
+1894:       "y_mean": 53.965076195987656,
+1895:       "y_std": 51.38208730743288,
+1896:       "is_uniform_diag": false,
+1897:       "frame": 89
+1898:     },
+1899:     {
+1900:       "shape": [
+1901:         1080,
+1902:         1920,
+1903:         3
+1904:       ],
+1905:       "mean_bgr": [
+1906:         53.96857783564815,
+1907:         53.96857783564815,
+1908:         53.96857783564815
+1909:       ],
+1910:       "std_bgr": [
+1911:         51.38213951335155,
+1912:         51.38213951335155,
+1913:         51.38213951335155
+1914:       ],
+1915:       "y_mean": 53.96857783564815,
+1916:       "y_std": 51.382139513725306,
+1917:       "is_uniform_diag": false,
+1918:       "frame": 90
+1919:     },
+1920:     {
+1921:       "shape": [
+1922:         1080,
+1923:         1920,
+1924:         3
+1925:       ],
+1926:       "mean_bgr": [
+1927:         53.965253665123456,
+1928:         53.965253665123456,
+1929:         53.965253665123456
+1930:       ],
+1931:       "std_bgr": [
+1932:         51.378378619563364,
+1933:         51.378378619563364,
+1934:         51.378378619563364
+1935:       ],
+1936:       "y_mean": 53.965253665123456,
+1937:       "y_std": 51.37837861986103,
+1938:       "is_uniform_diag": false,
+1939:       "frame": 91
+1940:     },
+1941:     {
+1942:       "shape": [
+1943:         1080,
+1944:         1920,
+1945:         3
+1946:       ],
+1947:       "mean_bgr": [
+1948:         53.954918016975306,
+1949:         53.954918016975306,
+1950:         53.954918016975306
+1951:       ],
+1952:       "std_bgr": [
+1953:         51.37548898840153,
+1954:         51.37548898840153,
+1955:         51.37548898840153
+1956:       ],
+1957:       "y_mean": 53.954918016975306,
+1958:       "y_std": 51.37548898890769,
+1959:       "is_uniform_diag": false,
+1960:       "frame": 92
+1961:     },
+1962:     {
+1963:       "shape": [
+1964:         1080,
+1965:         1920,
+1966:         3
+1967:       ],
+1968:       "mean_bgr": [
+1969:         53.9546696566358,
+1970:         53.9546696566358,
+1971:         53.9546696566358
+1972:       ],
+1973:       "std_bgr": [
+1974:         51.381131133842224,
+1975:         51.381131133842224,
+1976:         51.381131133842224
+1977:       ],
+1978:       "y_mean": 53.9546696566358,
+1979:       "y_std": 51.381131134050044,
+1980:       "is_uniform_diag": false,
+1981:       "frame": 93
+1982:     },
+1983:     {
+1984:       "shape": [
+1985:         1080,
+1986:         1920,
+1987:         3
+1988:       ],
+1989:       "mean_bgr": [
+1990:         53.95168016975309,
+1991:         53.95168016975309,
+1992:         53.95168016975309
+1993:       ],
+1994:       "std_bgr": [
+1995:         51.37583624876935,
+1996:         51.37583624876935,
+1997:         51.37583624876935
+1998:       ],
+1999:       "y_mean": 53.95168016975309,
+2000:       "y_std": 51.375836248423894,
+2001:       "is_uniform_diag": false,
+2002:       "frame": 94
+2003:     },
+2004:     {
+2005:       "shape": [
+2006:         1080,
+2007:         1920,
+2008:         3
+2009:       ],
+2010:       "mean_bgr": [
+2011:         53.95060956790123,
+2012:         53.95060956790123,
+2013:         53.95060956790123
+2014:       ],
+2015:       "std_bgr": [
+2016:         51.37293859862675,
+2017:         51.37293859862675,
+2018:         51.37293859862675
+2019:       ],
+2020:       "y_mean": 53.95060956790123,
+2021:       "y_std": 51.37293859835431,
+2022:       "is_uniform_diag": false,
+2023:       "frame": 95
+2024:     },
+2025:     {
+2026:       "shape": [
+2027:         1080,
+2028:         1920,
+2029:         3
+2030:       ],
+2031:       "mean_bgr": [
+2032:         53.95598572530864,
+2033:         53.95598572530864,
+2034:         53.95598572530864
+2035:       ],
+2036:       "std_bgr": [
+2037:         51.37966027765638,
+2038:         51.37966027765638,
+2039:         51.37966027765638
+2040:       ],
+2041:       "y_mean": 53.95598572530864,
+2042:       "y_std": 51.37966027731948,
+2043:       "is_uniform_diag": false,
+2044:       "frame": 96
+2045:     },
+2046:     {
+2047:       "shape": [
+2048:         1080,
+2049:         1920,
+2050:         3
+2051:       ],
+2052:       "mean_bgr": [
+2053:         53.954176311728396,
+2054:         53.954176311728396,
+2055:         53.954176311728396
+2056:       ],
+2057:       "std_bgr": [
+2058:         51.374592896417255,
+2059:         51.374592896417255,
+2060:         51.374592896417255
+2061:       ],
+2062:       "y_mean": 53.954176311728396,
+2063:       "y_std": 51.374592896210096,
+2064:       "is_uniform_diag": false,
+2065:       "frame": 97
+2066:     },
+2067:     {
+2068:       "shape": [
+2069:         1080,
+2070:         1920,
+2071:         3
+2072:       ],
+2073:       "mean_bgr": [
+2074:         53.953244116512344,
+2075:         53.953244116512344,
+2076:         53.953244116512344
+2077:       ],
+2078:       "std_bgr": [
+2079:         51.369698556193505,
+2080:         51.369698556193505,
+2081:         51.369698556193505
+2082:       ],
+2083:       "y_mean": 53.953244116512344,
+2084:       "y_std": 51.36969855590507,
+2085:       "is_uniform_diag": false,
+2086:       "frame": 98
+2087:     },
+2088:     {
+2089:       "shape": [
+2090:         1080,
+2091:         1920,
+2092:         3
+2093:       ],
+2094:       "mean_bgr": [
+2095:         53.95536651234568,
+2096:         53.95536651234568,
+2097:         53.95536651234568
+2098:       ],
+2099:       "std_bgr": [
+2100:         51.37537096582405,
+2101:         51.37537096582405,
+2102:         51.37537096582405
+2103:       ],
+2104:       "y_mean": 53.95536651234568,
+2105:       "y_std": 51.37537096548282,
+2106:       "is_uniform_diag": false,
+2107:       "frame": 99
+2108:     },
+2109:     {
+2110:       "shape": [
+2111:         1080,
+2112:         1920,
+2113:         3
+2114:       ],
+2115:       "mean_bgr": [
+2116:         53.949121334876544,
+2117:         53.949121334876544,
+2118:         53.949121334876544
+2119:       ],
+2120:       "std_bgr": [
+2121:         51.369492051032616,
+2122:         51.369492051032616,
+2123:         51.369492051032616
+2124:       ],
+2125:       "y_mean": 53.949121334876544,
+2126:       "y_std": 51.36949205158324,
+2127:       "is_uniform_diag": false,
+2128:       "frame": 100
+2129:     },
+2130:     {
+2131:       "shape": [
+2132:         1080,
+2133:         1920,
+2134:         3
+2135:       ],
+2136:       "mean_bgr": [
+2137:         53.949444444444445,
+2138:         53.949444444444445,
+2139:         53.949444444444445
+2140:       ],
+2141:       "std_bgr": [
+2142:         51.36885575237781,
+2143:         51.36885575237781,
+2144:         51.36885575237781
+2145:       ],
+2146:       "y_mean": 53.949444444444445,
+2147:       "y_std": 51.36885575248331,
+2148:       "is_uniform_diag": false,
+2149:       "frame": 101
+2150:     },
+2151:     {
+2152:       "shape": [
+2153:         1080,
+2154:         1920,
+2155:         3
+2156:       ],
+2157:       "mean_bgr": [
+2158:         53.95782600308642,
+2159:         53.95782600308642,
+2160:         53.95782600308642
+2161:       ],
+2162:       "std_bgr": [
+2163:         51.38159307181875,
+2164:         51.38159307181875,
+2165:         51.38159307181875
+2166:       ],
+2167:       "y_mean": 53.95782600308642,
+2168:       "y_std": 51.38159307162199,
+2169:       "is_uniform_diag": false,
+2170:       "frame": 102
+2171:     },
+2172:     {
+2173:       "shape": [
+2174:         1080,
+2175:         1920,
+2176:         3
+2177:       ],
+2178:       "mean_bgr": [
+2179:         53.95705198688272,
+2180:         53.95705198688272,
+2181:         53.95705198688272
+2182:       ],
+2183:       "std_bgr": [
+2184:         51.37345576389686,
+2185:         51.37345576389686,
+2186:         51.37345576389686
+2187:       ],
+2188:       "y_mean": 53.95705198688272,
+2189:       "y_std": 51.37345576335355,
+2190:       "is_uniform_diag": false,
+2191:       "frame": 103
+2192:     },
+2193:     {
+2194:       "shape": [
+2195:         1080,
+2196:         1920,
+2197:         3
+2198:       ],
+2199:       "mean_bgr": [
+2200:         53.957249228395064,
+2201:         53.957249228395064,
+2202:         53.957249228395064
+2203:       ],
+2204:       "std_bgr": [
+2205:         51.37337492136425,
+2206:         51.37337492136425,
+2207:         51.37337492136425
+2208:       ],
+2209:       "y_mean": 53.957249228395064,
+2210:       "y_std": 51.37337492093149,
+2211:       "is_uniform_diag": false,
+2212:       "frame": 104
+2213:     },
+2214:     {
+2215:       "shape": [
+2216:         1080,
+2217:         1920,
+2218:         3
+2219:       ],
+2220:       "mean_bgr": [
+2221:         53.95785204475309,
+2222:         53.95785204475309,
+2223:         53.95785204475309
+2224:       ],
+2225:       "std_bgr": [
+2226:         51.372871323268285,
+2227:         51.372871323268285,
+2228:         51.372871323268285
+2229:       ],
+2230:       "y_mean": 53.95785204475309,
+2231:       "y_std": 51.372871322940966,
+2232:       "is_uniform_diag": false,
+2233:       "frame": 105
+2234:     },
+2235:     {
+2236:       "shape": [
+2237:         1080,
+2238:         1920,
+2239:         3
+2240:       ],
+2241:       "mean_bgr": [
+2242:         53.951535976080244,
+2243:         53.951535976080244,
+2244:         53.951535976080244
+2245:       ],
+2246:       "std_bgr": [
+2247:         51.36924414595878,
+2248:         51.36924414595878,
+2249:         51.36924414595878
+2250:       ],
+2251:       "y_mean": 53.951535976080244,
+2252:       "y_std": 51.3692441458927,
+2253:       "is_uniform_diag": false,
+2254:       "frame": 106
+2255:     },
+2256:     {
+2257:       "shape": [
+2258:         1080,
+2259:         1920,
+2260:         3
+2261:       ],
+2262:       "mean_bgr": [
+2263:         53.94816261574074,
+2264:         53.94816261574074,
+2265:         53.94816261574074
+2266:       ],
+2267:       "std_bgr": [
+2268:         51.368272910008194,
+2269:         51.368272910008194,
+2270:         51.368272910008194
+2271:       ],
+2272:       "y_mean": 53.94816261574074,
+2273:       "y_std": 51.368272910478005,
+2274:       "is_uniform_diag": false,
+2275:       "frame": 107
+2276:     },
+2277:     {
+2278:       "shape": [
+2279:         1080,
+2280:         1920,
+2281:         3
+2282:       ],
+2283:       "mean_bgr": [
+2284:         53.953494888117284,
+2285:         53.953494888117284,
+2286:         53.953494888117284
+2287:       ],
+2288:       "std_bgr": [
+2289:         51.37675551346728,
+2290:         51.37675551346728,
+2291:         51.37675551346728
+2292:       ],
+2293:       "y_mean": 53.953494888117284,
+2294:       "y_std": 51.376755513793434,
+2295:       "is_uniform_diag": false,
+2296:       "frame": 108
+2297:     },
+2298:     {
+2299:       "shape": [
+2300:         1080,
+2301:         1920,
+2302:         3
+2303:       ],
+2304:       "mean_bgr": [
+2305:         53.94348476080247,
+2306:         53.94348476080247,
+2307:         53.94348476080247
+2308:       ],
+2309:       "std_bgr": [
+2310:         51.36971030575394,
+2311:         51.36971030575394,
+2312:         51.36971030575394
+2313:       ],
+2314:       "y_mean": 53.94348476080247,
+2315:       "y_std": 51.36971030532834,
+2316:       "is_uniform_diag": false,
+2317:       "frame": 109
+2318:     },
+2319:     {
+2320:       "shape": [
+2321:         1080,
+2322:         1920,
+2323:         3
+2324:       ],
+2325:       "mean_bgr": [
+2326:         53.942898341049386,
+2327:         53.942898341049386,
+2328:         53.942898341049386
+2329:       ],
+2330:       "std_bgr": [
+2331:         51.36830961292825,
+2332:         51.36830961292825,
+2333:         51.36830961292825
+2334:       ],
+2335:       "y_mean": 53.942898341049386,
+2336:       "y_std": 51.36830961260165,
+2337:       "is_uniform_diag": false,
+2338:       "frame": 110
+2339:     },
+2340:     {
+2341:       "shape": [
+2342:         1080,
+2343:         1920,
+2344:         3
+2345:       ],
+2346:       "mean_bgr": [
+2347:         53.944122781635805,
+2348:         53.944122781635805,
+2349:         53.944122781635805
+2350:       ],
+2351:       "std_bgr": [
+2352:         51.37408698577659,
+2353:         51.37408698577659,
+2354:         51.37408698577659
+2355:       ],
+2356:       "y_mean": 53.944122781635805,
+2357:       "y_std": 51.374086985530006,
+2358:       "is_uniform_diag": false,
+2359:       "frame": 111
+2360:     },
+2361:     {
+2362:       "shape": [
+2363:         1080,
+2364:         1920,
+2365:         3
+2366:       ],
+2367:       "mean_bgr": [
+2368:         53.94233555169753,
+2369:         53.94233555169753,
+2370:         53.94233555169753
+2371:       ],
+2372:       "std_bgr": [
+2373:         51.366903029485016,
+2374:         51.366903029485016,
+2375:         51.366903029485016
+2376:       ],
+2377:       "y_mean": 53.94233555169753,
+2378:       "y_std": 51.366903029073875,
+2379:       "is_uniform_diag": false,
+2380:       "frame": 112
+2381:     },
+2382:     {
+2383:       "shape": [
+2384:         1080,
+2385:         1920,
+2386:         3
+2387:       ],
+2388:       "mean_bgr": [
+2389:         53.94189187885802,
+2390:         53.94189187885802,
+2391:         53.94189187885802
+2392:       ],
+2393:       "std_bgr": [
+2394:         51.366101232051356,
+2395:         51.366101232051356,
+2396:         51.366101232051356
+2397:       ],
+2398:       "y_mean": 53.94189187885802,
+2399:       "y_std": 51.366101232191994,
+2400:       "is_uniform_diag": false,
+2401:       "frame": 113
+2402:     },
+2403:     {
+2404:       "shape": [
+2405:         1080,
+2406:         1920,
+2407:         3
+2408:       ],
+2409:       "mean_bgr": [
+2410:         53.94528694058642,
+2411:         53.94528694058642,
+2412:         53.94528694058642
+2413:       ],
+2414:       "std_bgr": [
+2415:         51.372241933644105,
+2416:         51.372241933644105,
+2417:         51.372241933644105
+2418:       ],
+2419:       "y_mean": 53.94528694058642,
+2420:       "y_std": 51.37224193412608,
+2421:       "is_uniform_diag": false,
+2422:       "frame": 114
+2423:     },
+2424:     {
+2425:       "shape": [
+2426:         1080,
+2427:         1920,
+2428:         3
+2429:       ],
+2430:       "mean_bgr": [
+2431:         53.94502073688272,
+2432:         53.94502073688272,
+2433:         53.94502073688272
+2434:       ],
+2435:       "std_bgr": [
+2436:         51.36940101100995,
+2437:         51.36940101100995,
+2438:         51.36940101100995
+2439:       ],
+2440:       "y_mean": 53.94502073688272,
+2441:       "y_std": 51.369401011555766,
+2442:       "is_uniform_diag": false,
+2443:       "frame": 115
+2444:     },
+2445:     {
+2446:       "shape": [
+2447:         1080,
+2448:         1920,
+2449:         3
+2450:       ],
+2451:       "mean_bgr": [
+2452:         53.94379002700617,
+2453:         53.94379002700617,
+2454:         53.94379002700617
+2455:       ],
+2456:       "std_bgr": [
+2457:         51.366887047564944,
+2458:         51.366887047564944,
+2459:         51.366887047564944
+2460:       ],
+2461:       "y_mean": 53.94379002700617,
+2462:       "y_std": 51.36688704740875,
+2463:       "is_uniform_diag": false,
+2464:       "frame": 116
+2465:     },
+2466:     {
+2467:       "shape": [
+2468:         1080,
+2469:         1920,
+2470:         3
+2471:       ],
+2472:       "mean_bgr": [
+2473:         53.94320987654321,
+2474:         53.94320987654321,
+2475:         53.94320987654321
+2476:       ],
+2477:       "std_bgr": [
+2478:         51.366638475379965,
+2479:         51.366638475379965,
+2480:         51.366638475379965
+2481:       ],
+2482:       "y_mean": 53.94320987654321,
+2483:       "y_std": 51.36663847501534,
+2484:       "is_uniform_diag": false,
+2485:       "frame": 117
+2486:     },
+2487:     {
+2488:       "shape": [
+2489:         1080,
+2490:         1920,
+2491:         3
+2492:       ],
+2493:       "mean_bgr": [
+2494:         53.94408902391975,
+2495:         53.94408902391975,
+2496:         53.94408902391975
+2497:       ],
+2498:       "std_bgr": [
+2499:         51.37233236896089,
+2500:         51.37233236896089,
+2501:         51.37233236896089
+2502:       ],
+2503:       "y_mean": 53.94408902391975,
+2504:       "y_std": 51.37233236879383,
+2505:       "is_uniform_diag": false,
+2506:       "frame": 118
+2507:     },
+2508:     {
+2509:       "shape": [
+2510:         1080,
+2511:         1920,
+2512:         3
+2513:       ],
+2514:       "mean_bgr": [
+2515:         53.94956066743827,
+2516:         53.94956066743827,
+2517:         53.94956066743827
+2518:       ],
+2519:       "std_bgr": [
+2520:         51.36729863465155,
+2521:         51.36729863465155,
+2522:         51.36729863465155
+2523:       ],
+2524:       "y_mean": 53.94956066743827,
+2525:       "y_std": 51.36729863416723,
+2526:       "is_uniform_diag": false,
+2527:       "frame": 119
+2528:     }
+2529:   ]
+2530: }
+
+SOURCE E:/Xylinx/EO_IR_HD_SDI_panorama_base/captures/usb3_component_guard_confirm_20260709_0640/capture_summary.json
+1: {
+2:   "capture_dir": "E:\\Xylinx\\EO_IR_HD_SDI_panorama_base\\captures\\usb3_component_guard_confirm_20260709_0640",
+3:   "video_index": 0,
+4:   "elapsed_s": 16.886314153671265,
+5:   "frames": 120,
+6:   "uniform_diag_count": 0,
+7:   "real_count": 120,
+8:   "frame_summary": [
+9:     {
+10:       "shape": [
+11:         1080,
+12:         1920,
+13:         3
+14:       ],
+15:       "mean_bgr": [
+16:         53.99183883101852,
+17:         53.99183883101852,
+18:         53.99183883101852
+19:       ],
+20:       "std_bgr": [
+21:         51.414614932552404,
+22:         51.414614932552404,
+23:         51.414614932552404
+24:       ],
+25:       "y_mean": 53.99183883101852,
+26:       "y_std": 51.41461493299174,
+27:       "is_uniform_diag": false,
+28:       "frame": 0
+29:     },
+30:     {
+31:       "shape": [
+32:         1080,
+33:         1920,
+34:         3
+35:       ],
+36:       "mean_bgr": [
+37:         53.99099151234568,
+38:         53.99099151234568,
+39:         53.99099151234568
+40:       ],
+41:       "std_bgr": [
+42:         51.41282707134262,
+43:         51.41282707134262,
+44:         51.41282707134262
+45:       ],
+46:       "y_mean": 53.99099151234568,
+47:       "y_std": 51.412827071475206,
+48:       "is_uniform_diag": false,
+49:       "frame": 1
+50:     },
+51:     {
+52:       "shape": [
+53:         1080,
+54:         1920,
+55:         3
+56:       ],
+57:       "mean_bgr": [
+58:         53.98939573688271,
+59:         53.98939573688271,
+60:         53.98939573688271
+61:       ],
+62:       "std_bgr": [
+63:         51.4042778841738,
+64:         51.4042778841738,
+65:         51.4042778841738
+66:       ],
+67:       "y_mean": 53.98939573688271,
+68:       "y_std": 51.404277884527296,
+69:       "is_uniform_diag": false,
+70:       "frame": 2
+71:     },
+72:     {
+73:       "shape": [
+74:         1080,
+75:         1920,
+76:         3
+77:       ],
+78:       "mean_bgr": [
+79:         53.97701533564815,
+80:         53.97701533564815,
+81:         53.97701533564815
+82:       ],
+83:       "std_bgr": [
+84:         51.39852859837115,
+85:         51.39852859837115,
+86:         51.39852859837115
+87:       ],
+88:       "y_mean": 53.97701533564815,
+89:       "y_std": 51.39852859816397,
+90:       "is_uniform_diag": false,
+91:       "frame": 3
+92:     },
+93:     {
+94:       "shape": [
+95:         1080,
+96:         1920,
+97:         3
+98:       ],
+99:       "mean_bgr": [
+100:         53.972128665123456,
+101:         53.972128665123456,
+102:         53.972128665123456
+103:       ],
+104:       "std_bgr": [
+105:         51.39381450351608,
+106:         51.39381450351608,
+107:         51.39381450351608
+108:       ],
+109:       "y_mean": 53.972128665123456,
+110:       "y_std": 51.39381450307369,
+111:       "is_uniform_diag": false,
+112:       "frame": 4
+113:     },
+114:     {
+115:       "shape": [
+116:         1080,
+117:         1920,
+118:         3
+119:       ],
+120:       "mean_bgr": [
+121:         53.965278260030864,
+122:         53.965278260030864,
+123:         53.965278260030864
+124:       ],
+125:       "std_bgr": [
+126:         51.3853001521354,
+127:         51.3853001521354,
+128:         51.3853001521354
+129:       ],
+130:       "y_mean": 53.965278260030864,
+131:       "y_std": 51.38530015185567,
+132:       "is_uniform_diag": false,
+133:       "frame": 5
+134:     },
+135:     {
+136:       "shape": [
+137:         1080,
+138:         1920,
+139:         3
+140:       ],
+141:       "mean_bgr": [
+142:         53.97020061728395,
+143:         53.97020061728395,
+144:         53.97020061728395
+145:       ],
+146:       "std_bgr": [
+147:         51.39449903980181,
+148:         51.39449903980181,
+149:         51.39449903980181
+150:       ],
+151:       "y_mean": 53.97020061728395,
+152:       "y_std": 51.39449903984836,
+153:       "is_uniform_diag": false,
+154:       "frame": 6
+155:     },
+156:     {
+157:       "shape": [
+158:         1080,
+159:         1920,
+160:         3
+161:       ],
+162:       "mean_bgr": [
+163:         53.96673514660494,
+164:         53.96673514660494,
+165:         53.96673514660494
+166:       ],
+167:       "std_bgr": [
+168:         51.38969841470869,
+169:         51.38969841470869,
+170:         51.38969841470869
+171:       ],
+172:       "y_mean": 53.96673514660494,
+173:       "y_std": 51.389698414499065,
+174:       "is_uniform_diag": false,
+175:       "frame": 7
+176:     },
+177:     {
+178:       "shape": [
+179:         1080,
+180:         1920,
+181:         3
+182:       ],
+183:       "mean_bgr": [
+184:         53.96668499228395,
+185:         53.96668499228395,
+186:         53.96668499228395
+187:       ],
+188:       "std_bgr": [
+189:         51.388420824869144,
+190:         51.388420824869144,
+191:         51.388420824869144
+192:       ],
+193:       "y_mean": 53.96668499228395,
+194:       "y_std": 51.38842082431658,
+195:       "is_uniform_diag": false,
+196:       "frame": 8
+197:     },
+198:     {
+199:       "shape": [
+200:         1080,
+201:         1920,
+202:         3
+203:       ],
+204:       "mean_bgr": [
+205:         53.96454571759259,
+206:         53.96454571759259,
+207:         53.96454571759259
+208:       ],
+209:       "std_bgr": [
+210:         51.387259956645785,
+211:         51.387259956645785,
+212:         51.387259956645785
+213:       ],
+214:       "y_mean": 53.96454571759259,
+215:       "y_std": 51.38725995669069,
+216:       "is_uniform_diag": false,
+217:       "frame": 9
+218:     },
+219:     {
+220:       "shape": [
+221:         1080,
+222:         1920,
+223:         3
+224:       ],
+225:       "mean_bgr": [
+226:         53.96551311728395,
+227:         53.96551311728395,
+228:         53.96551311728395
+229:       ],
+230:       "std_bgr": [
+231:         51.391887045045735,
+232:         51.391887045045735,
+233:         51.391887045045735
+234:       ],
+235:       "y_mean": 53.96551311728395,
+236:       "y_std": 51.39188704548875,
+237:       "is_uniform_diag": false,
+238:       "frame": 10
+239:     },
+240:     {
+241:       "shape": [
+242:         1080,
+243:         1920,
+244:         3
+245:       ],
+246:       "mean_bgr": [
+247:         53.95977092978395,
+248:         53.95977092978395,
+249:         53.95977092978395
+250:       ],
+251:       "std_bgr": [
+252:         51.38581018859809,
+253:         51.38581018859809,
+254:         51.38581018859809
+255:       ],
+256:       "y_mean": 53.95977092978395,
+257:       "y_std": 51.38581018898644,
+258:       "is_uniform_diag": false,
+259:       "frame": 11
+260:     },
+261:     {
+262:       "shape": [
+263:         1080,
+264:         1920,
+265:         3
+266:       ],
+267:       "mean_bgr": [
+268:         53.957740644290126,
+269:         53.957740644290126,
+270:         53.957740644290126
+271:       ],
+272:       "std_bgr": [
+273:         51.38187485868548,
+274:         51.38187485868548,
+275:         51.38187485868548
+276:       ],
+277:       "y_mean": 53.957740644290126,
+278:       "y_std": 51.38187485848721,
+279:       "is_uniform_diag": false,
+280:       "frame": 12
+281:     },
+282:     {
+283:       "shape": [
+284:         1080,
+285:         1920,
+286:         3
+287:       ],
+288:       "mean_bgr": [
+289:         53.96260850694444,
+290:         53.96260850694444,
+291:         53.96260850694444
+292:       ],
+293:       "std_bgr": [
+294:         51.385937658228585,
+295:         51.385937658228585,
+296:         51.385937658228585
+297:       ],
+298:       "y_mean": 53.96260850694444,
+299:       "y_std": 51.385937658549246,
+300:       "is_uniform_diag": false,
+301:       "frame": 13
+302:     },
+303:     {
+304:       "shape": [
+305:         1080,
+306:         1920,
+307:         3
+308:       ],
+309:       "mean_bgr": [
+310:         53.95957175925926,
+311:         53.95957175925926,
+312:         53.95957175925926
+313:       ],
+314:       "std_bgr": [
+315:         51.38041888179472,
+316:         51.38041888179472,
+317:         51.38041888179472
+318:       ],
+319:       "y_mean": 53.95957175925926,
+320:       "y_std": 51.38041888165133,
+321:       "is_uniform_diag": false,
+322:       "frame": 14
+323:     },
+324:     {
+325:       "shape": [
+326:         1080,
+327:         1920,
+328:         3
+329:       ],
+330:       "mean_bgr": [
+331:         53.968111014660494,
+332:         53.968111014660494,
+333:         53.968111014660494
+334:       ],
+335:       "std_bgr": [
+336:         51.3778969213947,
+337:         51.3778969213947,
+338:         51.3778969213947
+339:       ],
+340:       "y_mean": 53.968111014660494,
+341:       "y_std": 51.37789692099065,
+342:       "is_uniform_diag": false,
+343:       "frame": 15
+344:     },
+345:     {
+346:       "shape": [
+347:         1080,
+348:         1920,
+349:         3
+350:       ],
+351:       "mean_bgr": [
+352:         53.969903549382714,
+353:         53.969903549382714,
+354:         53.969903549382714
+355:       ],
+356:       "std_bgr": [
+357:         51.38840472638804,
+358:         51.38840472638804,
+359:         51.38840472638804
+360:       ],
+361:       "y_mean": 53.969903549382714,
+362:       "y_std": 51.388404726232324,
+363:       "is_uniform_diag": false,
+364:       "frame": 16
+365:     },
+366:     {
+367:       "shape": [
+368:         1080,
+369:         1920,
+370:         3
+371:       ],
+372:       "mean_bgr": [
+373:         53.974112172067905,
+374:         53.974112172067905,
+375:         53.974112172067905
+376:       ],
+377:       "std_bgr": [
+378:         51.38973053562818,
+379:         51.38973053562818,
+380:         51.38973053562818
+381:       ],
+382:       "y_mean": 53.974112172067905,
+383:       "y_std": 51.38973053606714,
+384:       "is_uniform_diag": false,
+385:       "frame": 17
+386:     },
+387:     {
+388:       "shape": [
+389:         1080,
+390:         1920,
+391:         3
+392:       ],
+393:       "mean_bgr": [
+394:         53.96862364969136,
+395:         53.96862364969136,
+396:         53.96862364969136
+397:       ],
+398:       "std_bgr": [
+399:         51.383434248267044,
+400:         51.383434248267044,
+401:         51.383434248267044
+402:       ],
+403:       "y_mean": 53.96862364969136,
+404:       "y_std": 51.383434247822144,
+405:       "is_uniform_diag": false,
+406:       "frame": 18
+407:     },
+408:     {
+409:       "shape": [
+410:         1080,
+411:         1920,
+412:         3
+413:       ],
+414:       "mean_bgr": [
+415:         53.9690552662037,
+416:         53.9690552662037,
+417:         53.9690552662037
+418:       ],
+419:       "std_bgr": [
+420:         51.38356419156643,
+421:         51.38356419156643,
+422:         51.38356419156643
+423:       ],
+424:       "y_mean": 53.9690552662037,
+425:       "y_std": 51.383564191899985,
+426:       "is_uniform_diag": false,
+427:       "frame": 19
+428:     },
+429:     {
+430:       "shape": [
+431:         1080,
+432:         1920,
+433:         3
+434:       ],
+435:       "mean_bgr": [
+436:         53.973233506944446,
+437:         53.973233506944446,
+438:         53.973233506944446
+439:       ],
+440:       "std_bgr": [
+441:         51.3905134563202,
+442:         51.3905134563202,
+443:         51.3905134563202
+444:       ],
+445:       "y_mean": 53.973233506944446,
+446:       "y_std": 51.390513456769156,
+447:       "is_uniform_diag": false,
+448:       "frame": 20
+449:     },
+450:     {
+451:       "shape": [
+452:         1080,
+453:         1920,
+454:         3
+455:       ],
+456:       "mean_bgr": [
+457:         53.97066261574074,
+458:         53.97066261574074,
+459:         53.97066261574074
+460:       ],
+461:       "std_bgr": [
+462:         51.38359750021451,
+463:         51.38359750021451,
+464:         51.38359750021451
+465:       ],
+466:       "y_mean": 53.97066261574074,
+467:       "y_std": 51.3835975001467,
+468:       "is_uniform_diag": false,
+469:       "frame": 21
+470:     },
+471:     {
+472:       "shape": [
+473:         1080,
+474:         1920,
+475:         3
+476:       ],
+477:       "mean_bgr": [
+478:         53.963485725308644,
+479:         53.963485725308644,
+480:         53.963485725308644
+481:       ],
+482:       "std_bgr": [
+483:         51.378788953598225,
+484:         51.378788953598225,
+485:         51.378788953598225
+486:       ],
+487:       "y_mean": 53.963485725308644,
+488:       "y_std": 51.37878895345315,
+489:       "is_uniform_diag": false,
+490:       "frame": 22
+491:     },
+492:     {
+493:       "shape": [
+494:         1080,
+495:         1920,
+496:         3
+497:       ],
+498:       "mean_bgr": [
+499:         53.96200569058642,
+500:         53.96200569058642,
+501:         53.96200569058642
+502:       ],
+503:       "std_bgr": [
+504:         51.3771997007457,
+505:         51.3771997007457,
+506:         51.3771997007457
+507:       ],
+508:       "y_mean": 53.96200569058642,
+509:       "y_std": 51.377199701049236,
+510:       "is_uniform_diag": false,
+511:       "frame": 23
+512:     },
+513:     {
+514:       "shape": [
+515:         1080,
+516:         1920,
+517:         3
+518:       ],
+519:       "mean_bgr": [
+520:         53.96342158564815,
+521:         53.96342158564815,
+522:         53.96342158564815
+523:       ],
+524:       "std_bgr": [
+525:         51.38101160769385,
+526:         51.38101160769385,
+527:         51.38101160769385
+528:       ],
+529:       "y_mean": 53.96342158564815,
+530:       "y_std": 51.38101160798494,
+531:       "is_uniform_diag": false,
+532:       "frame": 24
+533:     },
+534:     {
+535:       "shape": [
+536:         1080,
+537:         1920,
+538:         3
+539:       ],
+540:       "mean_bgr": [
+541:         53.95752170138889,
+542:         53.95752170138889,
+543:         53.95752170138889
+544:       ],
+545:       "std_bgr": [
+546:         51.374978154019836,
+547:         51.374978154019836,
+548:         51.374978154019836
+549:       ],
+550:       "y_mean": 53.95752170138889,
+551:       "y_std": 51.37497815373823,
+552:       "is_uniform_diag": false,
+553:       "frame": 25
+554:     },
+555:     {
+556:       "shape": [
+557:         1080,
+558:         1920,
+559:         3
+560:       ],
+561:       "mean_bgr": [
+562:         53.96090374228395,
+563:         53.96090374228395,
+564:         53.96090374228395
+565:       ],
+566:       "std_bgr": [
+567:         51.374805711543026,
+568:         51.374805711543026,
+569:         51.374805711543026
+570:       ],
+571:       "y_mean": 53.96090374228395,
+572:       "y_std": 51.37480571132262,
+573:       "is_uniform_diag": false,
+574:       "frame": 26
+575:     },
+576:     {
+577:       "shape": [
+578:         1080,
+579:         1920,
+580:         3
+581:       ],
+582:       "mean_bgr": [
+583:         53.96150848765432,
+584:         53.96150848765432,
+585:         53.96150848765432
+586:       ],
+587:       "std_bgr": [
+588:         51.38067215575298,
+589:         51.38067215575298,
+590:         51.38067215575298
+591:       ],
+592:       "y_mean": 53.96150848765432,
+593:       "y_std": 51.38067215541928,
+594:       "is_uniform_diag": false,
+595:       "frame": 27
+596:     },
+597:     {
+598:       "shape": [
+599:         1080,
+600:         1920,
+601:         3
+602:       ],
+603:       "mean_bgr": [
+604:         53.96765094521605,
+605:         53.96765094521605,
+606:         53.96765094521605
+607:       ],
+608:       "std_bgr": [
+609:         51.38384867910709,
+610:         51.38384867910709,
+611:         51.38384867910709
+612:       ],
+613:       "y_mean": 53.96765094521605,
+614:       "y_std": 51.38384867858761,
+615:       "is_uniform_diag": false,
+616:       "frame": 28
+617:     },
+618:     {
+619:       "shape": [
+620:         1080,
+621:         1920,
+622:         3
+623:       ],
+624:       "mean_bgr": [
+625:         53.96132282021605,
+626:         53.96132282021605,
+627:         53.96132282021605
+628:       ],
+629:       "std_bgr": [
+630:         51.37817757704491,
+631:         51.37817757704491,
+632:         51.37817757704491
+633:       ],
+634:       "y_mean": 53.96132282021605,
+635:       "y_std": 51.3781775766835,
+636:       "is_uniform_diag": false,
+637:       "frame": 29
+638:     },
+639:     {
+640:       "shape": [
+641:         1080,
+642:         1920,
+643:         3
+644:       ],
+645:       "mean_bgr": [
+646:         53.96674961419753,
+647:         53.96674961419753,
+648:         53.96674961419753
+649:       ],
+650:       "std_bgr": [
+651:         51.37885645970364,
+652:         51.37885645970364,
+653:         51.37885645970364
+654:       ],
+655:       "y_mean": 53.96674961419753,
+656:       "y_std": 51.3788564599537,
+657:       "is_uniform_diag": false,
+658:       "frame": 30
+659:     },
+660:     {
+661:       "shape": [
+662:         1080,
+663:         1920,
+664:         3
+665:       ],
+666:       "mean_bgr": [
+667:         53.974732349537035,
+668:         53.974732349537035,
+669:         53.974732349537035
+670:       ],
+671:       "std_bgr": [
+672:         51.38393395377979,
+673:         51.38393395377979,
+674:         51.38393395377979
+675:       ],
+676:       "y_mean": 53.974732349537035,
+677:       "y_std": 51.38393395360223,
+678:       "is_uniform_diag": false,
+679:       "frame": 31
+680:     },
+681:     {
+682:       "shape": [
+683:         1080,
+684:         1920,
+685:         3
+686:       ],
+687:       "mean_bgr": [
+688:         53.97459249614197,
+689:         53.97459249614197,
+690:         53.97459249614197
+691:       ],
+692:       "std_bgr": [
+693:         51.38219582118099,
+694:         51.38219582118099,
+695:         51.38219582118099
+696:       ],
+697:       "y_mean": 53.97459249614197,
+698:       "y_std": 51.382195821669924,
+699:       "is_uniform_diag": false,
+700:       "frame": 32
+701:     },
+702:     {
+703:       "shape": [
+704:         1080,
+705:         1920,
+706:         3
+707:       ],
+708:       "mean_bgr": [
+709:         53.97905044367284,
+710:         53.97905044367284,
+711:         53.97905044367284
+712:       ],
+713:       "std_bgr": [
+714:         51.38286777247039,
+715:         51.38286777247039,
+716:         51.38286777247039
+717:       ],
+718:       "y_mean": 53.97905044367284,
+719:       "y_std": 51.38286777287145,
+720:       "is_uniform_diag": false,
+721:       "frame": 33
+722:     },
+723:     {
+724:       "shape": [
+725:         1080,
+726:         1920,
+727:         3
+728:       ],
+729:       "mean_bgr": [
+730:         53.97844569830247,
+731:         53.97844569830247,
+732:         53.97844569830247
+733:       ],
+734:       "std_bgr": [
+735:         51.38843238146451,
+736:         51.38843238146451,
+737:         51.38843238146451
+738:       ],
+739:       "y_mean": 53.97844569830247,
+740:       "y_std": 51.38843238174905,
+741:       "is_uniform_diag": false,
+742:       "frame": 34
+743:     },
+744:     {
+745:       "shape": [
+746:         1080,
+747:         1920,
+748:         3
+749:       ],
+750:       "mean_bgr": [
+751:         53.975458140432096,
+752:         53.975458140432096,
+753:         53.975458140432096
+754:       ],
+755:       "std_bgr": [
+756:         51.38155863196414,
+757:         51.38155863196414,
+758:         51.38155863196414
+759:       ],
+760:       "y_mean": 53.975458140432096,
+761:       "y_std": 51.381558631966485,
+762:       "is_uniform_diag": false,
+763:       "frame": 35
+764:     },
+765:     {
+766:       "shape": [
+767:         1080,
+768:         1920,
+769:         3
+770:       ],
+771:       "mean_bgr": [
+772:         53.97131124614197,
+773:         53.97131124614197,
+774:         53.97131124614197
+775:       ],
+776:       "std_bgr": [
+777:         51.38021523195385,
+778:         51.38021523195385,
+779:         51.38021523195385
+780:       ],
+781:       "y_mean": 53.97131124614197,
+782:       "y_std": 51.38021523241836,
+783:       "is_uniform_diag": false,
+784:       "frame": 36
+785:     },
+786:     {
+787:       "shape": [
+788:         1080,
+789:         1920,
+790:         3
+791:       ],
+792:       "mean_bgr": [
+793:         53.97360821759259,
+794:         53.97360821759259,
+795:         53.97360821759259
+796:       ],
+797:       "std_bgr": [
+798:         51.37966025273751,
+799:         51.37966025273751,
+800:         51.37966025273751
+801:       ],
+802:       "y_mean": 53.97360821759259,
+803:       "y_std": 51.37966025281304,
+804:       "is_uniform_diag": false,
+805:       "frame": 37
+806:     },
+807:     {
+808:       "shape": [
+809:         1080,
+810:         1920,
+811:         3
+812:       ],
+813:       "mean_bgr": [
+814:         53.961694155092594,
+815:         53.961694155092594,
+816:         53.961694155092594
+817:       ],
+818:       "std_bgr": [
+819:         51.38008837156306,
+820:         51.38008837156306,
+821:         51.38008837156306
+822:       ],
+823:       "y_mean": 53.961694155092594,
+824:       "y_std": 51.380088371480696,
+825:       "is_uniform_diag": false,
+826:       "frame": 38
+827:     },
+828:     {
+829:       "shape": [
+830:         1080,
+831:         1920,
+832:         3
+833:       ],
+834:       "mean_bgr": [
+835:         53.96622395833333,
+836:         53.96622395833333,
+837:         53.96622395833333
+838:       ],
+839:       "std_bgr": [
+840:         51.37841558295946,
+841:         51.37841558295946,
+842:         51.37841558295946
+843:       ],
+844:       "y_mean": 53.96622395833333,
+845:       "y_std": 51.37841558248927,
+846:       "is_uniform_diag": false,
+847:       "frame": 39
+848:     },
+849:     {
+850:       "shape": [
+851:         1080,
+852:         1920,
+853:         3
+854:       ],
+855:       "mean_bgr": [
+856:         53.9685262345679,
+857:         53.9685262345679,
+858:         53.9685262345679
+859:       ],
+860:       "std_bgr": [
+861:         51.37784802498249,
+862:         51.37784802498249,
+863:         51.37784802498249
+864:       ],
+865:       "y_mean": 53.9685262345679,
+866:       "y_std": 51.37784802516394,
+867:       "is_uniform_diag": false,
+868:       "frame": 40
+869:     },
+870:     {
+871:       "shape": [
+872:         1080,
+873:         1920,
+874:         3
+875:       ],
+876:       "mean_bgr": [
+877:         53.97461419753086,
+878:         53.97461419753086,
+879:         53.97461419753086
+880:       ],
+881:       "std_bgr": [
+882:         51.385571954381874,
+883:         51.385571954381874,
+884:         51.385571954381874
+885:       ],
+886:       "y_mean": 53.97461419753086,
+887:       "y_std": 51.38557195419245,
+888:       "is_uniform_diag": false,
+889:       "frame": 41
+890:     },
+891:     {
+892:       "shape": [
+893:         1080,
+894:         1920,
+895:         3
+896:       ],
+897:       "mean_bgr": [
+898:         53.98268325617284,
+899:         53.98268325617284,
+900:         53.98268325617284
+901:       ],
+902:       "std_bgr": [
+903:         51.3865784400992,
+904:         51.3865784400992,
+905:         51.3865784400992
+906:       ],
+907:       "y_mean": 53.98268325617284,
+908:       "y_std": 51.386578439945204,
+909:       "is_uniform_diag": false,
+910:       "frame": 42
+911:     },
+912:     {
+913:       "shape": [
+914:         1080,
+915:         1920,
+916:         3
+917:       ],
+918:       "mean_bgr": [
+919:         53.97907214506173,
+920:         53.97907214506173,
+921:         53.97907214506173
+922:       ],
+923:       "std_bgr": [
+924:         51.386077127466244,
+925:         51.386077127466244,
+926:         51.386077127466244
+927:       ],
+928:       "y_mean": 53.97907214506173,
+929:       "y_std": 51.38607712753808,
+930:       "is_uniform_diag": false,
+931:       "frame": 43
+932:     },
+933:     {
+934:       "shape": [
+935:         1080,
+936:         1920,
+937:         3
+938:       ],
+939:       "mean_bgr": [
+940:         53.98735580632716,
+941:         53.98735580632716,
+942:         53.98735580632716
+943:       ],
+944:       "std_bgr": [
+945:         51.395001614496344,
+946:         51.395001614496344,
+947:         51.395001614496344
+948:       ],
+949:       "y_mean": 53.98735580632716,
+950:       "y_std": 51.39500161411871,
+951:       "is_uniform_diag": false,
+952:       "frame": 44
+953:     },
+954:     {
+955:       "shape": [
+956:         1080,
+957:         1920,
+958:         3
+959:       ],
+960:       "mean_bgr": [
+961:         53.97784047067901,
+962:         53.97784047067901,
+963:         53.97784047067901
+964:       ],
+965:       "std_bgr": [
+966:         51.39103616811054,
+967:         51.39103616811054,
+968:         51.39103616811054
+969:       ],
+970:       "y_mean": 53.97784047067901,
+971:       "y_std": 51.39103616839642,
+972:       "is_uniform_diag": false,
+973:       "frame": 45
+974:     },
+975:     {
+976:       "shape": [
+977:         1080,
+978:         1920,
+979:         3
+980:       ],
+981:       "mean_bgr": [
+982:         53.98086178626543,
+983:         53.98086178626543,
+984:         53.98086178626543
+985:       ],
+986:       "std_bgr": [
+987:         51.38671526708284,
+988:         51.38671526708284,
+989:         51.38671526708284
+990:       ],
+991:       "y_mean": 53.98086178626543,
+992:       "y_std": 51.38671526699973,
+993:       "is_uniform_diag": false,
+994:       "frame": 46
+995:     },
+996:     {
+997:       "shape": [
+998:         1080,
+999:         1920,
+1000:         3
+1001:       ],
+1002:       "mean_bgr": [
+1003:         53.980095968364196,
+1004:         53.980095968364196,
+1005:         53.980095968364196
+1006:       ],
+1007:       "std_bgr": [
+1008:         51.38870223981003,
+1009:         51.38870223981003,
+1010:         51.38870223981003
+1011:       ],
+1012:       "y_mean": 53.980095968364196,
+1013:       "y_std": 51.38870224018703,
+1014:       "is_uniform_diag": false,
+1015:       "frame": 47
+1016:     },
+1017:     {
+1018:       "shape": [
+1019:         1080,
+1020:         1920,
+1021:         3
+1022:       ],
+1023:       "mean_bgr": [
+1024:         54.003684413580245,
+1025:         54.003684413580245,
+1026:         54.003684413580245
+1027:       ],
+1028:       "std_bgr": [
+1029:         51.405123288852046,
+1030:         51.405123288852046,
+1031:         51.405123288852046
+1032:       ],
+1033:       "y_mean": 54.003684413580245,
+1034:       "y_std": 51.405123288954066,
+1035:       "is_uniform_diag": false,
+1036:       "frame": 48
+1037:     },
+1038:     {
+1039:       "shape": [
+1040:         1080,
+1041:         1920,
+1042:         3
+1043:       ],
+1044:       "mean_bgr": [
+1045:         54.00185040509259,
+1046:         54.00185040509259,
+1047:         54.00185040509259
+1048:       ],
+1049:       "std_bgr": [
+1050:         51.39792279787591,
+1051:         51.39792279787591,
+1052:         51.39792279787591
+1053:       ],
+1054:       "y_mean": 54.00185040509259,
+1055:       "y_std": 51.39792279781517,
+1056:       "is_uniform_diag": false,
+1057:       "frame": 49
+1058:     },
+1059:     {
+1060:       "shape": [
+1061:         1080,
+1062:         1920,
+1063:         3
+1064:       ],
+1065:       "mean_bgr": [
+1066:         54.00464216820988,
+1067:         54.00464216820988,
+1068:         54.00464216820988
+1069:       ],
+1070:       "std_bgr": [
+1071:         51.399554464834814,
+1072:         51.399554464834814,
+1073:         51.399554464834814
+1074:       ],
+1075:       "y_mean": 54.00464216820988,
+1076:       "y_std": 51.399554464307265,
+1077:       "is_uniform_diag": false,
+1078:       "frame": 50
+1079:     },
+1080:     {
+1081:       "shape": [
+1082:         1080,
+1083:         1920,
+1084:         3
+1085:       ],
+1086:       "mean_bgr": [
+1087:         54.01377555941358,
+1088:         54.01377555941358,
+1089:         54.01377555941358
+1090:       ],
+1091:       "std_bgr": [
+1092:         51.40781113497895,
+1093:         51.40781113497895,
+1094:         51.40781113497895
+1095:       ],
+1096:       "y_mean": 54.01377555941358,
+1097:       "y_std": 51.40781113478688,
+1098:       "is_uniform_diag": false,
+1099:       "frame": 51
+1100:     },
+1101:     {
+1102:       "shape": [
+1103:         1080,
+1104:         1920,
+1105:         3
+1106:       ],
+1107:       "mean_bgr": [
+1108:         54.011757330246915,
+1109:         54.011757330246915,
+1110:         54.011757330246915
+1111:       ],
+1112:       "std_bgr": [
+1113:         51.40873049458864,
+1114:         51.40873049458864,
+1115:         51.40873049458864
+1116:       ],
+1117:       "y_mean": 54.011757330246915,
+1118:       "y_std": 51.408730494567,
+1119:       "is_uniform_diag": false,
+1120:       "frame": 52
+1121:     },
+1122:     {
+1123:       "shape": [
+1124:         1080,
+1125:         1920,
+1126:         3
+1127:       ],
+1128:       "mean_bgr": [
+1129:         54.008598572530865,
+1130:         54.008598572530865,
+1131:         54.008598572530865
+1132:       ],
+1133:       "std_bgr": [
+1134:         51.402133675220156,
+1135:         51.402133675220156,
+1136:         51.402133675220156
+1137:       ],
+1138:       "y_mean": 54.008598572530865,
+1139:       "y_std": 51.402133675523075,
+1140:       "is_uniform_diag": false,
+1141:       "frame": 53
+1142:     },
+1143:     {
+1144:       "shape": [
+1145:         1080,
+1146:         1920,
+1147:         3
+1148:       ],
+1149:       "mean_bgr": [
+1150:         54.01157359182099,
+1151:         54.01157359182099,
+1152:         54.01157359182099
+1153:       ],
+1154:       "std_bgr": [
+1155:         51.40976901861551,
+1156:         51.40976901861551,
+1157:         51.40976901861551
+1158:       ],
+1159:       "y_mean": 54.01157359182099,
+1160:       "y_std": 51.409769018382285,
+1161:       "is_uniform_diag": false,
+1162:       "frame": 54
+1163:     },
+1164:     {
+1165:       "shape": [
+1166:         1080,
+1167:         1920,
+1168:         3
+1169:       ],
+1170:       "mean_bgr": [
+1171:         54.01778163580247,
+1172:         54.01778163580247,
+1173:         54.01778163580247
+1174:       ],
+1175:       "std_bgr": [
+1176:         51.413362951504105,
+1177:         51.413362951504105,
+1178:         51.413362951504105
+1179:       ],
+1180:       "y_mean": 54.01778163580247,
+1181:       "y_std": 51.41336295191015,
+1182:       "is_uniform_diag": false,
+1183:       "frame": 55
+1184:     },
+1185:     {
+1186:       "shape": [
+1187:         1080,
+1188:         1920,
+1189:         3
+1190:       ],
+1191:       "mean_bgr": [
+1192:         54.0158309220679,
+1193:         54.0158309220679,
+1194:         54.0158309220679
+1195:       ],
+1196:       "std_bgr": [
+1197:         51.407094942133355,
+1198:         51.407094942133355,
+1199:         51.407094942133355
+1200:       ],
+1201:       "y_mean": 54.0158309220679,
+1202:       "y_std": 51.407094941826735,
+1203:       "is_uniform_diag": false,
+1204:       "frame": 56
+1205:     },
+1206:     {
+1207:       "shape": [
+1208:         1080,
+1209:         1920,
+1210:         3
+1211:       ],
+1212:       "mean_bgr": [
+1213:         54.02143711419753,
+1214:         54.02143711419753,
+1215:         54.02143711419753
+1216:       ],
+1217:       "std_bgr": [
+1218:         51.414860784602574,
+1219:         51.414860784602574,
+1220:         51.414860784602574
+1221:       ],
+1222:       "y_mean": 54.02143711419753,
+1223:       "y_std": 51.41486078431213,
+1224:       "is_uniform_diag": false,
+1225:       "frame": 57
+1226:     },
+1227:     {
+1228:       "shape": [
+1229:         1080,
+1230:         1920,
+1231:         3
+1232:       ],
+1233:       "mean_bgr": [
+1234:         54.018669945987654,
+1235:         54.018669945987654,
+1236:         54.018669945987654
+1237:       ],
+1238:       "std_bgr": [
+1239:         51.41422174574899,
+1240:         51.41422174574899,
+1241:         51.41422174574899
+1242:       ],
+1243:       "y_mean": 54.018669945987654,
+1244:       "y_std": 51.41422174583036,
+1245:       "is_uniform_diag": false,
+1246:       "frame": 58
+1247:     },
+1248:     {
+1249:       "shape": [
+1250:         1080,
+1251:         1920,
+1252:         3
+1253:       ],
+1254:       "mean_bgr": [
+1255:         54.01696325231482,
+1256:         54.01696325231482,
+1257:         54.01696325231482
+1258:       ],
+1259:       "std_bgr": [
+1260:         51.41267475224976,
+1261:         51.41267475224976,
+1262:         51.41267475224976
+1263:       ],
+1264:       "y_mean": 54.01696325231482,
+1265:       "y_std": 51.41267475198277,
+1266:       "is_uniform_diag": false,
+1267:       "frame": 59
+1268:     },
+1269:     {
+1270:       "shape": [
+1271:         1080,
+1272:         1920,
+1273:         3
+1274:       ],
+1275:       "mean_bgr": [
+1276:         54.028252314814814,
+1277:         54.028252314814814,
+1278:         54.028252314814814
+1279:       ],
+1280:       "std_bgr": [
+1281:         51.42156088243573,
+1282:         51.42156088243573,
+1283:         51.42156088243573
+1284:       ],
+1285:       "y_mean": 54.028252314814814,
+1286:       "y_std": 51.42156088299073,
+1287:       "is_uniform_diag": false,
+1288:       "frame": 60
+1289:     },
+1290:     {
+1291:       "shape": [
+1292:         1080,
+1293:         1920,
+1294:         3
+1295:       ],
+1296:       "mean_bgr": [
+1297:         54.0236434220679,
+1298:         54.0236434220679,
+1299:         54.0236434220679
+1300:       ],
+1301:       "std_bgr": [
+1302:         51.42102162532888,
+1303:         51.42102162532888,
+1304:         51.42102162532888
+1305:       ],
+1306:       "y_mean": 54.0236434220679,
+1307:       "y_std": 51.42102162544804,
+1308:       "is_uniform_diag": false,
+1309:       "frame": 61
+1310:     },
+1311:     {
+1312:       "shape": [
+1313:         1080,
+1314:         1920,
+1315:         3
+1316:       ],
+1317:       "mean_bgr": [
+1318:         54.02583670910494,
+1319:         54.02583670910494,
+1320:         54.02583670910494
+1321:       ],
+1322:       "std_bgr": [
+1323:         51.42356206735417,
+1324:         51.42356206735417,
+1325:         51.42356206735417
+1326:       ],
+1327:       "y_mean": 54.02583670910494,
+1328:       "y_std": 51.42356206764068,
+1329:       "is_uniform_diag": false,
+1330:       "frame": 62
+1331:     },
+1332:     {
+1333:       "shape": [
+1334:         1080,
+1335:         1920,
+1336:         3
+1337:       ],
+1338:       "mean_bgr": [
+1339:         54.02679301697531,
+1340:         54.02679301697531,
+1341:         54.02679301697531
+1342:       ],
+1343:       "std_bgr": [
+1344:         51.42099556965982,
+1345:         51.42099556965982,
+1346:         51.42099556965982
+1347:       ],
+1348:       "y_mean": 54.02679301697531,
+1349:       "y_std": 51.420995570035025,
+1350:       "is_uniform_diag": false,
+1351:       "frame": 63
+1352:     },
+1353:     {
+1354:       "shape": [
+1355:         1080,
+1356:         1920,
+1357:         3
+1358:       ],
+1359:       "mean_bgr": [
+1360:         54.036949266975306,
+1361:         54.036949266975306,
+1362:         54.036949266975306
+1363:       ],
+1364:       "std_bgr": [
+1365:         51.429634527234434,
+1366:         51.429634527234434,
+1367:         51.429634527234434
+1368:       ],
+1369:       "y_mean": 54.036949266975306,
+1370:       "y_std": 51.429634527100966,
+1371:       "is_uniform_diag": false,
+1372:       "frame": 64
+1373:     },
+1374:     {
+1375:       "shape": [
+1376:         1080,
+1377:         1920,
+1378:         3
+1379:       ],
+1380:       "mean_bgr": [
+1381:         54.040573398919754,
+1382:         54.040573398919754,
+1383:         54.040573398919754
+1384:       ],
+1385:       "std_bgr": [
+1386:         51.434898938797126,
+1387:         51.434898938797126,
+1388:         51.434898938797126
+1389:       ],
+1390:       "y_mean": 54.040573398919754,
+1391:       "y_std": 51.434898938547455,
+1392:       "is_uniform_diag": false,
+1393:       "frame": 65
+1394:     },
+1395:     {
+1396:       "shape": [
+1397:         1080,
+1398:         1920,
+1399:         3
+1400:       ],
+1401:       "mean_bgr": [
+1402:         54.04475356867284,
+1403:         54.04475356867284,
+1404:         54.04475356867284
+1405:       ],
+1406:       "std_bgr": [
+1407:         51.43553731925628,
+1408:         51.43553731925628,
+1409:         51.43553731925628
+1410:       ],
+1411:       "y_mean": 54.04475356867284,
+1412:       "y_std": 51.43553731941039,
+1413:       "is_uniform_diag": false,
+1414:       "frame": 66
+1415:     },
+1416:     {
+1417:       "shape": [
+1418:         1080,
+1419:         1920,
+1420:         3
+1421:       ],
+1422:       "mean_bgr": [
+1423:         54.04289978780864,
+1424:         54.04289978780864,
+1425:         54.04289978780864
+1426:       ],
+1427:       "std_bgr": [
+1428:         51.43169513483764,
+1429:         51.43169513483764,
+1430:         51.43169513483764
+1431:       ],
+1432:       "y_mean": 54.04289978780864,
+1433:       "y_std": 51.431695134907095,
+1434:       "is_uniform_diag": false,
+1435:       "frame": 67
+1436:     },
+1437:     {
+1438:       "shape": [
+1439:         1080,
+1440:         1920,
+1441:         3
+1442:       ],
+1443:       "mean_bgr": [
+1444:         54.05565923996914,
+1445:         54.05565923996914,
+1446:         54.05565923996914
+1447:       ],
+1448:       "std_bgr": [
+1449:         51.4436791672592,
+1450:         51.4436791672592,
+1451:         51.4436791672592
+1452:       ],
+1453:       "y_mean": 54.05565923996914,
+1454:       "y_std": 51.44367916757794,
+1455:       "is_uniform_diag": false,
+1456:       "frame": 68
+1457:     },
+1458:     {
+1459:       "shape": [
+1460:         1080,
+1461:         1920,
+1462:         3
+1463:       ],
+1464:       "mean_bgr": [
+1465:         54.05328125,
+1466:         54.05328125,
+1467:         54.05328125
+1468:       ],
+1469:       "std_bgr": [
+1470:         51.44067636043863,
+1471:         51.44067636043863,
+1472:         51.44067636043863
+1473:       ],
+1474:       "y_mean": 54.05328125,
+1475:       "y_std": 51.440676360730805,
+1476:       "is_uniform_diag": false,
+1477:       "frame": 69
+1478:     },
+1479:     {
+1480:       "shape": [
+1481:         1080,
+1482:         1920,
+1483:         3
+1484:       ],
+1485:       "mean_bgr": [
+1486:         54.05507137345679,
+1487:         54.05507137345679,
+1488:         54.05507137345679
+1489:       ],
+1490:       "std_bgr": [
+1491:         51.440364435475054,
+1492:         51.440364435475054,
+1493:         51.440364435475054
+1494:       ],
+1495:       "y_mean": 54.05507137345679,
+1496:       "y_std": 51.440364435929446,
+1497:       "is_uniform_diag": false,
+1498:       "frame": 70
+1499:     },
+1500:     {
+1501:       "shape": [
+1502:         1080,
+1503:         1920,
+1504:         3
+1505:       ],
+1506:       "mean_bgr": [
+1507:         54.06466676311729,
+1508:         54.06466676311729,
+1509:         54.06466676311729
+1510:       ],
+1511:       "std_bgr": [
+1512:         51.452682258871114,
+1513:         51.452682258871114,
+1514:         51.452682258871114
+1515:       ],
+1516:       "y_mean": 54.06466676311729,
+1517:       "y_std": 51.452682258491016,
+1518:       "is_uniform_diag": false,
+1519:       "frame": 71
+1520:     },
+1521:     {
+1522:       "shape": [
+1523:         1080,
+1524:         1920,
+1525:         3
+1526:       ],
+1527:       "mean_bgr": [
+1528:         54.062060667438274,
+1529:         54.062060667438274,
+1530:         54.062060667438274
+1531:       ],
+1532:       "std_bgr": [
+1533:         51.448608938877946,
+1534:         51.448608938877946,
+1535:         51.448608938877946
+1536:       ],
+1537:       "y_mean": 54.062060667438274,
+1538:       "y_std": 51.44860893868632,
+1539:       "is_uniform_diag": false,
+1540:       "frame": 72
+1541:     },
+1542:     {
+1543:       "shape": [
+1544:         1080,
+1545:         1920,
+1546:         3
+1547:       ],
+1548:       "mean_bgr": [
+1549:         54.06583381558642,
+1550:         54.06583381558642,
+1551:         54.06583381558642
+1552:       ],
+1553:       "std_bgr": [
+1554:         51.45008379630311,
+1555:         51.45008379630311,
+1556:         51.45008379630311
+1557:       ],
+1558:       "y_mean": 54.06583381558642,
+1559:       "y_std": 51.45008379587346,
+1560:       "is_uniform_diag": false,
+1561:       "frame": 73
+1562:     },
+1563:     {
+1564:       "shape": [
+1565:         1080,
+1566:         1920,
+1567:         3
+1568:       ],
+1569:       "mean_bgr": [
+1570:         54.05977912808642,
+1571:         54.05977912808642,
+1572:         54.05977912808642
+1573:       ],
+1574:       "std_bgr": [
+1575:         51.446398516475156,
+1576:         51.446398516475156,
+1577:         51.446398516475156
+1578:       ],
+1579:       "y_mean": 54.05977912808642,
+1580:       "y_std": 51.4463985161547,
+1581:       "is_uniform_diag": false,
+1582:       "frame": 74
+1583:     },
+1584:     {
+1585:       "shape": [
+1586:         1080,
+1587:         1920,
+1588:         3
+1589:       ],
+1590:       "mean_bgr": [
+1591:         54.06552662037037,
+1592:         54.06552662037037,
+1593:         54.06552662037037
+1594:       ],
+1595:       "std_bgr": [
+1596:         51.45546865898492,
+1597:         51.45546865898492,
+1598:         51.45546865898492
+1599:       ],
+1600:       "y_mean": 54.06552662037037,
+1601:       "y_std": 51.4554686585705,
+1602:       "is_uniform_diag": false,
+1603:       "frame": 75
+1604:     },
+1605:     {
+1606:       "shape": [
+1607:         1080,
+1608:         1920,
+1609:         3
+1610:       ],
+1611:       "mean_bgr": [
+1612:         54.06095148533951,
+1613:         54.06095148533951,
+1614:         54.06095148533951
+1615:       ],
+1616:       "std_bgr": [
+1617:         51.45052646100276,
+1618:         51.45052646100276,
+1619:         51.45052646100276
+1620:       ],
+1621:       "y_mean": 54.06095148533951,
+1622:       "y_std": 51.45052646115655,
+1623:       "is_uniform_diag": false,
+1624:       "frame": 76
+1625:     },
+1626:     {
+1627:       "shape": [
+1628:         1080,
+1629:         1920,
+1630:         3
+1631:       ],
+1632:       "mean_bgr": [
+1633:         54.06316502700617,
+1634:         54.06316502700617,
+1635:         54.06316502700617
+1636:       ],
+1637:       "std_bgr": [
+1638:         51.45241703693581,
+1639:         51.45241703693581,
+1640:         51.45241703693581
+1641:       ],
+1642:       "y_mean": 54.06316502700617,
+1643:       "y_std": 51.452417037443,
+1644:       "is_uniform_diag": false,
+1645:       "frame": 77
+1646:     },
+1647:     {
+1648:       "shape": [
+1649:         1080,
+1650:         1920,
+1651:         3
+1652:       ],
+1653:       "mean_bgr": [
+1654:         54.0666015625,
+1655:         54.0666015625,
+1656:         54.0666015625
+1657:       ],
+1658:       "std_bgr": [
+1659:         51.459367506502296,
+1660:         51.459367506502296,
+1661:         51.459367506502296
+1662:       ],
+1663:       "y_mean": 54.0666015625,
+1664:       "y_std": 51.45936750624841,
+1665:       "is_uniform_diag": false,
+1666:       "frame": 78
+1667:     },
+1668:     {
+1669:       "shape": [
+1670:         1080,
+1671:         1920,
+1672:         3
+1673:       ],
+1674:       "mean_bgr": [
+1675:         54.064885706018515,
+1676:         54.064885706018515,
+1677:         54.064885706018515
+1678:       ],
+1679:       "std_bgr": [
+1680:         51.45571917968668,
+1681:         51.45571917968668,
+1682:         51.45571917968668
+1683:       ],
+1684:       "y_mean": 54.064885706018515,
+1685:       "y_std": 51.455719179470066,
+1686:       "is_uniform_diag": false,
+1687:       "frame": 79
+1688:     },
+1689:     {
+1690:       "shape": [
+1691:         1080,
+1692:         1920,
+1693:         3
+1694:       ],
+1695:       "mean_bgr": [
+1696:         54.06942177854938,
+1697:         54.06942177854938,
+1698:         54.06942177854938
+1699:       ],
+1700:       "std_bgr": [
+1701:         51.457500881737246,
+1702:         51.457500881737246,
+1703:         51.457500881737246
+1704:       ],
+1705:       "y_mean": 54.06942177854938,
+1706:       "y_std": 51.457500881362265,
+1707:       "is_uniform_diag": false,
+1708:       "frame": 80
+1709:     },
+1710:     {
+1711:       "shape": [
+1712:         1080,
+1713:         1920,
+1714:         3
+1715:       ],
+1716:       "mean_bgr": [
+1717:         54.075897955246916,
+1718:         54.075897955246916,
+1719:         54.075897955246916
+1720:       ],
+1721:       "std_bgr": [
+1722:         51.46736473757123,
+1723:         51.46736473757123,
+1724:         51.46736473757123
+1725:       ],
+1726:       "y_mean": 54.075897955246916,
+1727:       "y_std": 51.467364737461594,
+1728:       "is_uniform_diag": false,
+1729:       "frame": 81
+1730:     },
+1731:     {
+1732:       "shape": [
+1733:         1080,
+1734:         1920,
+1735:         3
+1736:       ],
+1737:       "mean_bgr": [
+1738:         54.077957175925924,
+1739:         54.077957175925924,
+1740:         54.077957175925924
+1741:       ],
+1742:       "std_bgr": [
+1743:         51.46559818090926,
+1744:         51.46559818090926,
+1745:         51.46559818090926
+1746:       ],
+1747:       "y_mean": 54.077957175925924,
+1748:       "y_std": 51.465598181071535,
+1749:       "is_uniform_diag": false,
+1750:       "frame": 82
+1751:     },
+1752:     {
+1753:       "shape": [
+1754:         1080,
+1755:         1920,
+1756:         3
+1757:       ],
+1758:       "mean_bgr": [
+1759:         54.08062548225308,
+1760:         54.08062548225308,
+1761:         54.08062548225308
+1762:       ],
+1763:       "std_bgr": [
+1764:         51.46495139225916,
+1765:         51.46495139225916,
+1766:         51.46495139225916
+1767:       ],
+1768:       "y_mean": 54.08062548225308,
+1769:       "y_std": 51.46495139267388,
+1770:       "is_uniform_diag": false,
+1771:       "frame": 83
+1772:     },
+1773:     {
+1774:       "shape": [
+1775:         1080,
+1776:         1920,
+1777:         3
+1778:       ],
+1779:       "mean_bgr": [
+1780:         54.08629484953704,
+1781:         54.08629484953704,
+1782:         54.08629484953704
+1783:       ],
+1784:       "std_bgr": [
+1785:         51.47372118334821,
+1786:         51.47372118334821,
+1787:         51.47372118334821
+1788:       ],
+1789:       "y_mean": 54.08629484953704,
+1790:       "y_std": 51.47372118343278,
+1791:       "is_uniform_diag": false,
+1792:       "frame": 84
+1793:     },
+1794:     {
+1795:       "shape": [
+1796:         1080,
+1797:         1920,
+1798:         3
+1799:       ],
+1800:       "mean_bgr": [
+1801:         54.09785686728395,
+1802:         54.09785686728395,
+1803:         54.09785686728395
+1804:       ],
+1805:       "std_bgr": [
+1806:         51.48059750032989,
+1807:         51.48059750032989,
+1808:         51.48059750032989
+1809:       ],
+1810:       "y_mean": 54.09785686728395,
+1811:       "y_std": 51.480597500593326,
+1812:       "is_uniform_diag": false,
+1813:       "frame": 85
+1814:     },
+1815:     {
+1816:       "shape": [
+1817:         1080,
+1818:         1920,
+1819:         3
+1820:       ],
+1821:       "mean_bgr": [
+1822:         54.09604118441358,
+1823:         54.09604118441358,
+1824:         54.09604118441358
+1825:       ],
+1826:       "std_bgr": [
+1827:         51.474489283883685,
+1828:         51.474489283883685,
+1829:         51.474489283883685
+1830:       ],
+1831:       "y_mean": 54.09604118441358,
+1832:       "y_std": 51.47448928372851,
+1833:       "is_uniform_diag": false,
+1834:       "frame": 86
+1835:     },
+1836:     {
+1837:       "shape": [
+1838:         1080,
+1839:         1920,
+1840:         3
+1841:       ],
+1842:       "mean_bgr": [
+1843:         54.09901668595679,
+1844:         54.09901668595679,
+1845:         54.09901668595679
+1846:       ],
+1847:       "std_bgr": [
+1848:         51.47841057032305,
+1849:         51.47841057032305,
+1850:         51.47841057032305
+1851:       ],
+1852:       "y_mean": 54.09901668595679,
+1853:       "y_std": 51.478410570064554,
+1854:       "is_uniform_diag": false,
+1855:       "frame": 87
+1856:     },
+1857:     {
+1858:       "shape": [
+1859:         1080,
+1860:         1920,
+1861:         3
+1862:       ],
+1863:       "mean_bgr": [
+1864:         54.10236930941358,
+1865:         54.10236930941358,
+1866:         54.10236930941358
+1867:       ],
+1868:       "std_bgr": [
+1869:         51.485127830458254,
+1870:         51.485127830458254,
+1871:         51.485127830458254
+1872:       ],
+1873:       "y_mean": 54.10236930941358,
+1874:       "y_std": 51.4851278303938,
+1875:       "is_uniform_diag": false,
+1876:       "frame": 88
+1877:     },
+1878:     {
+1879:       "shape": [
+1880:         1080,
+1881:         1920,
+1882:         3
+1883:       ],
+1884:       "mean_bgr": [
+1885:         54.10444782021605,
+1886:         54.10444782021605,
+1887:         54.10444782021605
+1888:       ],
+1889:       "std_bgr": [
+1890:         51.483069325667906,
+1891:         51.483069325667906,
+1892:         51.483069325667906
+1893:       ],
+1894:       "y_mean": 54.10444782021605,
+1895:       "y_std": 51.48306932544964,
+1896:       "is_uniform_diag": false,
+1897:       "frame": 89
+1898:     },
+1899:     {
+1900:       "shape": [
+1901:         1080,
+1902:         1920,
+1903:         3
+1904:       ],
+1905:       "mean_bgr": [
+1906:         54.110673225308645,
+1907:         54.110673225308645,
+1908:         54.110673225308645
+1909:       ],
+1910:       "std_bgr": [
+1911:         51.49170509137686,
+1912:         51.49170509137686,
+1913:         51.49170509137686
+1914:       ],
+1915:       "y_mean": 54.110673225308645,
+1916:       "y_std": 51.49170509102439,
+1917:       "is_uniform_diag": false,
+1918:       "frame": 90
+1919:     },
+1920:     {
+1921:       "shape": [
+1922:         1080,
+1923:         1920,
+1924:         3
+1925:       ],
+1926:       "mean_bgr": [
+1927:         54.108773148148146,
+1928:         54.108773148148146,
+1929:         54.108773148148146
+1930:       ],
+1931:       "std_bgr": [
+1932:         51.48532440852742,
+1933:         51.48532440852742,
+1934:         51.48532440852742
+1935:       ],
+1936:       "y_mean": 54.108773148148146,
+1937:       "y_std": 51.48532440838066,
+1938:       "is_uniform_diag": false,
+1939:       "frame": 91
+1940:     },
+1941:     {
+1942:       "shape": [
+1943:         1080,
+1944:         1920,
+1945:         3
+1946:       ],
+1947:       "mean_bgr": [
+1948:         54.10826244212963,
+1949:         54.10826244212963,
+1950:         54.10826244212963
+1951:       ],
+1952:       "std_bgr": [
+1953:         51.48408478464897,
+1954:         51.48408478464897,
+1955:         51.48408478464897
+1956:       ],
+1957:       "y_mean": 54.10826244212963,
+1958:       "y_std": 51.484084784816716,
+1959:       "is_uniform_diag": false,
+1960:       "frame": 92
+1961:     },
+1962:     {
+1963:       "shape": [
+1964:         1080,
+1965:         1920,
+1966:         3
+1967:       ],
+1968:       "mean_bgr": [
+1969:         54.10806520061728,
+1970:         54.10806520061728,
+1971:         54.10806520061728
+1972:       ],
+1973:       "std_bgr": [
+1974:         51.486744005290895,
+1975:         51.486744005290895,
+1976:         51.486744005290895
+1977:       ],
+1978:       "y_mean": 54.10806520061728,
+1979:       "y_std": 51.486744004806006,
+1980:       "is_uniform_diag": false,
+1981:       "frame": 93
+1982:     },
+1983:     {
+1984:       "shape": [
+1985:         1080,
+1986:         1920,
+1987:         3
+1988:       ],
+1989:       "mean_bgr": [
+1990:         54.11351948302469,
+1991:         54.11351948302469,
+1992:         54.11351948302469
+1993:       ],
+1994:       "std_bgr": [
+1995:         51.49418351332308,
+1996:         51.49418351332308,
+1997:         51.49418351332308
+1998:       ],
+1999:       "y_mean": 54.11351948302469,
+2000:       "y_std": 51.494183512945824,
+2001:       "is_uniform_diag": false,
+2002:       "frame": 94
+2003:     },
+2004:     {
+2005:       "shape": [
+2006:         1080,
+2007:         1920,
+2008:         3
+2009:       ],
+2010:       "mean_bgr": [
+2011:         54.10742959104938,
+2012:         54.10742959104938,
+2013:         54.10742959104938
+2014:       ],
+2015:       "std_bgr": [
+2016:         51.489126163280666,
+2017:         51.489126163280666,
+2018:         51.489126163280666
+2019:       ],
+2020:       "y_mean": 54.10742959104938,
+2021:       "y_std": 51.48912616282252,
+2022:       "is_uniform_diag": false,
+2023:       "frame": 95
+2024:     },
+2025:     {
+2026:       "shape": [
+2027:         1080,
+2028:         1920,
+2029:         3
+2030:       ],
+2031:       "mean_bgr": [
+2032:         54.11138117283951,
+2033:         54.11138117283951,
+2034:         54.11138117283951
+2035:       ],
+2036:       "std_bgr": [
+2037:         51.49303614789898,
+2038:         51.49303614789898,
+2039:         51.49303614789898
+2040:       ],
+2041:       "y_mean": 54.11138117283951,
+2042:       "y_std": 51.493036147652774,
+2043:       "is_uniform_diag": false,
+2044:       "frame": 96
+2045:     },
+2046:     {
+2047:       "shape": [
+2048:         1080,
+2049:         1920,
+2050:         3
+2051:       ],
+2052:       "mean_bgr": [
+2053:         54.11161892361111,
+2054:         54.11161892361111,
+2055:         54.11161892361111
+2056:       ],
+2057:       "std_bgr": [
+2058:         51.497227805944924,
+2059:         51.497227805944924,
+2060:         51.497227805944924
+2061:       ],
+2062:       "y_mean": 54.11161892361111,
+2063:       "y_std": 51.49722780572757,
+2064:       "is_uniform_diag": false,
+2065:       "frame": 97
+2066:     },
+2067:     {
+2068:       "shape": [
+2069:         1080,
+2070:         1920,
+2071:         3
+2072:       ],
+2073:       "mean_bgr": [
+2074:         54.11240981867284,
+2075:         54.11240981867284,
+2076:         54.11240981867284
+2077:       ],
+2078:       "std_bgr": [
+2079:         51.4933509438303,
+2080:         51.4933509438303,
+2081:         51.4933509438303
+2082:       ],
+2083:       "y_mean": 54.11240981867284,
+2084:       "y_std": 51.49335094439386,
+2085:       "is_uniform_diag": false,
+2086:       "frame": 98
+2087:     },
+2088:     {
+2089:       "shape": [
+2090:         1080,
+2091:         1920,
+2092:         3
+2093:       ],
+2094:       "mean_bgr": [
+2095:         54.115112364969136,
+2096:         54.115112364969136,
+2097:         54.115112364969136
+2098:       ],
+2099:       "std_bgr": [
+2100:         51.49696016111852,
+2101:         51.49696016111852,
+2102:         51.49696016111852
+2103:       ],
+2104:       "y_mean": 54.115112364969136,
+2105:       "y_std": 51.496960161505456,
+2106:       "is_uniform_diag": false,
+2107:       "frame": 99
+2108:     },
+2109:     {
+2110:       "shape": [
+2111:         1080,
+2112:         1920,
+2113:         3
+2114:       ],
+2115:       "mean_bgr": [
+2116:         54.12089265046296,
+2117:         54.12089265046296,
+2118:         54.12089265046296
+2119:       ],
+2120:       "std_bgr": [
+2121:         51.499441085344365,
+2122:         51.499441085344365,
+2123:         51.499441085344365
+2124:       ],
+2125:       "y_mean": 54.12089265046296,
+2126:       "y_std": 51.49944108562169,
+2127:       "is_uniform_diag": false,
+2128:       "frame": 100
+2129:     },
+2130:     {
+2131:       "shape": [
+2132:         1080,
+2133:         1920,
+2134:         3
+2135:       ],
+2136:       "mean_bgr": [
+2137:         54.124016203703704,
+2138:         54.124016203703704,
+2139:         54.124016203703704
+2140:       ],
+2141:       "std_bgr": [
+2142:         51.498812810405994,
+2143:         51.498812810405994,
+2144:         51.498812810405994
+2145:       ],
+2146:       "y_mean": 54.124016203703704,
+2147:       "y_std": 51.49881281028297,
+2148:       "is_uniform_diag": false,
+2149:       "frame": 101
+2150:     },
+2151:     {
+2152:       "shape": [
+2153:         1080,
+2154:         1920,
+2155:         3
+2156:       ],
+2157:       "mean_bgr": [
+2158:         54.13333478009259,
+2159:         54.13333478009259,
+2160:         54.13333478009259
+2161:       ],
+2162:       "std_bgr": [
+2163:         51.5102375723096,
+2164:         51.5102375723096,
+2165:         51.5102375723096
+2166:       ],
+2167:       "y_mean": 54.13333478009259,
+2168:       "y_std": 51.510237572246,
+2169:       "is_uniform_diag": false,
+2170:       "frame": 102
+2171:     },
+2172:     {
+2173:       "shape": [
+2174:         1080,
+2175:         1920,
+2176:         3
+2177:       ],
+2178:       "mean_bgr": [
+2179:         54.14244164737654,
+2180:         54.14244164737654,
+2181:         54.14244164737654
+2182:       ],
+2183:       "std_bgr": [
+2184:         51.51555592419499,
+2185:         51.51555592419499,
+2186:         51.51555592419499
+2187:       ],
+2188:       "y_mean": 54.14244164737654,
+2189:       "y_std": 51.51555592381985,
+2190:       "is_uniform_diag": false,
+2191:       "frame": 103
+2192:     },
+2193:     {
+2194:       "shape": [
+2195:         1080,
+2196:         1920,
+2197:         3
+2198:       ],
+2199:       "mean_bgr": [
+2200:         54.13488715277778,
+2201:         54.13488715277778,
+2202:         54.13488715277778
+2203:       ],
+2204:       "std_bgr": [
+2205:         51.507367653087286,
+2206:         51.507367653087286,
+2207:         51.507367653087286
+2208:       ],
+2209:       "y_mean": 54.13488715277778,
+2210:       "y_std": 51.507367653055866,
+2211:       "is_uniform_diag": false,
+2212:       "frame": 104
+2213:     },
+2214:     {
+2215:       "shape": [
+2216:         1080,
+2217:         1920,
+2218:         3
+2219:       ],
+2220:       "mean_bgr": [
+2221:         54.1353337191358,
+2222:         54.1353337191358,
+2223:         54.1353337191358
+2224:       ],
+2225:       "std_bgr": [
+2226:         51.51393680852982,
+2227:         51.51393680852982,
+2228:         51.51393680852982
+2229:       ],
+2230:       "y_mean": 54.1353337191358,
+2231:       "y_std": 51.5139368089459,
+2232:       "is_uniform_diag": false,
+2233:       "frame": 105
+2234:     },
+2235:     {
+2236:       "shape": [
+2237:         1080,
+2238:         1920,
+2239:         3
+2240:       ],
+2241:       "mean_bgr": [
+2242:         54.1369815779321,
+2243:         54.1369815779321,
+2244:         54.1369815779321
+2245:       ],
+2246:       "std_bgr": [
+2247:         51.51479278273288,
+2248:         51.51479278273288,
+2249:         51.51479278273288
+2250:       ],
+2251:       "y_mean": 54.1369815779321,
+2252:       "y_std": 51.51479278244693,
+2253:       "is_uniform_diag": false,
+2254:       "frame": 106
+2255:     },
+2256:     {
+2257:       "shape": [
+2258:         1080,
+2259:         1920,
+2260:         3
+2261:       ],
+2262:       "mean_bgr": [
+2263:         54.13377073688272,
+2264:         54.13377073688272,
+2265:         54.13377073688272
+2266:       ],
+2267:       "std_bgr": [
+2268:         51.50912734712062,
+2269:         51.50912734712062,
+2270:         51.50912734712062
+2271:       ],
+2272:       "y_mean": 54.13377073688272,
+2273:       "y_std": 51.5091273465976,
+2274:       "is_uniform_diag": false,
+2275:       "frame": 107
+2276:     },
+2277:     {
+2278:       "shape": [
+2279:         1080,
+2280:         1920,
+2281:         3
+2282:       ],
+2283:       "mean_bgr": [
+2284:         54.13978539737654,
+2285:         54.13978539737654,
+2286:         54.13978539737654
+2287:       ],
+2288:       "std_bgr": [
+2289:         51.51635637719235,
+2290:         51.51635637719235,
+2291:         51.51635637719235
+2292:       ],
+2293:       "y_mean": 54.13978539737654,
+2294:       "y_std": 51.516356377502305,
+2295:       "is_uniform_diag": false,
+2296:       "frame": 108
+2297:     },
+2298:     {
+2299:       "shape": [
+2300:         1080,
+2301:         1920,
+2302:         3
+2303:       ],
+2304:       "mean_bgr": [
+2305:         54.138862364969135,
+2306:         54.138862364969135,
+2307:         54.138862364969135
+2308:       ],
+2309:       "std_bgr": [
+2310:         51.514454010548924,
+2311:         51.514454010548924,
+2312:         51.514454010548924
+2313:       ],
+2314:       "y_mean": 54.138862364969135,
+2315:       "y_std": 51.51445401020644,
+2316:       "is_uniform_diag": false,
+2317:       "frame": 109
+2318:     },
+2319:     {
+2320:       "shape": [
+2321:         1080,
+2322:         1920,
+2323:         3
+2324:       ],
+2325:       "mean_bgr": [
+2326:         54.13978877314815,
+2327:         54.13978877314815,
+2328:         54.13978877314815
+2329:       ],
+2330:       "std_bgr": [
+2331:         51.51304321975675,
+2332:         51.51304321975675,
+2333:         51.51304321975675
+2334:       ],
+2335:       "y_mean": 54.13978877314815,
+2336:       "y_std": 51.51304321931135,
+2337:       "is_uniform_diag": false,
+2338:       "frame": 110
+2339:     },
+2340:     {
+2341:       "shape": [
+2342:         1080,
+2343:         1920,
+2344:         3
+2345:       ],
+2346:       "mean_bgr": [
+2347:         54.142171103395064,
+2348:         54.142171103395064,
+2349:         54.142171103395064
+2350:       ],
+2351:       "std_bgr": [
+2352:         51.52179581720833,
+2353:         51.52179581720833,
+2354:         51.52179581720833
+2355:       ],
+2356:       "y_mean": 54.142171103395064,
+2357:       "y_std": 51.52179581697498,
+2358:       "is_uniform_diag": false,
+2359:       "frame": 111
+2360:     },
+2361:     {
+2362:       "shape": [
+2363:         1080,
+2364:         1920,
+2365:         3
+2366:       ],
+2367:       "mean_bgr": [
+2368:         54.131794463734565,
+2369:         54.131794463734565,
+2370:         54.131794463734565
+2371:       ],
+2372:       "std_bgr": [
+2373:         51.51386596734639,
+2374:         51.51386596734639,
+2375:         51.51386596734639
+2376:       ],
+2377:       "y_mean": 54.131794463734565,
+2378:       "y_std": 51.51386596708137,
+2379:       "is_uniform_diag": false,
+2380:       "frame": 112
+2381:     },
+2382:     {
+2383:       "shape": [
+2384:         1080,
+2385:         1920,
+2386:         3
+2387:       ],
+2388:       "mean_bgr": [
+2389:         54.129434799382715,
+2390:         54.129434799382715,
+2391:         54.129434799382715
+2392:       ],
+2393:       "std_bgr": [
+2394:         51.51249198683627,
+2395:         51.51249198683627,
+2396:         51.51249198683627
+2397:       ],
+2398:       "y_mean": 54.129434799382715,
+2399:       "y_std": 51.51249198726115,
+2400:       "is_uniform_diag": false,
+2401:       "frame": 113
+2402:     },
+2403:     {
+2404:       "shape": [
+2405:         1080,
+2406:         1920,
+2407:         3
+2408:       ],
+2409:       "mean_bgr": [
+2410:         54.13333526234568,
+2411:         54.13333526234568,
+2412:         54.13333526234568
+2413:       ],
+2414:       "std_bgr": [
+2415:         51.52171224873569,
+2416:         51.52171224873569,
+2417:         51.52171224873569
+2418:       ],
+2419:       "y_mean": 54.13333526234568,
+2420:       "y_std": 51.52171224844753,
+2421:       "is_uniform_diag": false,
+2422:       "frame": 114
+2423:     },
+2424:     {
+2425:       "shape": [
+2426:         1080,
+2427:         1920,
+2428:         3
+2429:       ],
+2430:       "mean_bgr": [
+2431:         54.132812982253085,
+2432:         54.132812982253085,
+2433:         54.132812982253085
+2434:       ],
+2435:       "std_bgr": [
+2436:         51.51574587296215,
+2437:         51.51574587296215,
+2438:         51.51574587296215
+2439:       ],
+2440:       "y_mean": 54.132812982253085,
+2441:       "y_std": 51.51574587256459,
+2442:       "is_uniform_diag": false,
+2443:       "frame": 115
+2444:     },
+2445:     {
+2446:       "shape": [
+2447:         1080,
+2448:         1920,
+2449:         3
+2450:       ],
+2451:       "mean_bgr": [
+2452:         54.13393422067901,
+2453:         54.13393422067901,
+2454:         54.13393422067901
+2455:       ],
+2456:       "std_bgr": [
+2457:         51.51590144140244,
+2458:         51.51590144140244,
+2459:         51.51590144140244
+2460:       ],
+2461:       "y_mean": 54.13393422067901,
+2462:       "y_std": 51.515901441809035,
+2463:       "is_uniform_diag": false,
+2464:       "frame": 116
+2465:     },
+2466:     {
+2467:       "shape": [
+2468:         1080,
+2469:         1920,
+2470:         3
+2471:       ],
+2472:       "mean_bgr": [
+2473:         54.13918113425926,
+2474:         54.13918113425926,
+2475:         54.13918113425926
+2476:       ],
+2477:       "std_bgr": [
+2478:         51.52612409141111,
+2479:         51.52612409141111,
+2480:         51.52612409141111
+2481:       ],
+2482:       "y_mean": 54.13918113425926,
+2483:       "y_std": 51.52612409132103,
+2484:       "is_uniform_diag": false,
+2485:       "frame": 117
+2486:     },
+2487:     {
+2488:       "shape": [
+2489:         1080,
+2490:         1920,
+2491:         3
+2492:       ],
+2493:       "mean_bgr": [
+2494:         54.13861689814815,
+2495:         54.13861689814815,
+2496:         54.13861689814815
+2497:       ],
+2498:       "std_bgr": [
+2499:         51.51988518891087,
+2500:         51.51988518891087,
+2501:         51.51988518891087
+2502:       ],
+2503:       "y_mean": 54.13861689814815,
+2504:       "y_std": 51.51988518897207,
+2505:       "is_uniform_diag": false,
+2506:       "frame": 118
+2507:     },
+2508:     {
+2509:       "shape": [
+2510:         1080,
+2511:         1920,
+2512:         3
+2513:       ],
+2514:       "mean_bgr": [
+2515:         54.13276379243827,
+2516:         54.13276379243827,
+2517:         54.13276379243827
+2518:       ],
+2519:       "std_bgr": [
+2520:         51.51583125187658,
+2521:         51.51583125187658,
+2522:         51.51583125187658
+2523:       ],
+2524:       "y_mean": 54.13276379243827,
+2525:       "y_std": 51.51583125242226,
+2526:       "is_uniform_diag": false,
+2527:       "frame": 119
+2528:     }
+2529:   ]
+2530: }

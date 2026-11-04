@@ -1,0 +1,42 @@
+{
+  "audit_date": "2026-11-04",
+  "hash_algorithm": "SHA-256",
+  "paths_relative_to": "this manifest",
+  "files": [
+    {
+      "path": "historical_log_excerpts.txt",
+      "bytes": 144542,
+      "sha256": "70f491e6349511419c7688453806aa6096610311adcad39c02618cb8fee7a309"
+    },
+    {
+      "path": "mig_generated_electrical.xdc",
+      "bytes": 22421,
+      "sha256": "9af9f8e33bcfddc45507b3e8674fd63547c325cbc8f10ab2016528fa165daced"
+    },
+    {
+      "path": "query_routed_dci_transcript.txt",
+      "bytes": 95050,
+      "sha256": "17a2f1b5d7cff58d0453b9e2e455e4ac81bcd332e0f98b628ddbd8d6eb3f4c06"
+    },
+    {
+      "path": "query_routed_dci.tcl",
+      "bytes": 1516,
+      "sha256": "af8156ae9dd051087ba09f1cabc2105e4bb7f7258a13c97b4711031949ecfede"
+    },
+    {
+      "path": "query_summary.json",
+      "bytes": 32668,
+      "sha256": "0dfe05696103c0ce7c5fc2c7036656a17bb2d623502af482fce0f487e3c4cd09"
+    },
+    {
+      "path": "source_manifest.json",
+      "bytes": 14732,
+      "sha256": "fe55a4bf499f22f9999030a28e641c117271608a47fb363e206afca7ad37a750"
+    },
+    {
+      "path": "../../DDR4_DCI_VRP_REVIEW_20261104.md",
+      "bytes": 12008,
+      "sha256": "4bfcff67f15bc6d5a32a9987385278de76c5e2d20d144768c8163d09658963ad"
+    }
+  ]
+}

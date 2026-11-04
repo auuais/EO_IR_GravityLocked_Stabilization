@@ -1,0 +1,583 @@
+
+****** Vivado v2025.2 (64-bit)
+  **** SW Build 6299465 on Fri Nov 14 19:35:11 GMT 2025
+  **** IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+  **** SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+  **** Start of session at: Wed Nov  4 17:29:04 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+
+AUDIT_BEGIN latest E:/Xylinx/EO_IR_GravityLocked_Stabilization/builds/gravity_20261022_235934/routed.dcp
+Command: open_checkpoint E:/Xylinx/EO_IR_GravityLocked_Stabilization/builds/gravity_20261022_235934/routed.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.082 . Memory (MB): peak = 321.762 ; gain = 4.762
+INFO: [Device 21-403] Loading part xcku15p-ffve1517-2-i
+Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 1823.414 ; gain = 0.250
+INFO: [Netlist 29-17] Analyzing 4119 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 3 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+WARNING: [Constraints 18-550] Could not create 'DRIVE' constraint because net 'u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/cal_RESET_n[0]' is not directly connected to top level port. 'DRIVE' is ignored for synthesis but preserved for implementation.
+WARNING: [Constraints 18-550] Could not create 'SLEW' constraint because net 'u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/cal_RESET_n[0]' is not directly connected to top level port. 'SLEW' is ignored for synthesis but preserved for implementation.
+WARNING: [Constraints 18-550] Could not create 'IBUF_LOW_PWR' constraint because net 'u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/sys_clk_in' is not directly connected to top level port. 'IBUF_LOW_PWR' is ignored for synthesis but preserved for implementation.
+Read ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.577 . Memory (MB): peak = 2439.078 ; gain = 21.980
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.145 . Memory (MB): peak = 3136.672 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.039 . Memory (MB): peak = 3136.672 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 3277.906 ; gain = 141.234
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3277.906 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:04 ; elapsed = 00:00:02 . Memory (MB): peak = 3377.180 ; gain = 99.273
+Read Physdb Files: Time (s): cpu = 00:00:09 ; elapsed = 00:00:07 . Memory (MB): peak = 3377.180 ; gain = 240.508
+Restored from archive | CPU: 9.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:09 ; elapsed = 00:00:08 . Memory (MB): peak = 3377.180 ; gain = 240.508
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/AMDDesignTools/2025.2/Vivado/data/ip'.
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.088 . Memory (MB): peak = 3415.168 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1450 instances were transformed.
+  CFGLUT5 => CFGLUT5 (SRL16E, SRLC32E): 476 instances
+  DSP48E1 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 3 instances
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 27 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 170 instances
+  IBUFDS => IBUFDS (DIFFINBUF, IBUFCTRL): 2 instances
+  IOBUF => IOBUF (IBUFCTRL, INBUF, OBUFT): 1 instance 
+  IOBUFDS => IOBUFDS (DIFFINBUF, IBUFCTRL, INV, OBUFT(x2)): 6 instances
+  IOBUFE3 => IOBUFE3 (IBUFCTRL, INBUF, OBUFT_DCIEN): 54 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 31 instances
+  OBUFDS => OBUFDS_DUAL_BUF (INV, OBUF(x2)): 1 instance 
+  RAM16X1D => RAM32X1D (RAMD32(x2)): 24 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 176 instances
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 266 instances
+  RAM32X1D => RAM32X1D (RAMD32(x2)): 6 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 71 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 136 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:01:29 ; elapsed = 00:01:42 . Memory (MB): peak = 3423.195 ; gain = 3113.523
+AUDIT_PART xcku15p-ffve1517-2-i
+AUDIT_DESIGN BITSTREAM.CONFIG.DCIUPDATEMODE=
+AUDIT_DESIGN BITSTREAM.STARTUP.MATCH_CYCLE=
+AUDIT_BANK 66 BANK_TYPE=BT_HIGH_PERFORMANCE
+AUDIT_BANK 66 DCI_CASCADE=
+AUDIT_BANK 66 INTERNAL_VREF=0.840
+AUDIT_BANK 66 IS_MASTER=0
+AUDIT_BANK 66 MASTER_BANK=
+AUDIT_BANK 66 VCCOSENSEMODE=
+AUDIT_BANK 67 BANK_TYPE=BT_HIGH_PERFORMANCE
+AUDIT_BANK 67 DCI_CASCADE=
+AUDIT_BANK 67 INTERNAL_VREF=
+AUDIT_BANK 67 IS_MASTER=0
+AUDIT_BANK 67 MASTER_BANK=
+AUDIT_BANK 67 VCCOSENSEMODE=
+AUDIT_BANK 68 BANK_TYPE=BT_HIGH_PERFORMANCE
+AUDIT_BANK 68 DCI_CASCADE=
+AUDIT_BANK 68 INTERNAL_VREF=0.840
+AUDIT_BANK 68 IS_MASTER=0
+AUDIT_BANK 68 MASTER_BANK=
+AUDIT_BANK 68 VCCOSENSEMODE=
+AUDIT_DCIRESET 0
+AUDIT_PORT c0_ddr4_adr[16] PIN=AP35 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[15] PIN=AP34 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[14] PIN=AP31 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[13] PIN=AR39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[12] PIN=AR37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[11] PIN=AW36 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[10] PIN=AU38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[9] PIN=AT39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[8] PIN=AV28 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[7] PIN=AP39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[6] PIN=AT31 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[5] PIN=AP38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[4] PIN=AU39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[3] PIN=AR36 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[2] PIN=AV37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[1] PIN=AR38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[0] PIN=AV38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_ba[1] PIN=AP36 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_ba[0] PIN=AW33 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_bg[0] PIN=AR31 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_ck_c[0] PIN=AT34 BANK=67 STD=DIFF_SSTL12_DCI
+AUDIT_PORT c0_ddr4_ck_t[0] PIN=AR34 BANK=67 STD=DIFF_SSTL12_DCI
+AUDIT_PORT c0_ddr4_cke[0] PIN=AU37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_cs_n[0] PIN=AP33 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[5] PIN=AM28 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[4] PIN=AH30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[3] PIN=AK33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[2] PIN=AM37 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[1] PIN=AW23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[0] PIN=AR23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[47] PIN=AN32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[46] PIN=AP29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[45] PIN=AL30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[44] PIN=AP28 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[43] PIN=AN33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[42] PIN=AM29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[41] PIN=AM30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[40] PIN=AL29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[39] PIN=AM32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[38] PIN=AJ29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[37] PIN=AH32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[36] PIN=AH31 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[35] PIN=AM33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[34] PIN=AJ30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[33] PIN=AL32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[32] PIN=AK32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[31] PIN=AJ34 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[30] PIN=AJ33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[29] PIN=AK35 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[28] PIN=AH33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[27] PIN=AL34 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[26] PIN=AM34 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[25] PIN=AL35 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[24] PIN=AM35 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[23] PIN=AM39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[22] PIN=AL36 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[21] PIN=AJ39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[20] PIN=AN38 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[19] PIN=AL39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[18] PIN=AL37 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[17] PIN=AK39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[16] PIN=AM38 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[15] PIN=AV27 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[14] PIN=AV23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[13] PIN=AW26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[12] PIN=AT24 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[11] PIN=AW25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[10] PIN=AU24 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[9] PIN=AV26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[8] PIN=AU23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[7] PIN=AT26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[6] PIN=AP25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[5] PIN=AP26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[4] PIN=AN23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[3] PIN=AT25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[2] PIN=AP24 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[1] PIN=AP23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[0] PIN=AN25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[5] PIN=AN31 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[4] PIN=AL31 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[3] PIN=AN36 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[2] PIN=AK38 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[1] PIN=AV25 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[0] PIN=AR27 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[5] PIN=AN30 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[4] PIN=AK31 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[3] PIN=AN35 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[2] PIN=AK37 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[1] PIN=AU25 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[0] PIN=AR26 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_odt[0] PIN=AR33 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_act_n PIN=AT37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_reset_n PIN=AH34 BANK=68 STD=LVCMOS12
+AUDIT_VRP AU27 IO_T0U_N12_VRP_66 BANK=66
+AUDIT_VRP AR29 IO_T0U_N12_VRP_67 BANK=67
+AUDIT_VRP AP30 IO_T0U_N12_VRP_68 BANK=68
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_END latest
+AUDIT_BEGIN stable E:/Xylinx/EO_Panorama_V19_RollPitch/EO_Panorama_V19_M1.runs/impl_1/KintexTop_EO_IR_HD_SDI_panorama_base_routed.dcp
+Command: open_checkpoint E:/Xylinx/EO_Panorama_V19_RollPitch/EO_Panorama_V19_M1.runs/impl_1/KintexTop_EO_IR_HD_SDI_panorama_base_routed.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3437.176 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 3437.176 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 4278 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 4 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2025.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+WARNING: [Constraints 18-550] Could not create 'DRIVE' constraint because net 'u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/cal_RESET_n[0]' is not directly connected to top level port. 'DRIVE' is ignored for synthesis but preserved for implementation.
+WARNING: [Constraints 18-550] Could not create 'SLEW' constraint because net 'u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/cal_RESET_n[0]' is not directly connected to top level port. 'SLEW' is ignored for synthesis but preserved for implementation.
+WARNING: [Constraints 18-550] Could not create 'IBUF_LOW_PWR' constraint because net 'u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/sys_clk_in' is not directly connected to top level port. 'IBUF_LOW_PWR' is ignored for synthesis but preserved for implementation.
+Read ShapeDB Complete: Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.578 . Memory (MB): peak = 3437.176 ; gain = 0.000
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Constraints 18-5170] The checkpoint was created with non-default parameter values which do not match the current Vivado settings.  Mismatching parameters are:
+  general.maxThreads
+INFO: [Project 1-853] Binary constraint restore complete.
+INFO: [Designutils 20-5722] Start Reading Physical Databases.
+Reading placement.
+Read Netlist Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.140 . Memory (MB): peak = 3437.176 ; gain = 0.000
+Reading placer database...
+Read Device Cache: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.039 . Memory (MB): peak = 3437.176 ; gain = 0.000
+Read PlaceDB: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 3437.176 ; gain = 0.000
+Read PulsedLatchDB: Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3437.176 ; gain = 0.000
+Reading routing.
+Read RouteStorage: Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 3437.176 ; gain = 0.000
+Read Physdb Files: Time (s): cpu = 00:00:08 ; elapsed = 00:00:07 . Memory (MB): peak = 3437.176 ; gain = 0.000
+Restored from archive | CPU: 9.000000 secs | Memory: 0.000000 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:09 ; elapsed = 00:00:08 . Memory (MB): peak = 3437.176 ; gain = 0.000
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/AMDDesignTools/2025.2/Vivado/data/ip'.
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.090 . Memory (MB): peak = 3437.176 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 1494 instances were transformed.
+  CFGLUT5 => CFGLUT5 (SRL16E, SRLC32E): 540 instances
+  DSP48E1 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 3 instances
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 25 instances
+  IBUF => IBUF (IBUFCTRL, INBUF): 170 instances
+  IBUFDS => IBUFDS (DIFFINBUF, IBUFCTRL): 2 instances
+  IOBUF => IOBUF (IBUFCTRL, INBUF, OBUFT): 1 instance 
+  IOBUFDS => IOBUFDS (DIFFINBUF, IBUFCTRL, INV, OBUFT(x2)): 6 instances
+  IOBUFE3 => IOBUFE3 (IBUFCTRL, INBUF, OBUFT_DCIEN): 54 instances
+  LUT6_2 => LUT6_2 (LUT5, LUT6): 31 instances
+  OBUFDS => OBUFDS_DUAL_BUF (INV, OBUF(x2)): 1 instance 
+  RAM16X1D => RAM32X1D (RAMD32(x2)): 24 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 174 instances
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 250 instances
+  RAM32X1D => RAM32X1D (RAMD32(x2)): 6 instances
+  RAM64M => RAM64M (RAMD64E(x4)): 71 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 136 instances
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2025.2 (64-bit) build 6299465
+open_checkpoint: Time (s): cpu = 00:01:10 ; elapsed = 00:01:09 . Memory (MB): peak = 3440.270 ; gain = 3.094
+AUDIT_PART xcku15p-ffve1517-2-i
+AUDIT_DESIGN BITSTREAM.CONFIG.DCIUPDATEMODE=
+AUDIT_DESIGN BITSTREAM.STARTUP.MATCH_CYCLE=
+AUDIT_BANK 66 BANK_TYPE=BT_HIGH_PERFORMANCE
+AUDIT_BANK 66 DCI_CASCADE=
+AUDIT_BANK 66 INTERNAL_VREF=0.840
+AUDIT_BANK 66 IS_MASTER=0
+AUDIT_BANK 66 MASTER_BANK=
+AUDIT_BANK 66 VCCOSENSEMODE=
+AUDIT_BANK 67 BANK_TYPE=BT_HIGH_PERFORMANCE
+AUDIT_BANK 67 DCI_CASCADE=
+AUDIT_BANK 67 INTERNAL_VREF=
+AUDIT_BANK 67 IS_MASTER=0
+AUDIT_BANK 67 MASTER_BANK=
+AUDIT_BANK 67 VCCOSENSEMODE=
+AUDIT_BANK 68 BANK_TYPE=BT_HIGH_PERFORMANCE
+AUDIT_BANK 68 DCI_CASCADE=
+AUDIT_BANK 68 INTERNAL_VREF=0.840
+AUDIT_BANK 68 IS_MASTER=0
+AUDIT_BANK 68 MASTER_BANK=
+AUDIT_BANK 68 VCCOSENSEMODE=
+AUDIT_DCIRESET 0
+AUDIT_PORT c0_ddr4_adr[16] PIN=AP35 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[15] PIN=AP34 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[14] PIN=AP31 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[13] PIN=AR39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[12] PIN=AR37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[11] PIN=AW36 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[10] PIN=AU38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[9] PIN=AT39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[8] PIN=AV28 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[7] PIN=AP39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[6] PIN=AT31 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[5] PIN=AP38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[4] PIN=AU39 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[3] PIN=AR36 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[2] PIN=AV37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[1] PIN=AR38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_adr[0] PIN=AV38 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_ba[1] PIN=AP36 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_ba[0] PIN=AW33 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_bg[0] PIN=AR31 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_ck_c[0] PIN=AT34 BANK=67 STD=DIFF_SSTL12_DCI
+AUDIT_PORT c0_ddr4_ck_t[0] PIN=AR34 BANK=67 STD=DIFF_SSTL12_DCI
+AUDIT_PORT c0_ddr4_cke[0] PIN=AU37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_cs_n[0] PIN=AP33 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[5] PIN=AM28 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[4] PIN=AH30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[3] PIN=AK33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[2] PIN=AM37 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[1] PIN=AW23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dm_dbi_n[0] PIN=AR23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[47] PIN=AN32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[46] PIN=AP29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[45] PIN=AL30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[44] PIN=AP28 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[43] PIN=AN33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[42] PIN=AM29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[41] PIN=AM30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[40] PIN=AL29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[39] PIN=AM32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[38] PIN=AJ29 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[37] PIN=AH32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[36] PIN=AH31 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[35] PIN=AM33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[34] PIN=AJ30 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[33] PIN=AL32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[32] PIN=AK32 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[31] PIN=AJ34 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[30] PIN=AJ33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[29] PIN=AK35 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[28] PIN=AH33 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[27] PIN=AL34 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[26] PIN=AM34 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[25] PIN=AL35 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[24] PIN=AM35 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[23] PIN=AM39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[22] PIN=AL36 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[21] PIN=AJ39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[20] PIN=AN38 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[19] PIN=AL39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[18] PIN=AL37 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[17] PIN=AK39 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[16] PIN=AM38 BANK=68 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[15] PIN=AV27 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[14] PIN=AV23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[13] PIN=AW26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[12] PIN=AT24 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[11] PIN=AW25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[10] PIN=AU24 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[9] PIN=AV26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[8] PIN=AU23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[7] PIN=AT26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[6] PIN=AP25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[5] PIN=AP26 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[4] PIN=AN23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[3] PIN=AT25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[2] PIN=AP24 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[1] PIN=AP23 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dq[0] PIN=AN25 BANK=66 STD=POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[5] PIN=AN31 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[4] PIN=AL31 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[3] PIN=AN36 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[2] PIN=AK38 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[1] PIN=AV25 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_c[0] PIN=AR27 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[5] PIN=AN30 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[4] PIN=AK31 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[3] PIN=AN35 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[2] PIN=AK37 BANK=68 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[1] PIN=AU25 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_dqs_t[0] PIN=AR26 BANK=66 STD=DIFF_POD12_DCI
+AUDIT_PORT c0_ddr4_odt[0] PIN=AR33 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_act_n PIN=AT37 BANK=67 STD=SSTL12_DCI
+AUDIT_PORT c0_ddr4_reset_n PIN=AH34 BANK=68 STD=LVCMOS12
+AUDIT_VRP AU27 IO_T0U_N12_VRP_66 BANK=66
+AUDIT_VRP AR29 IO_T0U_N12_VRP_67 BANK=67
+AUDIT_VRP AP30 IO_T0U_N12_VRP_68 BANK=68
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[0].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[10].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[11].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[1].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[8].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[0] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[0].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[7] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[10].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[8] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[1] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[2].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[2] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[3].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[3] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[4].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[4] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[5].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[5] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[8].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[11].genblk1_1.IOBUF_0[6] DRIVER=
+AUDIT_DCITERMDISABLE u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/OBUFT_INST/DCITERMDISABLE NET=u_ddr_black_frame/u_ddr4_sub64/inst/u_ddr4_mem_intfc/u_mig_ddr4_phy/inst/u_ddr_iob/genByte[9].u_ddr_iob_byte/genBuf[9].genblk1_1.IOBUF/DCITERMDISABLE DRIVER=
+AUDIT_END stable
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed Nov  4 17:32:13 2026...
+

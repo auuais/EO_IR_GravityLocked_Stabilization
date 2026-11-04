@@ -1,0 +1,590 @@
+{
+  "audit_date": "2026-11-04",
+  "hardware_connected": false,
+  "audit_scope": "Read saved files/checkpoints only; no implementation rebuild, IP/RTL/constraint modification or hardware programming.",
+  "repo_starting_commit": "884ebc120385780b5770193d4934fedc6c605d06",
+  "historical_guard_commit_in_panorama_base": "8caaea4d0e4f18dd95f9e4b6aab3838509170016",
+  "source_files": [
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/ddr4_sub64.xci",
+      "bytes": 42483,
+      "sha256": "e7e701e5925d298d58aad99f1d3f6897a7116925b57c3938a53dfb704c2bcd37"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/ddr4_sub64_board.xdc",
+      "bytes": 62,
+      "sha256": "59fa05af6b5ff771f5dacd68758d5964d8dfd1219e6394e702a61ac05a3c98fe"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/par/ddr4_sub64.xdc",
+      "bytes": 22421,
+      "sha256": "9af9f8e33bcfddc45507b3e8674fd63547c325cbc8f10ab2016528fa165daced"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/constraints/ddr4_sub64_firstpass.xdc",
+      "bytes": 7437,
+      "sha256": "e873bda86ba07e7e861928131c95635426695aa452603a41f7f9d934a95e2528"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/src/PanoramaBase_DdrBlackFrame.v",
+      "bytes": 268155,
+      "sha256": "bc02dc489e1df82efb6ddf747dd764ca03e79d78ed7e87f4fd129310e8ce66ea"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/docs/CODEX_NEXT_SESSION_HANDOFF_20260708.md",
+      "bytes": 16040,
+      "sha256": "4a4ca2732fd7397caca83219f2bb9daad08752b9f32e8f7f82ed0693030acb05"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/builds/gravity_20261022_235934/routed.dcp",
+      "bytes": 53188128,
+      "sha256": "dd2864015366808bee2eddbbba4330a28b1adf470681d0173fbac2c66cfd8b97"
+    },
+    {
+      "path": "E:/Xylinx/EO_Panorama_V19_RollPitch/EO_Panorama_V19_M1.runs/impl_1/KintexTop_EO_IR_HD_SDI_panorama_base_routed.dcp",
+      "bytes": 51358985,
+      "sha256": "7fd0212ba09a262b6160cf1c0edadf6cd7ac71a85ad2e2ed7d4e1cbec37b9478"
+    },
+    {
+      "path": "E:/Xylinx/EO_Panorama_V19_RollPitch/ip/ddr4_sub64/par/ddr4_sub64.xdc",
+      "bytes": 22421,
+      "sha256": "9af9f8e33bcfddc45507b3e8674fd63547c325cbc8f10ab2016528fa165daced"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_Stabilization_RowWindow/ip/ddr4_sub64/par/ddr4_sub64.xdc",
+      "bytes": 22421,
+      "sha256": "9af9f8e33bcfddc45507b3e8674fd63547c325cbc8f10ab2016528fa165daced"
+    },
+    {
+      "path": "C:/SVNProjects/IMU_Stabilize_v40/Circuit Diagram/tbt_camerasystem_251106.pdf",
+      "bytes": 625561,
+      "sha256": "65c5ed684024664e2938056389423a948b5d8b935180e16c382f76699369d0ee"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_ddr_margins2.log",
+      "bytes": 198255,
+      "sha256": "33bbc7363288548f443a0e35e9fbe154b3e64a3df5df643a2f0b68e90aca0ee9"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_retime_1866_synth2.log",
+      "bytes": 213917,
+      "sha256": "87ac466804f2c206cfcae9b4bcffc0ecc12433a05c21d26009df934581de3865"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_set_ddr4_x48.log",
+      "bytes": 31844,
+      "sha256": "fabb00aeb3cf70164428ed6404779031a13dbb1fc38f01f650dbd390a71aaf98"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_x48_program.log",
+      "bytes": 2571,
+      "sha256": "8eb76dee8603dae28392dafb08565c621c7f6ca43b86e61d777dc5ccfd953edf"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_program_component_guard_20260709_0636.log",
+      "bytes": 2246,
+      "sha256": "604e7e4c8297191a8f6641ec749e02fe8cd19202b5a5882a079f0942b58b69b9"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/captures/usb3_component_guard_20260709_0638/capture_summary.json",
+      "bytes": 52575,
+      "sha256": "7cf4ddb56cabc0f6705a9b4a55470d8c22e6f25f5f73ecbeaa81f27ba81cad02"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/captures/usb3_component_guard_confirm_20260709_0640/capture_summary.json",
+      "bytes": 52529,
+      "sha256": "1a3f2877bcc34b155021a405597709a5c600b64f39608b25fb23e3987156bc30"
+    }
+  ],
+  "generated_iostandards": [
+    {
+      "line": 110,
+      "port": "c0_ddr4_reset_n",
+      "iostandard": "LVCMOS12"
+    },
+    {
+      "line": 113,
+      "port": "c0_ddr4_dq[12]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 114,
+      "port": "c0_ddr4_dm_dbi_n[1]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 115,
+      "port": "c0_ddr4_dq[34]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 116,
+      "port": "c0_ddr4_dq[37]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 117,
+      "port": "c0_ddr4_dq[36]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 118,
+      "port": "c0_ddr4_dq[13]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 119,
+      "port": "c0_ddr4_dq[11]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 120,
+      "port": "c0_ddr4_dq[10]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 121,
+      "port": "c0_ddr4_act_n",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 122,
+      "port": "c0_ddr4_dq[35]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 123,
+      "port": "c0_ddr4_dq[38]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 124,
+      "port": "c0_ddr4_dqs_t[4]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 125,
+      "port": "c0_ddr4_dqs_c[1]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 126,
+      "port": "c0_ddr4_dqs_t[1]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 127,
+      "port": "c0_ddr4_ck_t[0]",
+      "iostandard": "DIFF_SSTL12_DCI"
+    },
+    {
+      "line": 128,
+      "port": "c0_ddr4_dm_dbi_n[4]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 129,
+      "port": "c0_ddr4_dq[39]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 130,
+      "port": "c0_ddr4_dqs_c[4]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 131,
+      "port": "c0_ddr4_dq[8]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 132,
+      "port": "c0_ddr4_adr[6]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 133,
+      "port": "c0_ddr4_ck_c[0]",
+      "iostandard": "DIFF_SSTL12_DCI"
+    },
+    {
+      "line": 134,
+      "port": "c0_ddr4_adr[2]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 135,
+      "port": "c0_ddr4_dqs_t[5]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 136,
+      "port": "c0_ddr4_dq[47]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 137,
+      "port": "c0_ddr4_dq[46]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 138,
+      "port": "c0_ddr4_dq[32]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 139,
+      "port": "c0_ddr4_dq[15]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 140,
+      "port": "c0_ddr4_dq[14]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 141,
+      "port": "c0_ddr4_dq[9]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 142,
+      "port": "c0_ddr4_adr[7]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 143,
+      "port": "c0_ddr4_adr[3]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 144,
+      "port": "c0_ddr4_dqs_c[5]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 145,
+      "port": "c0_ddr4_dq[40]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 146,
+      "port": "c0_ddr4_dq[33]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 147,
+      "port": "c0_ddr4_cke[0]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 148,
+      "port": "c0_ddr4_adr[11]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 149,
+      "port": "c0_sys_clk_n",
+      "iostandard": "DIFF_SSTL12"
+    },
+    {
+      "line": 150,
+      "port": "c0_sys_clk_p",
+      "iostandard": "DIFF_SSTL12"
+    },
+    {
+      "line": 151,
+      "port": "c0_ddr4_adr[8]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 152,
+      "port": "c0_ddr4_dq[44]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 153,
+      "port": "c0_ddr4_dq[41]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 154,
+      "port": "c0_ddr4_dq[31]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 155,
+      "port": "c0_ddr4_dq[30]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 156,
+      "port": "c0_ddr4_dqs_t[3]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 157,
+      "port": "c0_ddr4_adr[12]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 158,
+      "port": "c0_ddr4_adr[9]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 159,
+      "port": "c0_ddr4_adr[5]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 160,
+      "port": "c0_ddr4_adr[4]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 161,
+      "port": "c0_ddr4_dq[45]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 162,
+      "port": "c0_ddr4_dq[43]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 163,
+      "port": "c0_ddr4_dq[42]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 164,
+      "port": "c0_ddr4_dq[28]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 165,
+      "port": "c0_ddr4_dqs_c[3]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 166,
+      "port": "c0_ddr4_cs_n[0]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 167,
+      "port": "c0_ddr4_bg[0]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 168,
+      "port": "c0_ddr4_adr[10]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 169,
+      "port": "c0_ddr4_adr[1]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 170,
+      "port": "c0_ddr4_adr[0]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 171,
+      "port": "c0_ddr4_dm_dbi_n[5]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 172,
+      "port": "c0_ddr4_dq[29]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 173,
+      "port": "c0_ddr4_dq[24]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 174,
+      "port": "c0_ddr4_adr[15]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 175,
+      "port": "c0_ddr4_adr[14]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 176,
+      "port": "c0_ddr4_adr[13]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 177,
+      "port": "c0_ddr4_dq[5]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 178,
+      "port": "c0_ddr4_dq[4]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 179,
+      "port": "c0_ddr4_dqs_t[2]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 180,
+      "port": "c0_ddr4_dq[16]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 181,
+      "port": "c0_ddr4_dq[23]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 182,
+      "port": "c0_ddr4_dq[22]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 183,
+      "port": "c0_ddr4_dq[25]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 184,
+      "port": "c0_ddr4_adr[16]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 185,
+      "port": "c0_ddr4_ba[1]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 186,
+      "port": "c0_ddr4_ba[0]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 187,
+      "port": "c0_ddr4_dq[0]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 188,
+      "port": "c0_ddr4_dm_dbi_n[0]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 189,
+      "port": "c0_ddr4_dqs_c[2]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 190,
+      "port": "c0_ddr4_dq[17]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 191,
+      "port": "c0_ddr4_dq[21]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 192,
+      "port": "c0_ddr4_dq[20]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 193,
+      "port": "c0_ddr4_dq[26]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 194,
+      "port": "c0_ddr4_dm_dbi_n[3]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 195,
+      "port": "c0_ddr4_dq[6]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 196,
+      "port": "c0_ddr4_dq[1]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 197,
+      "port": "c0_ddr4_dq[2]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 198,
+      "port": "c0_ddr4_odt[0]",
+      "iostandard": "SSTL12_DCI"
+    },
+    {
+      "line": 199,
+      "port": "c0_ddr4_dm_dbi_n[2]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 200,
+      "port": "c0_ddr4_dq[19]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 201,
+      "port": "c0_ddr4_dq[18]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 202,
+      "port": "c0_ddr4_dq[27]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 203,
+      "port": "c0_ddr4_dq[7]",
+      "iostandard": "POD12_DCI"
+    },
+    {
+      "line": 204,
+      "port": "c0_ddr4_dqs_c[0]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 205,
+      "port": "c0_ddr4_dqs_t[0]",
+      "iostandard": "DIFF_POD12_DCI"
+    },
+    {
+      "line": 206,
+      "port": "c0_ddr4_dq[3]",
+      "iostandard": "POD12_DCI"
+    }
+  ],
+  "schematic_vrp_open_stubs": {
+    "pdf_page": 11,
+    "printed_sheet": "9/17",
+    "bank66": "AU27",
+    "bank67": "AR29",
+    "bank68": "AP30"
+  },
+  "physical_board_reference_resistance_measured_this_review": false,
+  "official_sources_checked": [
+    "https://docs.amd.com/r/en-US/pg150-ultrascale-memory-ip/DDR4-Pin-Rules",
+    "https://docs.amd.com/api/khub/documents/kFbaUC5HGcXyGNauhgU6Gw/content",
+    "https://docs.amd.com/r/en-US/pg150-ultrascale-memory-ip/init_calib_complete",
+    "https://docs.amd.com/r/en-US/pg150-ultrascale-memory-ip/Calibration-Overview"
+  ]
+}
