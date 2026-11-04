@@ -1,0 +1,288 @@
+Numbered source excerpts; read-only review, 2026-11-04.
+
+SOURCE: E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/controller/ddr4_v2_2_mc_ecc.sv
+LINES: 141-265
+141: 
+142: // Swizzle data into DDR bus burst order for ECC generation and error detection.
+143: // Each burst on the DDR bus forms an ECC code word.
+144: // =============================================================================
+145: 
+146: // NI interface order example:  4 byte data width
+147: // wr_data_ni2mc          =  DDR bus burst/byte { 7/3 6/3 5/3 4/3  3/3 2/3 1/3 0/3
+148: //                                                7/2 6/2 5/2 4/2  3/2 2/2 1/2 0/2
+149: //                                                7/1 6/1 5/1 4/1  3/1 2/1 1/1 0/1
+150: //                                                7/0 6/0 5/0 4/0  3/0 2/0 1/0 0/0 }
+151: //
+152: // wr_data_ni2mc_cw_order  = DDR bus burst/byte {  7/3 7/2 7/1 7/0
+153: //                                                 6/3 6/2 6/1 6/0
+154: //                                                 5/3 5/2 5/1 5/0
+155: //                                                 4/3 4/2 4/1 4/0
+156: //                                                 3/3 3/2 3/1 3/0
+157: //                                                 2/3 2/2 2/1 2/0
+158: //                                                 1/3 1/2 1/1 1/0
+159: //                                                 0/3 0/2 0/1 0/0 }
+160: //
+161: // wr_data_mc2phy_cw_order = DDR bus burst/byte {  7/C 6/C 5/C 4/C
+162: //                                                 3/C 2/C 1/C 0/C
+163: //                                                 7/3 7/2 7/1 7/0
+164: //                                                 6/3 6/2 6/1 6/0
+165: //                                                 5/3 5/2 5/1 5/0
+166: //                                                 4/3 4/2 4/1 4/0
+167: //                                                 3/3 3/2 3/1 3/0
+168: //                                                 2/3 2/2 2/1 2/0
+169: //                                                 1/3 1/2 1/1 1/0
+170: //                                                 0/3 0/2 0/1 0/0 }
+171: //
+172: // wr_data_ni2mc          =  DDR bus burst/byte { 7/C 6/C 5/C 4/C  3/C 2/C 1/C 0/C
+173: //                                                7/3 6/3 5/3 4/3  3/3 2/3 1/3 0/3
+174: //                                                7/2 6/2 5/2 4/2  3/2 2/2 1/2 0/2
+175: //                                                7/1 6/1 5/1 4/1  3/1 2/1 1/1 0/1
+176: //                                                7/0 6/0 5/0 4/0  3/0 2/0 1/0 0/0 }
+177: //
+178: 
+179: integer pl_byte;
+180: integer dq_byte;
+181: integer burst;
+182: 
+183: reg  [DQ_WIDTH-1:0]            rd_data_phy2mc_burst[7:0];
+184: wire [PAYLOAD_WIDTH*8-1:0]     rd_data_mc2ni_cw_order;
+185: reg  [63:0]                    rd_data_mc2ni_byte[PAYLOAD_WIDTH/8-1:0];
+186: reg  [PAYLOAD_WIDTH*8-1:0]     wr_data_ni2mc_cw_order;
+187: reg  [PAYLOAD_WIDTH-1:0]       wr_data_ni2mc_burst[7:0];
+188: wire [DQ_WIDTH*8-1:0]          wr_data_mc2phy_cw_order;
+189: reg  [63:0]                    wr_data_mc2phy_byte[DQ_WIDTH/8-1:0];
+190: reg  [PAYLOAD_DM_WIDTH*8-1:0]  wr_data_mask_ni2mc_cw_order;
+191: reg  [PAYLOAD_DM_WIDTH-1:0]    wr_data_mask_ni2mc_burst[7:0];
+192: wire [DM_WIDTH*8-1:0]          wr_data_mask_mc2phy_cw_order;
+193: reg  [7:0]                     wr_data_mask_mc2phy_byte[DM_WIDTH-1:0];
+194: 
+195: // Swizzle read data from NI format to DDR bus codeword per burst format
+196: always @(*) begin
+197:    for (burst = 0; burst < 8; burst++) begin
+198:      for (pl_byte = 0; pl_byte < DQ_WIDTH/8; pl_byte++) begin
+199:         rd_data_phy2mc_burst     [burst][pl_byte*8 +: 8] = rd_data_phy2mc_xif [burst*8 + pl_byte*64 +: 8];
+200:      end // for pl_byte
+201:      rd_data_phy2mc_cw_order     [burst*DQ_WIDTH    +: DQ_WIDTH]    = rd_data_phy2mc_burst     [burst];
+202:    end // for burst
+203: end // always
+204: 
+205: // Swizzle read data from DDR bus codeword per burst format to NI format
+206: always @(*) begin
+207:    for (dq_byte = 0; dq_byte < PAYLOAD_WIDTH/8; dq_byte++) begin
+208:      for (burst = 0; burst < 8; burst++) begin
+209:         rd_data_mc2ni_byte     [dq_byte][burst*8 +: 8] = rd_data_mc2ni_cw_order     [dq_byte*8 + burst*PAYLOAD_WIDTH +: 8];
+210:      end // for burst
+211:      rd_data_mc2ni     [dq_byte*64 +: 64] = rd_data_mc2ni_byte     [dq_byte];
+212:    end // for dq_byte
+213: end // always
+214: 
+215: // Swizzle write data from NI format to DDR bus codeword per burst format
+216: always @(*) begin
+217:    for (burst = 0; burst < 8; burst++) begin
+218:      for (pl_byte = 0; pl_byte < PAYLOAD_WIDTH/8; pl_byte++) begin
+219:         wr_data_ni2mc_burst     [burst][pl_byte*8 +: 8] = wr_data_ni2mc     [burst*8 + pl_byte*64 +: 8];
+220:         wr_data_mask_ni2mc_burst[burst][pl_byte]        = wr_data_mask_ni2mc[burst   + pl_byte*8];
+221:      end // for pl_byte
+222:      wr_data_ni2mc_cw_order     [burst*PAYLOAD_WIDTH    +: PAYLOAD_WIDTH]    = wr_data_ni2mc_burst     [burst];
+223:      wr_data_mask_ni2mc_cw_order[burst*PAYLOAD_DM_WIDTH +: PAYLOAD_DM_WIDTH] = wr_data_mask_ni2mc_burst[burst];
+224:    end // for burst
+225: end // always
+226: 
+227: 
+228: // Swizzle write data from DDR bus codeword per burst format to NI format
+229: always @(*) begin
+230:    // First swizzle back the payload
+231:    for (dq_byte = 0; dq_byte < DATA_WIDTH/8; dq_byte++) begin
+232:      for (burst = 0; burst < 8; burst++) begin
+233:         wr_data_mc2phy_byte     [dq_byte][burst*8 +: 8] = wr_data_mc2phy_cw_order     [dq_byte*8 + burst*DATA_WIDTH +: 8];
+234:         wr_data_mask_mc2phy_byte[dq_byte][burst]        = wr_data_mask_mc2phy_cw_order[dq_byte   + burst*PAYLOAD_DM_WIDTH];
+235:      end // for burst
+236:      wr_data_mc2phy     [dq_byte*64 +: 64] = wr_data_mc2phy_byte     [dq_byte];
+237:      wr_data_mask_mc2phy[dq_byte*8  +:  8] = wr_data_mask_mc2phy_byte[dq_byte];
+238:    end // for dq_byte
+239:    // Now swizzle out the check bits
+240:    for (dq_byte = DATA_WIDTH/8; dq_byte < DQ_WIDTH/8; dq_byte++) begin
+241:      for (burst = 0; burst < 8; burst++) begin
+242:         wr_data_mc2phy_byte     [dq_byte][burst*8 +: 8] = wr_data_mc2phy_cw_order     [(dq_byte-DATA_WIDTH/8)*8 + burst*ECC_WIDTH + 8*DATA_WIDTH +: 8];
+243:         wr_data_mask_mc2phy_byte[dq_byte][burst]        = wr_data_mask_mc2phy_cw_order[(dq_byte-PAYLOAD_WIDTH/8)   + burst*(DM_WIDTH-PAYLOAD_DM_WIDTH) + 8*PAYLOAD_DM_WIDTH];
+244:      end // for burst
+245:      wr_data_mc2phy     [dq_byte*64 +: 64] = wr_data_mc2phy_byte     [dq_byte];
+246:      wr_data_mask_mc2phy[dq_byte*8  +:  8] = wr_data_mask_mc2phy_byte[dq_byte];
+247:    end // for dq_byte
+248: end // always
+249: 
+250: 
+251: reg  [4:0] rd_data_addr_dly;
+252: reg        rd_data_en_dly;
+253: reg        rmw_rd_done_dly;
+254: reg        ecc_status_valid;
+255: 
+256: generate
+257: if (ECC=="OFF") begin
+258: 
+259: assign  wr_data_mc2phy_cw_order      = wr_data_ni2mc_cw_order;
+260: assign  wr_data_mask_mc2phy_cw_order = wr_data_mask_ni2mc_cw_order;
+261: assign  rd_data_mc2ni_cw_order       = rd_data_phy2mc_cw_order;
+262: assign  rd_data_addr_mc2ni           = rd_data_addr_phy2mc;
+263: assign  rd_data_en_mc2ni             = rd_data_en_phy2mc;
+264: assign  rd_data_end_mc2ni            = rd_data_end_phy2mc;
+265: assign  ecc_err_addr                 = '0;
+
+SOURCE: E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/ui/ddr4_v2_2_ui_wr_data.sv
+LINES: 468-523
+468:   wire [RAM_WIDTH-1:0] wr_buf_out_data_w;
+469:   reg [RAM_WIDTH-1:0] wr_buf_out_data;
+470:   generate
+471:       wire [RAM_WIDTH-1:0] wr_buf_in_data;
+472:       if (REMAINDER == 0)
+473:         if (ECC_TEST == "OFF")
+474:           assign wr_buf_in_data = {app_wdf_mask_ns1, app_wdf_data_ns1};
+475:         else
+476:           assign wr_buf_in_data = 
+477:                    {app_raw_not_ecc_r1, app_wdf_mask_ns1, app_wdf_data_ns1};
+478:       else
+479:         if (ECC_TEST == "OFF")
+480:           assign wr_buf_in_data =
+481:                {{6-REMAINDER{1'b0}}, app_wdf_mask_ns1, app_wdf_data_ns1};
+482:         else 
+483:           assign wr_buf_in_data = {{6-REMAINDER{1'b0}}, app_raw_not_ecc_r1,//app_raw_not_ecc_r1 is not ff 
+484:                                    app_wdf_mask_ns1, app_wdf_data_ns1};
+485: 
+486:       wire [4:0] rd_addr_w;
+487: 
+488:       assign rd_addr_w = {wr_data_addr, wr_data_offset};
+489: 
+490:       always @(posedge clk) wr_buf_out_data <= #TCQ  wr_buf_out_data_w; // spyglass disable UndrivenNet-ML
+491:       genvar ii;
+492:       for (ii=0; ii<RAM_CNT; ii=ii+1) begin : wr_buffer_ram
+493:         RAM32M
+494:           #(.INIT_A(64'h0000000000000000),
+495:             .INIT_B(64'h0000000000000000),
+496:             .INIT_C(64'h0000000000000000),
+497:             .INIT_D(64'h0000000000000000)
+498:           ) RAM32M0 (
+499:             .DOA(wr_buf_out_data_w[((ii*6)+4)+:2]),
+500:             .DOB(wr_buf_out_data_w[((ii*6)+2)+:2]),
+501:             .DOC(wr_buf_out_data_w[((ii*6)+0)+:2]),
+502:             .DOD(),
+503:             .DIA(wr_buf_in_data[((ii*6)+4)+:2]),
+504:             .DIB(wr_buf_in_data[((ii*6)+2)+:2]),
+505:             .DIC(wr_buf_in_data[((ii*6)+0)+:2]),
+506:             .DID(2'b0),
+507:             .ADDRA(rd_addr_w),
+508:             .ADDRB(rd_addr_w),
+509:             .ADDRC(rd_addr_w),
+510:             .ADDRD(wb_wr_data_addr_w),
+511:             .WE(wdf_rdy_ns),
+512:             .WCLK(clk)
+513:            );
+514:       end // block: wr_buffer_ram
+515:   endgenerate
+516: 
+517:   output [APP_DATA_WIDTH-1:0] wr_data;
+518:   output [APP_MASK_WIDTH-1:0] wr_data_mask;
+519:   assign {wr_data_mask, wr_data} = wr_buf_out_data[WR_BUF_WIDTH-1:0];
+520:   output [2*nCK_PER_CLK-1:0] raw_not_ecc;
+521:   generate
+522:     if (ECC_TEST == "OFF") assign raw_not_ecc = {2*nCK_PER_CLK{1'b0}};
+523:     else assign raw_not_ecc = wr_buf_out_data[WR_BUF_WIDTH-1-:4];
+
+SOURCE: E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/cal/ddr4_v2_2_cal_top.sv
+LINES: 405-415
+405: );
+406: 
+407: assign dbg_out = {8'b0, mcal_CKE[7:0], 16'b0};
+408: 
+409: function [63:0] swizzle; // spyglass disable W499
+410:    input [63:0] d;
+411:    reg [6:0] b;
+412:    for (b = 0; b <= 63; b = b + 1) swizzle[b] = d[{b[2:0], b[5:3]}];
+413: endfunction
+414: 
+415: function [4:0] mr2totcwl3;
+
+SOURCE: E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/cal/ddr4_v2_2_cal_top.sv
+LINES: 704-711
+704: generate
+705:   always @(posedge clk)
+706:     for (i = 0; i < DBYTES; i = i + 1) begin
+707:       if (DM_DBI == "DM_NODBI" || DM_DBI == "NONE" || DM_DBI == "NODM_DBIWR")
+708:         rdData[i*64+:64] <= #TCQ swizzle(mcal_DQIn[i*64+:64]);
+709:       else
+710:         rdData[i*64+:64] <= #TCQ (cal_dbi_rd_r[1] == 1'b1) ? 
+711:                   rdDBI(swizzle(mcal_DQIn[i*64+:64]), ~(mcal_DMIn_n >> (i * 8))) : 
+
+SOURCE: E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/cal/ddr4_v2_2_cal_top.sv
+LINES: 1540-1551
+1540:    wrDBIMask[i] = wrDBI(wrData[i*8+:8]);
+1541: 
+1542: always @(*) for (i = 0; i < (DBYTES * 8); i = i + 1)
+1543:    wrDataDBI[i*8+:8] = wrData[i*8+:8] ^ ~{8{wrDBIMask[i]}};
+1544: 
+1545: always @(*) for (i = 0; i < DBYTES; i = i + 1)
+1546:    wrDataSW[i*64+:64] = swizzle(wrData[i*64+:64]);
+1547: 
+1548: always @(*) for (i = 0; i < DBYTES; i = i + 1)
+1549:    wrDataDBISW[i*64+:64] = swizzle(wrDataDBI[i*64+:64]);
+1550: 
+1551: generate
+
+SOURCE: E:/Xylinx/EO_IR_HD_SDI_panorama_base/docs/DDR_EO_PANORAMA_FIX_PLAN.md
+LINES: 2128-2145
+2128:   `01_DQS_GATE`/`02_DQS_GATE_SANITY_CHECK` are pass/fail gates, not
+2129:   continuous-traffic stress tests;
+2130: - per-bit eye margins all healthy and uniform (§15 -- the eye itself
+2131:   is fine; the GATE is in the wrong clock cycle, which per-bit deskew
+2132:   margins do not measure).
+2133: 
+2134: AMD documents this class of failure (calibration passes, deterministic
+2135: post-calibration read data errors, DQS-gate tracking landing/underflow
+2136: issues) in its UltraScale/UltraScale+ MIG hardware-failure casebook:
+2137: https://adaptivesupport.amd.com/s/article/1225537 -- including a case
+2138: where a power-rail (VTT) anomaly during calibration parked the gate in
+2139: a wrong-but-stable position. See also AR 70006 (DDR4 post-calibration
+2140: data errors under specific patterns).
+2141: 
+2142: ### 20.2 Why this is FIXABLE from this repo after all
+2143: 
+2144: The interface currently runs at **DDR4-2400** (`C0.DDR4_TimePeriod
+2145: {833}` ps in `scripts/create_ddr4_sub64_ip.tcl` -> 1200MHz memory
+
+SOURCE: E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_ddr_eyescan.log
+LINES: 62-80
+62: #         after 2000
+63: #         refresh_hw_mig $m
+64: #         set endv [get_property 2D_EYE_SCAN_END $m]
+65: #         puts "  poll $i: 2D_EYE_SCAN_END=$endv"
+66: #         if {$endv != "000"} {
+67: #             puts "Scan appears complete."
+68: #             break
+69: #         }
+70: #     }
+71: # }
+72: Trigger attempt error: ERROR: [Labtoolstcl 44-156] hw_mig property '2D_EYE_SCAN_START' is read-only.
+73: 
+74: # puts "\n==== Full property dump after scan attempt ===="
+75: 
+76: ==== Full property dump after scan attempt ====
+77: # report_property $m
+78: Property                                                      Type    Read-only  Value
+79: 2D_EYE_SCAN_END                                               string  true       000
+80: 2D_EYE_SCAN_START                                             string  true       000
+
+SOURCE: E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_takeover_mig_writable.log
+LINES: 70-85
+70: # set p DQS_GATE_COARSE_RANK0_BYTE0
+71: # set v [get_property $p $m]
+72: # puts "TRY_SET_CURRENT $p=$v"
+73: TRY_SET_CURRENT DQS_GATE_COARSE_RANK0_BYTE0=005
+74: # if {[catch {set_property $p $v $m} err]} {
+75: #   puts "SET_FAILED: $err"
+76: # } else {
+77: #   puts "SET_OK"
+78: # }
+79: SET_FAILED: ERROR: [Labtoolstcl 44-156] hw_mig property 'DQS_GATE_COARSE_RANK0_BYTE0' is read-only.
+80: 
+81: # close_hw_manager
+82: # exit
+83: INFO: [Common 17-206] Exiting Vivado at Wed Jul  8 21:36:44 2026...

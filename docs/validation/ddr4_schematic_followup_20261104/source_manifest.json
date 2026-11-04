@@ -1,0 +1,104 @@
+{
+  "audit_date": "2026-11-04",
+  "hardware_connected": false,
+  "sources": [
+    {
+      "path": "C:/SVNProjects/IMU_Stabilize_v40/Circuit Diagram/tbt_camerasystem_251106.pdf",
+      "bytes": 625561,
+      "sha256": "65c5ed684024664e2938056389423a948b5d8b935180e16c382f76699369d0ee"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/ddr4_sub64.xci",
+      "bytes": 42483,
+      "sha256": "e7e701e5925d298d58aad99f1d3f6897a7116925b57c3938a53dfb704c2bcd37"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/constraints/ddr4_sub64_firstpass.xdc",
+      "bytes": 7437,
+      "sha256": "e873bda86ba07e7e861928131c95635426695aa452603a41f7f9d934a95e2528"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/docs/validation/ddr4_dci_vrp_20261104/query_summary.json",
+      "bytes": 32668,
+      "sha256": "0dfe05696103c0ce7c5fc2c7036656a17bb2d623502af482fce0f487e3c4cd09"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/ip/ddr4_sub64/rtl/controller/ddr4_v2_2_mc_ecc.sv",
+      "bytes": 23766,
+      "sha256": "8bdeb6816b26bcba870e043601a8c64b5d7638fa0c1777326d9e5a220cdc8333"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/controller/ddr4_v2_2_mc_ecc.sv",
+      "bytes": 23766,
+      "sha256": "8bdeb6816b26bcba870e043601a8c64b5d7638fa0c1777326d9e5a220cdc8333"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/ui/ddr4_v2_2_ui_wr_data.sv",
+      "bytes": 21052,
+      "sha256": "b3864bbae35bfedaf99967266992832e16cfe1e74b9e9ad76fb1f0d4778292c7"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/ip/ddr4_sub64/rtl/cal/ddr4_v2_2_cal_top.sv",
+      "bytes": 68227,
+      "sha256": "a61e43ff4e1ab4622a6e72fe19e71192108558b66fdc516e45d5984c8375ea17"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/docs/DDR_EO_PANORAMA_FIX_PLAN.md",
+      "bytes": 162200,
+      "sha256": "44f568d07f4cc23d7c0e322a32c5b929e874f522a37d3cc862812f9243443747"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_ddr_eyescan.log",
+      "bytes": 199020,
+      "sha256": "758eab9761e109aafce9662bd20ee91e3701582235d1443384f743336282ddd6"
+    },
+    {
+      "path": "E:/Xylinx/EO_IR_HD_SDI_panorama_base/codex_takeover_mig_writable.log",
+      "bytes": 3689,
+      "sha256": "e351e30d009af8ecdbec16096fd606aa50c8eb1d30571230ca4f8d583c9c53bd"
+    }
+  ],
+  "crop_method": "Original PDF rendered by pypdfium2 at scale 2; PIL extracts these pixel rectangles without modifying drawing content.",
+  "root_crops": [
+    {
+      "render": "page_03.png",
+      "pixel_box": [
+        980,
+        810,
+        1600,
+        960
+      ],
+      "output": "pg2_enable_branches.png"
+    },
+    {
+      "render": "page_06.png",
+      "pixel_box": [
+        1010,
+        960,
+        1800,
+        1330
+      ],
+      "output": "vpp_regulator.png"
+    },
+    {
+      "render": "page_18.png",
+      "pixel_box": [
+        700,
+        60,
+        1500,
+        1520
+      ],
+      "output": "dram_m4.png"
+    }
+  ],
+  "references": [
+    "https://docs.amd.com/r/en-US/pg150-ultrascale-memory-ip/DDR4-Pin-Rules",
+    "https://docs.amd.com/api/khub/documents/kFbaUC5HGcXyGNauhgU6Gw/content",
+    "https://docs.amd.com/r/en-US/pg150-ultrascale-memory-ip/Write-Path?contentId=~p_ZvVIFyCS30_GLdJ~KsA",
+    "https://www.renesas.com/en/document/dst/isl68224-datasheet",
+    "https://device.report/m/a82202ea0826ff816106a9e47d2ba37556d78fa4ed84981a0f9890a9b4a90970",
+    "https://docs.amd.com/r/en-US/ug583-ultrascale-pcb-design/alert_n",
+    "https://www.skyworksinc.com/-/media/SkyWorks/SL/documents/public/data-sheets/Si590-591.pdf",
+    "https://adaptivesupport.amd.com/s/article/70006?language=en_US"
+  ]
+}

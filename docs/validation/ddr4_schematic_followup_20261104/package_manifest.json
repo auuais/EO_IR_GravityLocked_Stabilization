@@ -1,0 +1,77 @@
+{
+  "audit_date": "2026-11-04",
+  "paths_relative_to": "this manifest",
+  "hash_algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "all_five_dram_data_pins.csv",
+      "bytes": 3213,
+      "sha256": "41c994087e0be20ddf9f5c8ad705bb1f403c27a2540530972f0dd876e3e3b991"
+    },
+    {
+      "path": "compare_x48_pin_trace.py",
+      "bytes": 5934,
+      "sha256": "118a7734c71a37925212b54d1710b4412aba5077c999284e71ced26608560fa7"
+    },
+    {
+      "path": "current_x48_pin_trace.csv",
+      "bytes": 6600,
+      "sha256": "64aba86e4f02b370723c16fc84cd73ec71a84f6eecc99c0c4e2ae27863aed403"
+    },
+    {
+      "path": "dram_m4.png",
+      "bytes": 167593,
+      "sha256": "6677e8afb0d22aa754ce8ebb4800d7c66ae9330683d4e14de60e71647d3955a8"
+    },
+    {
+      "path": "extract_schematic.py",
+      "bytes": 2809,
+      "sha256": "7ff6d319c806c23841327d1c6f73407e9dd69c271ec8acc3d8c31add92304113"
+    },
+    {
+      "path": "m4_old_dq48_63_pin_trace.csv",
+      "bytes": 1626,
+      "sha256": "9e619fb8e2872bc75549eb9e0ec632d322b9684e3a2d50a339032dcb07afaeb0"
+    },
+    {
+      "path": "pg2_enable_branches.png",
+      "bytes": 16273,
+      "sha256": "92a2ea58d4dadf38e0c637ab9a9677717aae97795a5188946930d601280b1d10"
+    },
+    {
+      "path": "reference_clock.png",
+      "bytes": 65781,
+      "sha256": "7192dc4211c2e2b540a8633aa616010f4653e2a7317b29296944e40f4349b7cc"
+    },
+    {
+      "path": "schematic_extracted_nets.json",
+      "bytes": 107624,
+      "sha256": "9582a72f126fa9a58cb2961d1c692cad649a8b6ff642cff0f7348d54698eb751"
+    },
+    {
+      "path": "schematic_mapping_audit.json",
+      "bytes": 12779,
+      "sha256": "15e7e8f365aee4d026290c09cb4eece3a48566c767d58ec519e67ad58024ce1e"
+    },
+    {
+      "path": "source_excerpts.txt",
+      "bytes": 14008,
+      "sha256": "cec9fcb4cc22fb4f6e3ede989d1bbbbf56a93ccb4301fd6c75512df09c0196cf"
+    },
+    {
+      "path": "source_manifest.json",
+      "bytes": 3789,
+      "sha256": "684654367915d62c7e11598988335f52201101cd25f15206f725f582d7979d94"
+    },
+    {
+      "path": "vpp_regulator.png",
+      "bytes": 50286,
+      "sha256": "ec221cf9bf6dc9cfe50fa1e16acbf0c051b685edd5244402a1d1b41e62fc5f85"
+    },
+    {
+      "path": "../../DDR4_SCHEMATIC_FOLLOWUP_20261104.md",
+      "bytes": 14748,
+      "sha256": "74acc8bbbba1d450cd1d42ee90b5f4119dc65f13604395b2f767ee34e5ffb820"
+    }
+  ]
+}

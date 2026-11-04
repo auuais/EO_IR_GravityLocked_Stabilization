@@ -1,0 +1,428 @@
+{
+  "scope": "Schematic net/pin trace plus current XDC and two previously queried routed checkpoints; no board inspection or electrical margin measurement.",
+  "pdf": "C:\\SVNProjects\\IMU_Stabilize_v40\\Circuit Diagram\\tbt_camerasystem_251106.pdf",
+  "pdf_sha256": "65c5ed684024664e2938056389423a948b5d8b935180e16c382f76699369d0ee",
+  "xdc": "E:\\Xylinx\\EO_IR_GravityLocked_Stabilization\\constraints\\ddr4_sub64_firstpass.xdc",
+  "xdc_sha256": "e873bda86ba07e7e861928131c95635426695aa452603a41f7f9d934a95e2528",
+  "xci": "E:\\Xylinx\\EO_IR_GravityLocked_Stabilization\\ip\\ddr4_sub64\\ddr4_sub64.xci",
+  "xci_sha256": "e7e701e5925d298d58aad99f1d3f6897a7116925b57c3938a53dfb704c2bcd37",
+  "mapped_ports_checked": 95,
+  "data_dq_checked": 48,
+  "data_dm_checked": 6,
+  "data_dqs_wires_checked": 12,
+  "control_address_ck_reset_checked": 27,
+  "reference_clock_wires_checked": 2,
+  "mismatches": [],
+  "routed_port_mappings_cross_checked_per_checkpoint": 93,
+  "routed_checkpoints": [
+    {
+      "path": "E:/Xylinx/EO_IR_GravityLocked_Stabilization/builds/gravity_20261022_235934/routed.dcp",
+      "sha256": "dd2864015366808bee2eddbbba4330a28b1adf470681d0173fbac2c66cfd8b97"
+    },
+    {
+      "path": "E:/Xylinx/EO_Panorama_V19_RollPitch/EO_Panorama_V19_M1.runs/impl_1/KintexTop_EO_IR_HD_SDI_panorama_base_routed.dcp",
+      "sha256": "7fd0212ba09a262b6160cf1c0edadf6cd7ac71a85ad2e2ed7d4e1cbec37b9478"
+    }
+  ],
+  "physical_mapping": [
+    {
+      "component": "M1",
+      "old_dq": [
+        0,
+        15
+      ],
+      "old_byte_lanes": [
+        0,
+        1
+      ],
+      "current_mig_logical_dq": null,
+      "image_payload_used": false,
+      "pdf_page": 17
+    },
+    {
+      "component": "M2",
+      "old_dq": [
+        16,
+        31
+      ],
+      "old_byte_lanes": [
+        2,
+        3
+      ],
+      "current_mig_logical_dq": [
+        0,
+        15
+      ],
+      "image_payload_used": true,
+      "pdf_page": 17
+    },
+    {
+      "component": "M3",
+      "old_dq": [
+        32,
+        47
+      ],
+      "old_byte_lanes": [
+        4,
+        5
+      ],
+      "current_mig_logical_dq": [
+        16,
+        31
+      ],
+      "image_payload_used": true,
+      "pdf_page": 18
+    },
+    {
+      "component": "M4",
+      "old_dq": [
+        48,
+        63
+      ],
+      "old_byte_lanes": [
+        6,
+        7
+      ],
+      "current_mig_logical_dq": [
+        32,
+        47
+      ],
+      "image_payload_used": false,
+      "pdf_page": 18
+    },
+    {
+      "component": "M5",
+      "old_dq": [
+        64,
+        79
+      ],
+      "old_byte_lanes": [
+        8,
+        9
+      ],
+      "current_mig_logical_dq": null,
+      "image_payload_used": false,
+      "pdf_page": 18
+    }
+  ],
+  "m4_current_ports": [
+    {
+      "mig_port": "c0_ddr4_dm_dbi_n[4]",
+      "fpga_package_pin": "AH30",
+      "schematic_fpga_pin": "AH30",
+      "schematic_net": "FU_DDR4_DM_DBI6_N",
+      "dram_component": "M4",
+      "dram_terminal": "LDM_N/DBI_N",
+      "component_ball": "E7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 114,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[32]",
+      "fpga_package_pin": "AK32",
+      "schematic_fpga_pin": "AK32",
+      "schematic_net": "FU_DDR4_DQ48",
+      "dram_component": "M4",
+      "dram_terminal": "DQ0",
+      "component_ball": "G2",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 115,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[33]",
+      "fpga_package_pin": "AL32",
+      "schematic_fpga_pin": "AL32",
+      "schematic_net": "FU_DDR4_DQ49",
+      "dram_component": "M4",
+      "dram_terminal": "DQ1",
+      "component_ball": "F7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 116,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[34]",
+      "fpga_package_pin": "AJ30",
+      "schematic_fpga_pin": "AJ30",
+      "schematic_net": "FU_DDR4_DQ50",
+      "dram_component": "M4",
+      "dram_terminal": "DQ2",
+      "component_ball": "H3",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 117,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[35]",
+      "fpga_package_pin": "AM33",
+      "schematic_fpga_pin": "AM33",
+      "schematic_net": "FU_DDR4_DQ51",
+      "dram_component": "M4",
+      "dram_terminal": "DQ3",
+      "component_ball": "H7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 118,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[36]",
+      "fpga_package_pin": "AH31",
+      "schematic_fpga_pin": "AH31",
+      "schematic_net": "FU_DDR4_DQ52",
+      "dram_component": "M4",
+      "dram_terminal": "DQ4",
+      "component_ball": "H2",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 119,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[37]",
+      "fpga_package_pin": "AH32",
+      "schematic_fpga_pin": "AH32",
+      "schematic_net": "FU_DDR4_DQ53",
+      "dram_component": "M4",
+      "dram_terminal": "DQ5",
+      "component_ball": "H8",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 120,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[38]",
+      "fpga_package_pin": "AJ29",
+      "schematic_fpga_pin": "AJ29",
+      "schematic_net": "FU_DDR4_DQ54",
+      "dram_component": "M4",
+      "dram_terminal": "DQ6",
+      "component_ball": "J3",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 121,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[39]",
+      "fpga_package_pin": "AM32",
+      "schematic_fpga_pin": "AM32",
+      "schematic_net": "FU_DDR4_DQ55",
+      "dram_component": "M4",
+      "dram_terminal": "DQ7",
+      "component_ball": "J7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 122,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dqs_t[4]",
+      "fpga_package_pin": "AK31",
+      "schematic_fpga_pin": "AK31",
+      "schematic_net": "FU_DDR4_DQS6_T",
+      "dram_component": "M4",
+      "dram_terminal": "LDQS_T",
+      "component_ball": "G3",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 123,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dqs_c[4]",
+      "fpga_package_pin": "AL31",
+      "schematic_fpga_pin": "AL31",
+      "schematic_net": "FU_DDR4_DQS6_C",
+      "dram_component": "M4",
+      "dram_terminal": "LDQS_C",
+      "component_ball": "F3",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 124,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dm_dbi_n[5]",
+      "fpga_package_pin": "AM28",
+      "schematic_fpga_pin": "AM28",
+      "schematic_net": "FU_DDR4_DM_DBI7_N",
+      "dram_component": "M4",
+      "dram_terminal": "UDM_N/DBI_N",
+      "component_ball": "E2",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 126,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[40]",
+      "fpga_package_pin": "AL29",
+      "schematic_fpga_pin": "AL29",
+      "schematic_net": "FU_DDR4_DQ56",
+      "dram_component": "M4",
+      "dram_terminal": "DQ8",
+      "component_ball": "A3",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 127,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[41]",
+      "fpga_package_pin": "AM30",
+      "schematic_fpga_pin": "AM30",
+      "schematic_net": "FU_DDR4_DQ57",
+      "dram_component": "M4",
+      "dram_terminal": "DQ9",
+      "component_ball": "B8",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 128,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[42]",
+      "fpga_package_pin": "AM29",
+      "schematic_fpga_pin": "AM29",
+      "schematic_net": "FU_DDR4_DQ58",
+      "dram_component": "M4",
+      "dram_terminal": "DQ10",
+      "component_ball": "C3",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 129,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[43]",
+      "fpga_package_pin": "AN33",
+      "schematic_fpga_pin": "AN33",
+      "schematic_net": "FU_DDR4_DQ59",
+      "dram_component": "M4",
+      "dram_terminal": "DQ11",
+      "component_ball": "C7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 130,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[44]",
+      "fpga_package_pin": "AP28",
+      "schematic_fpga_pin": "AP28",
+      "schematic_net": "FU_DDR4_DQ60",
+      "dram_component": "M4",
+      "dram_terminal": "DQ12",
+      "component_ball": "C2",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 131,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[45]",
+      "fpga_package_pin": "AL30",
+      "schematic_fpga_pin": "AL30",
+      "schematic_net": "FU_DDR4_DQ61",
+      "dram_component": "M4",
+      "dram_terminal": "DQ13",
+      "component_ball": "C8",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 132,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[46]",
+      "fpga_package_pin": "AP29",
+      "schematic_fpga_pin": "AP29",
+      "schematic_net": "FU_DDR4_DQ62",
+      "dram_component": "M4",
+      "dram_terminal": "DQ14",
+      "component_ball": "D3",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 133,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dq[47]",
+      "fpga_package_pin": "AN32",
+      "schematic_fpga_pin": "AN32",
+      "schematic_net": "FU_DDR4_DQ63",
+      "dram_component": "M4",
+      "dram_terminal": "DQ15",
+      "component_ball": "D7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 134,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dqs_t[5]",
+      "fpga_package_pin": "AN30",
+      "schematic_fpga_pin": "AN30",
+      "schematic_net": "FU_DDR4_DQS7_T",
+      "dram_component": "M4",
+      "dram_terminal": "UDQS_T",
+      "component_ball": "B7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 135,
+      "match": true
+    },
+    {
+      "mig_port": "c0_ddr4_dqs_c[5]",
+      "fpga_package_pin": "AN31",
+      "schematic_fpga_pin": "AN31",
+      "schematic_net": "FU_DDR4_DQS7_C",
+      "dram_component": "M4",
+      "dram_terminal": "UDQS_C",
+      "component_ball": "A7",
+      "fpga_pdf_page": 11,
+      "dram_pdf_pages": "18",
+      "xdc_line": 136,
+      "match": true
+    }
+  ],
+  "schematic_part_label": "MT40A512M16TB-062E_R",
+  "schematic_density": "8Gbit; 512M x16",
+  "selected_ip_parameters": {
+    "C0.DDR4_MemoryPart": "MT40A512M16TB-062E",
+    "C0.DDR4_DataWidth": "48",
+    "C0.DDR4_TimePeriod": "1071",
+    "C0.DDR4_InputClockPeriod": "4999",
+    "C0.DDR4_PhyClockRatio": "4:1",
+    "C0.DDR4_CasLatency": "13",
+    "C0.DDR4_CasWriteLatency": "10",
+    "C0.DDR4_DataMask": "DM_NO_DBI",
+    "C0.DDR4_Ecc": "false",
+    "C0.DDR4_MCS_ECC": "false",
+    "DCI_Cascade": "false"
+  },
+  "timing_note": "Generated RTL is configured for tCK=1071ps, CL13, CWL10, tRCD13tCK, tRP13tCK, tRAS30tCK, tRFC327tCK. Schematic itself provides no independent timing or measured margin evidence. Exact base memory part and 8Gb x16 density agree; this is not a physical board-population or timing-signoff assertion.",
+  "clock_schematic": {
+    "pdf_page": 11,
+    "oscillator": "Y2 590BD200M000DG",
+    "supply": "FU_3V3_VCCO",
+    "out_p": "Y2.4 through C523=0.1uF to FU_DDR4_SYSCLK_P / FPGA.AR32",
+    "out_n": "Y2.5 through C522=0.1uF to FU_DDR4_SYSCLK_N / FPGA.AT32",
+    "bias": "R634/R635 and R637/R638: each leg 1k to1.2V and1k toGND; nominal0.6V common mode",
+    "differential_resistor": "R636=100ohm 1% between SYSCLK_P/N"
+  },
+  "limitations": [
+    "Current XDC top comment still describes lowerx64; executable assignments and later comment implement remappedx48.",
+    "M1 and M5 data are omitted from MIG but their shared CA/clock/control connections remain on the schematic.",
+    "Mapping M4 to historically faulty lanes does not prove a defective M4 die; solder, PCB, power, timing and FPGA IO remain possible fault locations.",
+    "Schematic labels and controller setup do not prove actual populated parts or board rework.",
+    "No PCB routing/length/impedance, waveform, temperature, voltage margin or loaded bitstream verification was performed."
+  ]
+}
